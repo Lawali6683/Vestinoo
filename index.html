@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vestinoo Registration</title>
+    <meta property="og:title" content="Free VestBit Mining – Get $0.50 Bonus Instantly!" />
+<meta property="og:description" content="Deposit to activate miners, start mining daily, withdraw as low as $1.25. Earn more with referrals – Join Vestinoo today!" />
+<meta property="og:image" content="https://vestinoo.pages.dev/media.png" />
+<meta property="og:image:width" content="1152" />
+<meta property="og:image:height" content="768" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:url" content="https://vestinoo.pages.dev/" />
+<meta property="og:image:alt" content="Vestinoo Mining Banner" />
+<link rel="icon" type="image/png" href="https://vestinoo.pages.dev/logo.png" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at 30% 30%, #0f2e2e, #051616);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            color: #ffffff;
+        }
+
+        a {
+            text-decoration: none;
+            color: #00ffcc;
+        }
+
+          /* Loading Screen */
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(0, 255, 180, 0.05);
+            padding: 15px;
+            box-shadow: 0 0 25px rgba(0, 255, 180, 0.3);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .logo img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+        }
+
+        .spinner {
+            margin: 20px auto 0;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 255, 180, 0.2);
+            border-top: 4px solid #00ffb4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .text {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #00ffb4;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 180, 0.5); }
+            100% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
+        }
+        
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        header a {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        header a i {
+            margin-right: 8px;
+        }
+
+        
+        
+         /* Banner Image */
+.banner {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: url('banner2.png') center center no-repeat;
+    background-size: cover;
+    border-bottom: 2px solid #00ffcc; 
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;  
+    box-shadow: 0 0 10px #00ffcc;
+    background-size: contain;
+background-repeat: no-repeat;
+background-position: center;
+    
+    
+}
+
+        .banner img {
+             position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 35%; 
+    height: auto; 
+    top: 240px;
+            right: 24px;
+            display: flex;
+            gap: 60px;
+           
+        }
+
+
+        /* Form Container */
+        .form-container {
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00ffcc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #00ffcc;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: #00ffcc;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .form-container input {
+            width: calc(100% - 40px);
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            border: 2px solid #00ffcc;
+            border-radius: 5px;
+            background: #051616;
+            color: #ffffff;
+        }
+
+        .form-container input:focus {
+            outline: none;
+            box-shadow: 0 0 5px #00ffcc;
+        }
+
+        .form-container .password-container {
+            position: relative;
+        }
+
+        .form-container .password-container i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .form-container button {
+            width: 96%;
+            padding: 10px;
+            font-size: 1rem;
+            color: #ffffff;
+            background: #00ffcc;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background: #009f99;
+        }
+
+        /* Notification Containers */
+        .alert {
+            display: none;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .alert.error {
+            background: #ff4444;
+            color: #ffffff;
+        }
+
+       
+         .toggle-password {
+            position: absolute;
+            right: 30px;
+            top: 40%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #00ffcc;
+        }
+        
+        .banner-buttons {
+            position: absolute;
+            top: 4px;
+            right: 20px;
+            display: flex;
+            gap: 70px;
+            z-index: 999;
+        }
+
+        .banner-buttons a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ffcc;
+            border-radius: 5px;
+            color: #00ffcc;
+            font-size: 1.2rem;
+        }
+
+        .banner-buttons a:hover {
+            background: #00ffcc;
+            color: #051616;
+        }
+        
+        
+              
+       #error-message {
+    color: red;
+    border: 1px solid #f5c6cb; 
+    border-radius: 5px; 
+    font-size: 16px; 
+    display: none;     
+    margin-top: 10px;
+    display: none;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            background: #662bff8a;
+            
+}
+                       
+    </style>
+    <style>
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 10px;
+    width: 95%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  .modal-content {
+    background: #0f2e2e;
+    padding: 30px 20px;
+    text-align: center;
+    border: 2px solid #00ffcc;
+    border-radius: 8px;
+    position: relative;
+    color: #ffffff;
+    max-width: 500px;
+    width: 90%;
+  }
+
+  .modal-content .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #00ffcc;
+    font-size: 1.5em;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .cat {
+    color: #00ffcc;
+    font-size: 20px;
+    margin-top: 10px;
+    font-weight: bold;
+    display: none;
+  }
+</style>
+
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="logo">
+            <img src="logo.png" alt="Vestinoo Logo">
+        </div>
+        <div class="spinner"></div>
+        <div class="text">Loading Vestinoo...</div>
+    </div>
+    
+      <!-- Banner Section -->
+    <div class="banner">
+        <div class="banner-buttons">
+            <a href="homepage.html"><i class="fas fa-home"></i> Home Page</a>
+             <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+        </div>
+        <img src="logo.png" style="z-index: 999;">
+    </div>
+  
+    <!-- Registration Form -->
+    <div class="form-container">
+        <h2>Create Vestinoo Account</h2>
+
+        <!-- Error and Success Alerts -->
+        <div id="email-error" class="alert error">Invalid Email Address! Please try again.</div>
+        <div id="email-registered" class="alert error">This email address is already in use. Please <a href="login.html">login</a>.</div>
+        
+        <div id="error-message" style="color: red; display: none;">          </div>
+
+        
+        <!-- Modal Success Message -->
+<div id="success-modal" class="modal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal()">×</button>
+    <img src="mark.png" alt="Success" style="max-width: 50px; margin-bottom: 10px;">
+    <h2>Congratulations!</h2>
+    <p class="cat">Registration successful. Please check your email for verification before you can log in.</p>
+  </div>
+</div>
+
+        <form id="registration-form">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" placeholder="Enter your full name">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email address">
+
+            <label for="username">User Name</label>
+            <input type="text" id="username" placeholder="Enter your user name">
+
+            <label for="country">Country</label>
+            <input type="text" id="country" placeholder="Enter your country">
+
+            <label for="password">Password</label>
+            <div class="password-container">
+                <input type="password" id="password" placeholder="Enter your password">
+                <span class="toggle-password" onclick="togglePassword('password')">👀</span>                             </div>
+               
+
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="password-container">
+                <input type="password" id="confirmPassword" placeholder="Confirm your password">
+             <span class="toggle-password" onclick="togglePassword('confirmPassword')">👀</span>
+                </div>
+               
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+<script>
+function togglePassword(fieldId) {
+    const field = document.getElementById(fieldId);
+    const icon = field.nextElementSibling;
+
+    if (field.type === "password") {
+        field.type = "text";
+        icon.textContent = "🙄"; 
+    } else {
+        field.type = "password";
+        icon.textContent = "👀"; 
+    }
+}
+</script>
+    <script type="module">
+import { app } from './firebase.js';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+const auth = getAuth(app);
+
+// Hide loading screen initially
+document.getElementById('loading-screen').style.display = 'none';
+
+document.getElementById('registration-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const fullName = document.getElementById('fullName').value;
+  const email = document.getElementById('email').value;
+  const username = document.getElementById('username').value;
+  const country = document.getElementById('country').value;
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  const errorMessage = document.getElementById('error-message');
+  const emailError = document.getElementById('email-error');
+
+  if (password !== confirmPassword) {
+    errorMessage.textContent = 'Passwords do not match!';
+    errorMessage.style.display = 'block';
+    return;
+  } else {
+    errorMessage.style.display = 'none';
+  }
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await sendEmailVerification(userCredential.user);
+
+    // Send to external server (Vercel)
+    const response = await fetch("https://vestinooproject.vercel.app/api/userData", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "@haruna66"
+      },
+      body: JSON.stringify({
+        fullName,
+        email,
+        country,
+        username,
+        password,
+        referralBy: new URLSearchParams(window.location.search).get("ref")
+      })
+    });
+
+    if (response.ok) {
+      // Show success modal
+      document.getElementById('success-modal').style.display = 'flex';
+    } else {
+      throw new Error('Failed to save user data to server.');
+    }
+
+  } catch (error) {
+    console.error(error.message);
+
+    // Display readable Firebase errors
+    let message = "An error occurred, please try again.";
+    if (error.code === "auth/email-already-in-use") {
+      message = "This email is already in use.";
+    } else if (error.code === "auth/invalid-email") {
+      message = "Invalid email format.";
+    } else if (error.code === "auth/weak-password") {
+      message = "Password should be at least 6 characters.";
+    }
+
+    emailError.textContent = message;
+    emailError.style.display = 'block';
+  }
+});
+
+// Function to close the modal
+window.closeModal = function () {
+  document.getElementById('success-modal').style.display = 'none';
+}
+</script>
+
+</body>
+  </html>
