@@ -15,6 +15,10 @@
 <link rel="icon" type="image/png" href="https://vestinoo.pages.dev/logo.png" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
+<script src="https://ligheechoagool.com/88/tag.min.js" data-zone="145615" async data-cfasync="false"></script>
+<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
     <style>        
         body {
             margin: 0;
@@ -326,6 +330,45 @@ background-position: center;
     font-weight: bold;
     display: none;
   }
+  
+  .install-banner {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #0f2e2e;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  z-index: 9999;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-family: sans-serif;
+  animation: slideDown 0.5s ease-out;
+}
+
+.install-banner button {
+  background-color: #00ffd5;
+  color: black;
+  border: none;
+  padding: 8px 12px;
+  margin-left: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#dismissBtn {
+  background: transparent;
+  font-size: 20px;
+  color: white;
+  padding: 0 10px;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
 </style>
 
 </head>
@@ -338,6 +381,13 @@ background-position: center;
         <div class="spinner"></div>
         <div class="text">Loading Vestinoo...</div>
     </div>
+    
+    <div id="installBanner" style="display: none;" class="install-banner">
+  <p>Install Vestinoo app for a better experience.</p>
+  <button id="installBtn">Install Now</button>
+  <button id="dismissBtn" aria-label="Dismiss">×</button>
+</div>
+
     
       <!-- Banner Section -->
     <div class="banner">
@@ -398,6 +448,38 @@ background-position: center;
             <button type="submit">Submit</button>
         </form>
     </div>
+    <script>
+  let deferredPrompt;
+  const banner = document.getElementById('installBanner');
+  const installBtn = document.getElementById('installBtn');
+  const dismissBtn = document.getElementById('dismissBtn');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Tsaida default prompt din browser
+    e.preventDefault();
+    deferredPrompt = e;
+    // Nuna custom banner
+    banner.style.display = 'flex';
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+      banner.style.display = 'none';
+    }
+  });
+
+  dismissBtn.addEventListener('click', () => {
+    banner.style.display = 'none';
+  });
+</script>
 <script>
 function togglePassword(fieldId) {
     const field = document.getElementById(fieldId);
@@ -498,4 +580,4 @@ window.closeModal = function () {
 </script>
 
 </body>
-  </html>
+</html>
