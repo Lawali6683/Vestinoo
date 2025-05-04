@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Dashboard</title>
+    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
+<script src="https://ligheechoagool.com/88/tag.min.js" data-zone="145615" async data-cfasync="false"></script>
+<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+    <style>
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at 30% 30%, #0f2e2e, #051616);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            color: #ffffff;
+        }
+
+         /* Loading Screen */
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(0, 255, 180, 0.05);
+            padding: 15px;
+            box-shadow: 0 0 25px rgba(0, 255, 180, 0.3);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .logo img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+        }
+
+        .spinner {
+            margin: 20px auto 0;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 255, 180, 0.2);
+            border-top: 4px solid #00ffb4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .text {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #00ffb4;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 180, 0.5); }
+            100% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
+        }
+        
+
+        /* Main Content */
+        #mainContent {
+            display: none;
+        }
+
+        .banner {
+            position: relative;
+            text-align: center;
+        }
+
+        .banner img {
+            width: 100%;
+            height: auto;
+            
+            background-size: cover;
+    border-bottom: 2px solid #00ffcc; 
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    
+box-shadow: 0 0 10px #00ffcc;
+        }
+
+     
+       .package-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.package {
+    background-size: contain; 
+    background-repeat: no-repeat;
+    background-position: center;
+    
+    border: 2px solid #00ffcc;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    width: 100%;
+    height: 100px;
+    cursor: pointer;
+    position: relative;
+    
+    background-color: rgba(255, 255, 255, 0.05);
+    display: block;
+}
+
+.package:hover {
+    border-color: #ffffff;
+}
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 10px;
+            width: 95%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #0f2e2e;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #00ffcc;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .modal-content .close-btn {
+            position: absolute;
+            top: 0px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #00ffcc;
+            font-size: 1.5em;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .alert {
+            color: red;
+            font-size: 20px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+       
+
+ button {
+            margin-top: 0px;
+            padding: 8px 15px;
+            background-color: #00ffcc;
+            border: none;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+       button:hover {
+            background-color: #ffffff;
+        }
+        
+         .banner-content {
+           position: absolute;
+            top: 25px;
+            right: 47px;
+            display: flex;
+            gap: 55px;
+            z-index: 999;
+            font-size: 1.2rem;
+            font-weight: bold;
+            
+        }
+
+       
+        
+.h{
+     box-shadow: 0 0 10px #00ffcc;
+     font-size: 20px;
+ }
+    </style>
+    <style>
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #323232;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 9999;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hidden {
+    display: none;
+  }
+  
+  .wallet-section {
+  text-align: center;
+  margin: 30px 20px;
+}
+
+.wallet-section h3 {
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  color: #00ffcc;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.75);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #0c1a1a;
+  padding: 3px;
+  max-width: 600px;
+  width: 90%;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,255,204,0.3);
+  position: relative;
+  text-align: center;
+  color: #fff;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+.deposit-text {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #00ffcc;
+  margin-bottom: 20px;
+}
+
+.note {
+  font-size: 22px;
+  color: #ccc;
+  margin-bottom: 20px;
+}
+
+.wallet-box {
+ display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 500px;  
+  margin: 0 auto;
+  background: #101c1c;
+  border: 2px solid #00ffcc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+  padding: 1px 0px;
+}
+
+.wallet-box span {
+  flex: 0.9;
+  color: #00ffcc;
+  font-weight: bold;
+  text-align: left;
+}
+
+.wallet-box input {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.wallet-box button {
+ padding: 10px 20px;
+  background: #00ffcc;
+  color: #000;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.wallet-box button:hover {
+  background: blue;
+}
+P{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+</style>
+
+</head>
+<body>
+     <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="logo">
+            <img src="logo.png" alt="Vestinoo Logo">
+        </div>
+        <div class="spinner"></div>
+        <div class="text">Loading Vestinoo...</div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent">
+        <div class="banner">
+            <h1 class="h">Welcome to Vestinoo <i id="welcomeMessage"> Guest  </i> </h1>
+            <img src="Banner.png" alt="Banner">
+            
+            <div class="banner-content">
+                <p>wallet: <span id="userBalance">$0.00</span></p>
+                <p>Found: <span id="userDeposit">$0.00</span></p>
+                
+                
+            
+            </div>
+           
+            </div>
+            
+ 
+<div class="wallet-section">
+  <p>Copy your Vestinoo deposit wallet addresses to deposit your funds:</p>
+  <div id="toast" class="toast hidden">Wallet address copied successfully!</div>
+  
+<h3>USDT (TRC20)</h3>
+  <div class="wallet-box">    
+    <input id="wallet_usdt_trc20" type="text" readonly value="---">
+    <button data-copy="wallet_usdt_trc20">Copy</button>
+  </div>
+  
+<h3>BNB (BEP20)</h3>
+  <div class="wallet-box">    
+    <input id="wallet_bnb_bep20" type="text" readonly value="---">
+    <button data-copy="wallet_bnb_bep20">Copy</button>
+  </div>
+
+<h3>BTC</h3>
+  <div class="wallet-box">    
+    <input id="wallet_btc" type="text" readonly value="---">
+    <button data-copy="wallet_btc">Copy</button>
+  </div>
+  
+<h3>USDT (BEP20)</h3>
+  <div class="wallet-box">    
+    <input id="wallet_usdt_bep20" type="text" readonly value="---">
+    <button data-copy="wallet_usdt_bep20">Copy</button>
+  </div>
+
+  <p class="alert">Please ensure you send the correct coin to the correct address.</p>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast hidden">Wallet address copied successfully!</div>
+</div>
+
+    
+        </div>
+
+        <!-- Packages -->
+        <div class="package-container" id="packageContainer"></div>
+    </div>
+
+    
+<!-- Modern Modal -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <button class="close-btn" id="closeModal">✖️</button>
+ 
+    <!-- Toast Notification -->
+    <div id="toast-modal" class="toast hidden">Wallet address copied successfully!</div>
+
+    <h2 style="color:#00ffcc; text-align:center;">Deposit Details</h2>
+    <p class="deposit-text">Deposit Amount: <span id="modalDeposit">$0.00</span></p>
+    <p class="note">Choose the coin and copy the wallet address to make your deposit:</p>
+
+    <!-- Wallet Boxes -->
+    <span>USDT (TRC20)</span>
+    <div class="wallet-box">      
+      <input id="walletAddress_usdt_trc20" type="text" readonly value="---" />
+      <button data-copy="walletAddress_usdt_trc20">Copy</button>
+    </div>
+    
+<span>BNB (BEP20)</span>
+    <div class="wallet-box">      
+      <input id="walletAddress_bnb_bep20" type="text" readonly value="---" />
+      <button data-copy="walletAddress_bnb_bep20">Copy</button>
+    </div>
+    
+ <span>BTC</span>
+    <div class="wallet-box">     
+      <input id="walletAddress_btc" type="text" readonly value="---" />
+      <button data-copy="walletAddress_btc">Copy</button>
+    </div>
+    
+<span>USDT (BEP20)</span>
+    <div class="wallet-box">      
+      <input id="walletAddress_usdt_bep20" type="text" readonly value="---" />
+      <button data-copy="walletAddress_usdt_bep20">Copy</button>
+    </div>
+
+    <p class="alert">
+      Please ensure you send the correct coin to the correct address. Wrong deposits may be lost.
+    </p>
+  </div>
+</div>
+
+    <script type="module">
+import { app, analytics, firebaseConfig } from './firebase.js';
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+    const auth = getAuth();
+    const database = getDatabase();
+
+    const loadingScreen = document.getElementById("loadingScreen");
+    const mainContent = document.getElementById("mainContent");
+    const packageContainer = document.getElementById("packageContainer");
+    const modal = document.getElementById("modal");
+    const closeModal = document.getElementById("closeModal");
+    const modalDeposit = document.getElementById("modalDeposit");
+
+    const userAddresses = {
+        usdttrc20: "---",
+        bnb: "---",
+        btc: "---",
+        usdtbep20: "---"
+    };
+
+    // Show loading
+    setTimeout(() => {
+        loadingScreen.style.display = "none";
+        mainContent.style.display = "block";
+    }, 2000);
+
+    // Auth
+    onAuthStateChanged(auth, (user) => {
+        if (!user) return;
+
+        const userRef = ref(database, `users/${user.uid}`);
+        onValue(userRef, (snapshot) => {
+            const data = snapshot.val();
+            if (!data) return;
+
+            document.getElementById("userBalance").textContent = `$${(data.userBalance || 0).toFixed(2)}`;
+            document.getElementById("userDeposit").textContent = `$${(data.deposit || 0).toFixed(2)}`;
+            document.getElementById("welcomeMessage").textContent = `Hi, ${data.fullName || "Guest"}`;
+
+            userAddresses.usdttrc20 = data.usdttrc20Address || "---";
+            userAddresses.bnb = data.bnbAddress || "---";
+            userAddresses.btc = data.btcAddress || "---";
+            userAddresses.usdtbep20 = data.usdtbep20Address || "---";
+
+            // Update wallet
+            document.getElementById("wallet_usdt_trc20").textContent = userAddresses.usdttrc20;
+            document.getElementById("wallet_bnb_bep20").textContent = userAddresses.bnb;
+            document.getElementById("wallet_btc").textContent = userAddresses.btc;
+            document.getElementById("wallet_usdt_bep20").textContent = userAddresses.usdtbep20;
+
+            document.getElementById("walletAddress_usdt_trc20").textContent = userAddresses.usdttrc20;
+            document.getElementById("walletAddress_bnb_bep20").textContent = userAddresses.bnb;
+            document.getElementById("walletAddress_btc").textContent = userAddresses.btc;
+            document.getElementById("walletAddress_usdt_bep20").textContent = userAddresses.usdtbep20;
+        });
+    });
+
+    // Package list
+    const packages = [
+        { img: "pac1.png", deposit: "$2" },
+        { img: "pac2.png", deposit: "$4" },
+        { img: "pac3.png", deposit: "$8" },
+        { img: "pac4.png", deposit: "$15" },
+        { img: "pac5.png", deposit: "$30" },
+        { img: "pac6.png", deposit: "$50" },
+        { img: "pac7.png", deposit: "$100" },
+        { img: "pac8.png", deposit: "$200" },
+        { img: "pac9.png", deposit: "$400" },
+        { img: "pac10.png", deposit: "$800" },
+    ];
+
+    // Render packages once
+    packages.forEach(pkg => {
+        const div = document.createElement("div");
+        div.classList.add("package");
+        div.style.backgroundImage = `url(${pkg.img})`;
+        div.setAttribute("data-deposit", pkg.deposit);
+        div.addEventListener("click", () => {
+            modalDeposit.textContent = pkg.deposit;
+            modal.style.display = "flex";
+        });
+        packageContainer.appendChild(div);
+    });
+
+    // Close modal
+    closeModal.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    // Copy wallet buttons
+    const copyConfigs = [
+        { btnId: "copy_usdt_trc20", spanId: "wallet_usdt_trc20", toastId: "toast" },
+        { btnId: "copy_bnb_bep20", spanId: "wallet_bnb_bep20", toastId: "toast2" },
+        { btnId: "copy_btc", spanId: "wallet_btc", toastId: "toast3" },
+        { btnId: "copy_usdt_bep20", spanId: "wallet_usdt_bep20", toastId: "toast4" },
+        { btnId: "copyModal_usdt_trc20", spanId: "walletAddress_usdt_trc20", toastId: "toast" },
+        { btnId: "copyModal_bnb_bep20", spanId: "walletAddress_bnb_bep20", toastId: "toast2" },
+        { btnId: "copyModal_btc", spanId: "walletAddress_btc", toastId: "toast3" },
+        { btnId: "copyModal_usdt_bep20", spanId: "walletAddress_usdt_bep20", toastId: "toast4" },
+    ];
+
+    copyConfigs.forEach(cfg => {
+        const btn = document.getElementById(cfg.btnId);
+        const span = document.getElementById(cfg.spanId);
+        const toast = document.getElementById(cfg.toastId);
+
+        if (btn && span && toast) {
+            btn.addEventListener("click", () => {
+                navigator.clipboard.writeText(span.textContent).then(() => {
+                    toast.classList.remove("hidden");
+                    toast.classList.add("show");
+                    setTimeout(() => {
+                        toast.classList.remove("show");
+                        toast.classList.add("hidden");
+                    }, 3000);
+                });
+            });
+        }
+    });
+});
+
+
+  
+            
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const toast = document.getElementById("toast");
+
+  // Kowane button yana da data-copy
+  document.querySelectorAll("button[data-copy]").forEach(button => {
+    button.addEventListener("click", () => {
+      const inputId = button.getAttribute("data-copy");
+      const input = document.getElementById(inputId);
+      if (input) {
+        navigator.clipboard.writeText(input.value).then(() => {
+          showToast("Wallet address copied successfully!");
+        });
+      }
+    });
+  });
+
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.remove("hidden");
+    toast.classList.add("show");
+    setTimeout(() => {
+      toast.classList.remove("show");
+      toast.classList.add("hidden");
+    }, 3000);
+  }
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("modal");
+  const closeModal = document.getElementById("closeModal");
+  const toast = document.getElementById("toast-modal");
+
+  closeModal.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  document.querySelectorAll("button[data-copy]").forEach(button => {
+    button.addEventListener("click", () => {
+      const targetId = button.getAttribute("data-copy");
+      const input = document.getElementById(targetId);
+      if (input) {
+        navigator.clipboard.writeText(input.value).then(() => {
+          showToast("Wallet address copied successfully!");
+        });
+      }
+    });
+  });
+
+  function showToast(message) {
+    toast.textContent = message;
+    toast.classList.remove("hidden");
+    toast.classList.add("show");
+    setTimeout(() => {
+      toast.classList.remove("show");
+      toast.classList.add("hidden");
+    }, 3000);
+  }
+});
+</script>
+
+</body>
+</html>

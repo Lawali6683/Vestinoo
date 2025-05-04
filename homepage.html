@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vestinoo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at 30% 30%, #0f2e2e, #051616);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      color: #ffffff;
+      
+    }
+
+    header {
+      padding: 20px 30px;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left img {
+      height: 50px;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #00ffcc;
+      color: #051616;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1em;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .nav-link:hover {
+      background-color: #00c2a6;
+      transform: scale(1.05);
+      color: #ffffff;
+    }
+        
+        /* Banner Image */
+.banner {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background: url('banner.png') center center no-repeat;
+    background-size: cover;
+    border-bottom: 2px solid #00ffcc; 
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 0 10px #00ffcc;
+}
+
+        
+  
+    .banner h1 {
+      font-size: 3em;
+      color: #ffffff;
+      margin: 0;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
+
+    .intro {
+      text-align: center;
+      padding: 30px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 1.2em;
+      color: #cccccc;
+    }
+
+    .packages {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .package {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 2px solid #00ffcc;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .package:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 255, 204, 0.2);
+    }
+
+    .package img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    footer {
+      background-color: #051616;
+      color: #00ffcc;
+      text-align: center;
+      padding: 40px 20px 20px;
+    }
+
+    .social-icons a {
+      color: #ffffff;
+      margin: 0 10px;
+      font-size: 1.5em;
+      text-decoration: none;
+    }
+
+    .footer-menu {
+      margin-top: 20px;
+    }
+
+    .footer-menu a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 15px;
+      color: #00ffcc;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .auth-buttons {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .banner h1 {
+        font-size: 2em;
+      }
+    }
+   .ves{
+       Font-size: 17px;
+       Font-weight: bold;
+       Color: #00ffcc;
+   }
+   
+   .referral-section {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 3rem 1.5rem;
+      
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .referral-section::before {
+      content: "";
+      background: url('') no-repeat top right;
+      background-size: 180px;
+      opacity: 0.07;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .referral-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      color: #e0e0e0;
+    }
+
+    ul {
+      padding-left: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.6rem;
+    }
+
+    .highlight1 {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 1rem;
+      border-left: 4px solid #00ffcc;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+    }
+
+    strong {
+      color: #ffffff;
+    }
+    h2{
+        Font-weight: bold;
+       Color: #00ffcc;
+    }
+    
+   
+    h1 {
+      font-size: 2.5em;
+      color: #00ffc8;
+      text-align: center;
+      margin-bottom: 15px;
+      text-shadow: 1px 1px 8px rgba(0, 255, 200, 0.2);
+    }
+
+    .launch-date {
+      text-align: center;
+      font-size: 1.1em;
+      color: #ffcc00;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .content {
+      font-size: 1em;
+      line-height: 1.5;     
+    }
+
+    .content p {
+      margin: 5px 0;
+      color: #e0fdfb;
+      
+    }
+
+    .highlight {
+      color: #00ffc8;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      .container {
+        padding: 20px 15px;
+      }
+    }
+    .highlight1 .icon {
+   color: #00ffcc;
+    font-weight: bold;
+    margin-right: 8px;
+  }
+ .red{
+     width: 100%;
+     height: 200px;
+     border: 2px solid #00ffcc;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 10px #00ffcc;
+ }
+.h{
+     box-shadow: 0 0 10px #00ffcc;
+ }
+ 
+ 
+   
+    .menu-button {
+      position: absolute; 
+      top: 20px;
+      right: 20px;
+      background: #4f46e5;
+      color: #fff;
+      font-size: 22px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 1000;
+      transition: background 0.3s ease;
+      border: 1px solid #00ffc8;
+      box-shadow: 0 0 10px #00ffcc;
+    }
+
+    .menu-button:hover {
+      background: #4338ca;
+    }
+
+    .menu-container {
+      position: absolute;
+      top: -400px;
+      right: 20px;
+      width: 260px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      padding: 20px;
+      transition: top 0.4s ease;
+      z-index: 99;
+      border: 2px solid #00ffc8;
+      box-shadow: 0 0 10px #00ffcc;
+    }
+
+    .menu-container.active {
+      top: 70px;
+    }
+
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      color: #4f46e5;
+    }
+
+    .menu-header i {
+      cursor: pointer;
+      font-size: 22px;
+      color: #333;
+    }
+
+    .menu-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      cursor: pointer;
+      font-size: 16px;
+      color: #333;
+      transition: background 0.3s;
+      border-bottom: 1px solid #eee;
+    }
+
+    .menu-list li:hover {
+      background: #f0f4ff;
+      border-radius: 8px;
+      padding-left: 8px;
+    }
+
+    .menu-list i {
+      font-size: 20px;
+      color: #4f46e5;
+    }
+
+    .menu-list a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+      width: 100%;
+    }
+    
+    .announcement-section {
+  padding: 50px 20px;
+  background: radial-gradient(circle at 30% 30%, #0f2e2e, #051616);
+}
+
+.announcement {
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(0, 255, 204, 0.2);
+  border-left: 5px solid #00ffd1;
+  border-radius: 12px;
+  padding: 30px;
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 255, 204, 0.1);
+}
+
+.announcement-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.announcement-header .icon {
+  color: #00ffd1;
+  width: 28px;
+  height: 28px;
+}
+
+.announcement-header h2 {
+  font-size: 1.8rem;
+  color: #00ffd1;
+  margin: 0;
+}
+
+.announcement-body p {
+  margin-bottom: 14px;
+  font-size: 1.05rem;
+  color: #e1e1e1;
+}
+
+.highlight {
+  color: #00ffcc;
+  font-weight: bold;
+}
+
+
+.announcement {
+      max-width: 1000px;
+      margin: 80px auto;
+      padding: 40px 30px;
+      text-align: center;
+      color: #e0e0e0;
+      animation: fadeInUp 1.5s ease-out;
+    }
+
+
+    .announcement h1 {
+      font-size: 2.5rem;
+      color: #00ffd5;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #00ffd5;
+      font-weight: 600;
+    }
+
+    .announcement p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin: 15px 0;
+      color: #c2fdfb;
+    }
+
+    .highlight {
+      color: #ffbe0b;
+      font-weight: bold;
+    }
+
+    .icon {
+      color: #00ffd5;
+      margin-right: 8px;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    
+   .free{
+       position: absolute; 
+      top: 160%;
+      left: 53%;
+      Font-weight: bold;
+      color: #fff;
+      font-size: 22px;
+      padding: 12px 14px;
+      border-radius: 12px
+       z-index: 99;
+   }
+  </style>
+    
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+    <span> <img src="log.png" alt="Vestinoo Logo">
+      
+          <!-- Button to open menu -->
+<div class="menu-button" id="openMenu">
+  <i class="fas fa-bars"></i>
+</div>
+
+<!-- Floating menu container -->
+<div class="menu-container" id="menuContainer">
+  <div class="menu-header">
+    <span>Menu</span>
+    <i class="fas fa-times" id="closeMenu"></i>
+  </div>
+  <ul class="menu-list">
+    <li>
+      <a href="index.html">
+        <i class="fas fa-user-plus"></i> Register
+      </a>
+    </li>
+    <li>
+      <a href="login.html">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </a>
+    </li>
+    <li>
+      <a href="contact.html">
+        <i class="fas fa-headset"></i> Support
+      </a>
+    </li>
+    <li>
+      <a href="about.html">
+        <i class="fas fa-info-circle"></i> About Us
+      </a>
+    </li>
+  </ul>
+</div>
+
+<script>
+  const openMenu = document.getElementById('openMenu');
+  const closeMenu = document.getElementById('closeMenu');
+  const menuContainer = document.getElementById('menuContainer');
+
+  openMenu.addEventListener('click', () => {
+    menuContainer.classList.add('active');
+  });
+
+  closeMenu.addEventListener('click', () => {
+    menuContainer.classList.remove('active');
+  });
+</script>
+      
+    </div>
+    <div class="auth-buttons">
+      <a href="index.html" class="nav-link"><i class="fas fa-user-plus"></i> Register</a>
+      <a href="login.html" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+    </div>
+    
+  </header>
+
+  <section class="banner">
+    <h1 class="h">Welcome to Vestinoo</h1>
+  </section>
+
+  <section class="intro">
+      <p class="ves">Vestinoo – Honest Earnings, Smart System </p>
+    <p>Vestinoo is your one-stop destination for discovering premium packages curated with quality, style, and value. Explore our exclusive offerings tailored for a modern lifestyle.</p>    
+  </section>
+  <i class="free">For free Mining</i>
+  <img src="good.png" style="width: 100%;height: 100%;">
+  <div class="announcement">
+    <h1><i class="fas fa-coins icon"></i> Vestinoo</h1>
+    <p>
+      <i class="fas fa-bolt icon"></i>
+      At <span class="highlight">Vestinoo</span>, we make it easy for you to start mining and earning profits quickly.
+      Our powerful mining machines help you earn returns every 24 hours, all the way until your package expires.
+    </p>
+    <p>
+      <i class="fas fa-user-plus icon"></i>
+      <span class="highlight">Register now</span> and start enjoying the benefits! You'll get free <span class="highlight">VestBit Coin</span> mining,
+      and the value of the coin is already <span class="highlight">$1.00</span> in your wallet — even without investing any money!
+    </p>
+    <p>
+      <i class="fas fa-box-open icon"></i>
+      Want to earn more? Purchase one of our <span class="highlight">mining packages</span> for daily profits based on your plan.
+    </p>
+    <p>
+      <i class="fas fa-question-circle icon"></i>
+      Need help? Reach out via email — we reply from 8 AM to 5 PM on working days.
+    </p>
+    
+    <p style="margin-top: 30px;">
+      <strong>Vestinoo — a simple and profitable system for everyone.</strong>
+    </p>
+  </div>
+  
+    <section class="referral-section">
+    <div class="referral-content">
+      <h2>Join – Earn – Grow</h2>
+      <img src="red.png" class="red">
+      <p>We reward you for bringing others into the platform, but it’s important to understand exactly how the referral system works:</p>
+      <ul>
+        <li><strong>$0.50 Welcome Bonus</strong> – Just for signing up!</li>
+        <li><strong>8% Direct Referral Bonus</strong> – When someone you invite purchases a mining package.</li>
+        <li><strong>10% Indirect Referral Bonus (Level 2)</strong> – When someone invited by your direct referral invites another person who also purchases a package.</li>
+          <li><strong>Minimum withdrawal $1.25</strong></li>
+      </ul>
+
+      <div class="highlight1">
+  <p><span class="icon">➤</span><strong>Level 1 Referral – 8% his deposit:</strong><br>
+  If you directly invite someone and they purchase a package, you will earn 8% his deposit.</p>
+
+  <p><span class="icon">➤</span><strong>Level 2 Referral – 10% his deposit:</strong><br>
+  If the person you invited goes on to invite someone else who purchases a package, you will earn 10% his deposit from that second-level referral.</p>
+</div>
+
+
+      <p>This is designed to encourage wider outreach and reward those who help the platform grow deeper.</p>
+
+      <h2>Simple Conditions:</h3>
+      <ul>
+        <li>You only earn bonuses when the referred user actually purchases a mining package.</li>
+        <li>Bonuses cannot be withdrawn until your total balance reaches at least <strong>$1.25</strong>.</li>
+      </ul>
+
+      <p><strong>Vestinoo – Transparency First. Real Earnings, Real Growth.</strong><br>
+      Invite smart, grow your network, and earn with confidence.</p>
+    </div>
+  </section>
+  
+  
+  <section class="packages">
+      <div class="package"><img src="pac1.png" alt="Package 1"></div>
+    <div class="package"><img src="pac2.png" alt="Package 2"></div>
+    <div class="package"><img src="pac3.png" alt="Package 3"></div>
+    <div class="package"><img src="pac4.png" alt="Package 4"></div>
+    <div class="package"><img src="pac5.png" alt="Package 5"></div>
+    <div class="package"><img src="pac6.png" alt="Package 6"></div>
+    <div class="package"><img src="pac7.png" alt="Package 7"></div>
+    <div class="package"><img src="pac8.png" alt="Package 8"></div>
+    <div class="package"><img src="pac9.png" alt="Package 9"></div>
+    <div class="package"><img src="pac10.png" alt="Package 10"></div>
+       
+  </section>
+  
+<section class="announcement-section">
+  <div class="announcement">
+    <div class="announcement-header">
+      <i data-lucide="info" class="icon"></i>
+      <h2>Important Notice</h2>
+    </div>
+    <div class="announcement-body">
+      <p>At <span class="highlight">Vestinoo</span>, we give you the opportunity to invest in modern mining systems — from the comfort of your home.</p>
+      <p><strong>Note:</strong> Every package has a set <span class="highlight">duration</span> and a defined <span class="highlight">profit limit</span>.</p>
+      <p>For example: If you purchase a plan for 31 days, you’ll receive profit every 24 hours for exactly 31 days only.</p>
+      <p>Once that time ends, your mining stops — your investment has completed its cycle, and no further profit will be generated.</p>
+      <p>This system ensures <span class="highlight">transparency</span> and <span class="highlight">fairness</span> for every user.</p>
+      <p>Track your package duration and renew it to keep earning. We value honesty – no tricks, no hidden charges.</p>
+      <p><strong>Let your money work for you with peace of mind.</strong></p>
+    </div>
+  </div>
+</section>
+
+</p>
+
+  <footer>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+      <a href="#"><i class="fab fa-apple"></i></a>
+      <a href="#"><i class="fab fa-android"></i></a>
+      <a href="#"><i class="fab fa-whatsapp"></i></a>
+      <a href="mailto:vestinoominer@gmail.com"><i class="fas fa-envelope"></i></a>
+    </div>
+    <div class="footer-menu">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="mailto:vestinoominer@gmail.com"><i class="fas fa-envelope"></i> vestinoo@support.com</a>
+    </div>
+  </footer>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+</script>
+</body>
+</html>

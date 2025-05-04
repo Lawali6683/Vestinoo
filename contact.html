@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us – Vestinoo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet"/>
+  <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
+<script src="https://ligheechoagool.com/88/tag.min.js" data-zone="145615" async data-cfasync="false"></script>
+<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at 30% 30%, #0f2e2e, #051616);
+      background-attachment: fixed;
+      background-size: cover;
+      color: #ffffff;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 255, 200, 0.15);
+      backdrop-filter: blur(10px);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #00ffc6;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 90%;
+      border-radius: 10px;
+      border: 2px solid #00ffd1;
+      padding: 15px;
+      background: #0f2e2e;
+      color: #ffffff;
+      resize: none;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 15px;
+      background-color: #00ffc6;
+      color: #000;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #00bfa6;
+    }
+
+    .response-message {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .success {
+      color: #00ff88;
+    }
+
+    .error {
+      color: #ff4a4a;
+    }
+
+    .note {
+      margin-top: 30px;
+      font-size: 0.95em;
+      text-align: center;
+      color: #bbbbbb;
+    }
+
+    #email-icon {
+      position: fixed;
+      bottom: 30px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(0, 255, 200, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #00ffc6;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    #email-icon:hover {
+      transform: scale(1.1);
+    }
+
+    #email-icon img {
+      width: 40px;
+      height: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Vestinoo Support Center</h1>
+    <h2>Contact Us</h2>
+    <textarea id="message" placeholder="Write your message here..." rows="6" required></textarea>
+    <button id="sendMessageButton">Send Message</button>
+    <p id="responseMessage" class="response-message"></p>
+
+    <div class="note">
+      We are available to receive your messages during business days:<br/>
+      <strong>Monday to Friday | 8:00 AM – 5:00 PM</strong>
+    </div>
+  </div>
+
+  <div id="email-icon" title="Email Support">
+    <img src="sup.png" alt="Email Support Icon" />
+  </div>
+
+  <script>
+    // Email icon click
+    document.getElementById('email-icon').addEventListener('click', function () {
+      const email = 'Vestinoominer@gmail.com';
+      const subject = encodeURIComponent("Customer Inquiry – Vestinoo");
+      const body = encodeURIComponent("Dear Vestinoo Support,\n\nI have a few questions regarding your services.\n\nThank you.");
+      const mailtoUrl = `mailto:${email}?subject=${subject}&body=${body}`;
+      window.location.href = mailtoUrl;
+    });
+
+    // Send button logic
+    document.getElementById('sendMessageButton').addEventListener('click', function() {
+      var message = document.getElementById('message').value.trim();
+      if (!message) {
+        displayResponseMessage('Please enter your message before sending.', 'error');
+        return;
+      }
+
+      var emailAddress = 'Vestinoominer@gmail.com';
+      var subject = 'Customer Message – Vestinoo Contact Page';
+      var body = encodeURIComponent(message);
+      var mailtoLink = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+      window.location.href = mailtoLink;
+
+      displayResponseMessage('Your email client is ready to send the message.', 'success');
+    });
+
+    function displayResponseMessage(message, type) {
+      const responseMessageElement = document.getElementById('responseMessage');
+      responseMessageElement.textContent = message;
+      responseMessageElement.className = `response-message ${type}`;
+    }
+  </script>
+</body>
+</html>

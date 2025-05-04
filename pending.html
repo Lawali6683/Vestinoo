@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Withdrawals</title>
+    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
+<script src="https://ligheechoagool.com/88/tag.min.js" data-zone="145615" async data-cfasync="false"></script>
+<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at 30% 30%, #0f2e2e, #051616);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+        }
+
+        .withdrawal-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: #1e3a3a;
+            color: #ffffff;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            border: 2px solid #00ffcc;
+            box-shadow: 0 0 10px #00ffcc;
+        }
+
+        .withdrawal-item:nth-child(odd) {
+            background: #153838;
+        }
+
+        .withdrawal-number {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        .withdrawal-details {
+            flex: 1;
+            margin-left: 15px;
+        }
+
+        .withdrawal-details span {
+            display: block;
+            margin: 5px 0;
+        }
+
+        .withdrawal-details .amount {
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        .message {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="withdrawalsContainer">
+        <h1>Pending Withdrawals</h1>
+    </div>
+
+    <script type="module">
+        import { app, analytics, firebaseConfig } from './firebase.js';
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        const withdrawalsContainer = document.getElementById('withdrawalsContainer');
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userId = user.uid;
+                const fullNameRef = ref(db, `users/${userId}/fullName`);
+                const withdrawalsRef = ref(db, `approvedWithdrawals/${userId}`);
+
+                // Get user full name
+                let fullName = '';
+                onValue(fullNameRef, (snapshot) => {
+                    fullName = snapshot.val() || 'User';
+                });
+
+                // Get pending withdrawals
+                onValue(withdrawalsRef, (snapshot) => {
+                    const withdrawals = snapshot.val();
+                    withdrawalsContainer.innerHTML = '<h1>Pending Withdrawals</h1>';
+
+                    if (withdrawals) {
+                        let count = 1;
+                        for (const key in withdrawals) {
+                            const withdrawal = withdrawals[key];
+                            const withdrawalHTML = `
+                                <div class="withdrawal-item">
+                                    <div class="withdrawal-number">#${count}</div>
+                                    <div class="withdrawal-details">
+                                        <span>Amount: <span class="amount">$${parseFloat(withdrawal.amount).toFixed(2)}</span></span>
+                                        <span>Wallet Address: ${withdrawal.welletAddress}</span>
+                                        <span>Withdrawal Time: ${new Date(withdrawal.withdrawalTime).toLocaleString()}</span>
+                                    </div>
+                                </div>
+                            `;
+                            withdrawalsContainer.innerHTML += withdrawalHTML;
+                            count++;
+                        }
+                    } else {
+                        withdrawalsContainer.innerHTML += `
+                            <div class="message">
+                                ${fullName}, you are not pending payment in Vestinoo.
+                            </div>
+                        `;
+                    }
+                });
+            } else {
+                withdrawalsContainer.innerHTML = '<p>Please log in to see your pending withdrawals.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

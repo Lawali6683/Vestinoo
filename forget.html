@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forget Password - Vestinoo</title>
+  <style>
+   
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at 30% 30%, #0f2e2e, #051616);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      color: #ffffff;
+    }
+
+    /* Centered Container */
+    .container {
+      max-width: 300px;
+      margin: 100px auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+      border: 2px solid #00ffcc;
+      box-shadow: 0 0 15px #00ffcc;
+    }
+
+    .container h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #00ffcc;
+    }
+
+    .container p {
+      font-size: 0.9rem;
+      text-align: center;
+      color: #cccccc;
+    }
+
+    .container input[type="email"] {
+      width: 92%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #00ffcc;
+      border-radius: 5px;
+      background: transparent;
+      color: #ffffff;
+      font-size: 1rem;
+    }
+
+    .container button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      background: #00ffcc;
+      color: #051616;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .container button:hover {
+      background: #00bfa5;
+    }
+
+    /* Loading screen styling */
+    #loadingScreen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      color: #00ffcc;
+      font-size: 1.5rem;
+    }
+    
+     }
+   
+  </style>
+</head>
+<body>
+  <div id="loadingScreen">Loading...</div>
+
+<div><center><img src="log.png" style="width: 100%;"></center></div>
+
+  <div class="container">
+    <h1>Forget Password</h1>
+    <p>Enter your registered Vestinoo email to reset your password.</p>
+    <form id="forgotForm">
+      <input type="email" id="forgotEmail" placeholder="Enter your email" required>
+      <button type="submit">Send Reset Link</button>
+    </form>
+  </div>
+
+  <script type="module">
+    import { app, analytics, firebaseConfig } from './firebase.js';
+    import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+    import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+
+    const forgotForm = document.getElementById('forgotForm');
+    const loadingScreen = document.getElementById('loadingScreen');
+
+    forgotForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('forgotEmail').value;
+
+      // Show loading screen
+      loadingScreen.style.display = 'flex';
+
+      // Check if email exists in Firebase
+      const dbRef = ref(database);
+      get(child(dbRef, `users`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          const users = snapshot.val();
+          const emailExists = Object.values(users).some((user) => user.email === email);
+
+          if (emailExists) {
+            // Send password reset email
+            sendPasswordResetEmail(auth, email)
+              .then(() => {
+                loadingScreen.style.display = 'none';
+                alert('A password reset link has been sent to your email address. Please check your Email after 2 minutes.');
+              })
+              .catch((error) => {
+                loadingScreen.style.display = 'none';
+                alert(`Error: ${error.message}`);
+              });
+          } else {
+            loadingScreen.style.display = 'none';
+            alert('This email address is not registered in Vestinoo.');
+          }
+        } else {
+          loadingScreen.style.display = 'none';
+          alert('No user data found.');
+        }
+      }).catch((error) => {
+        loadingScreen.style.display = 'none';
+        alert(`Error fetching data: ${error.message}`);
+      });
+    });
+  </script>
+</body>
+</html>

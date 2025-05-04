@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vestinoo Verification</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+   
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at 30% 30%, #0f2e2e, #051616);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      color: #ffffff;
+    }
+
+    .container {
+      max-width: 300px;
+      margin: 50px auto;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #00ffcc;
+      text-align: center;
+    }
+
+    .container img {
+      max-width: 120px;
+      margin-bottom: 20px;
+    }
+
+    .container h2 {
+      font-size: 1.8rem;
+      color: #00ffcc;
+      margin-bottom: 15px;
+    }
+
+    .container p {
+      font-size: 1rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .container input {
+      width: 90%;
+      padding: 10px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      border: 2px solid #00ffcc;
+      border-radius: 5px;
+      background: #051616;
+      color: #ffffff;
+    }
+
+    .container input:focus {
+      outline: none;
+      box-shadow: 0 0 5px #00ffcc;
+    }
+
+    .container button {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      color: #ffffff;
+      background: #00ffcc;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .container button:hover {
+      background: #009f99;
+    }
+
+    .alert {
+      display: none;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .alert.error {
+      background: #ff4444;
+      color: #ffffff;
+    }
+
+    .alert.success {
+      background: #44ff44;
+      color: #ffffff;
+    }
+   .lod{
+       width: 100%;
+       height: 100%;
+       
+   }
+  </style>
+</head>
+<body>
+    <div>
+    <center><img src="log.png" class="lod"></center></div>
+  <div class="container">
+    
+    <h2>Loading...</h2>
+    <p>Please wait while we process your request.</p>
+  </div>
+
+  <script type="module">
+    import { app, analytics, firebaseConfig } from './firebase.js';
+    import { getAuth, applyActionCode, verifyPasswordResetCode, confirmPasswordReset } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+    const auth = getAuth(app);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const oobCode = urlParams.get('oobCode');
+    const mode = urlParams.get('mode');
+
+    if (oobCode) {
+      if (mode === 'verifyEmail') {
+        verifyEmail(oobCode);
+      } else if (mode === 'resetPassword') {
+        resetPassword(oobCode);
+      } else {
+        displayError('An unexpected issue occurred. Please try again.');
+      }
+    } else {
+      displayError('The link is invalid or expired. Please request a new one.');
+    }
+
+    function verifyEmail(oobCode) {
+      applyActionCode(auth, oobCode)
+        .then(() => {
+          document.querySelector('.container').innerHTML = `
+            <h2>Success!</h2>
+            <p>Your email has been successfully verified. Redirecting to login...</p>`;
+          setTimeout(() => {
+            window.location.href = 'login.html';
+          }, 3000);
+        })
+        .catch(() => {
+          displayError('This link has expired or is invalid. Try registering again.');
+          setTimeout(() => {
+            window.location.href = 'register.html';
+          }, 3000);
+        });
+    }
+
+    function resetPassword(oobCode) {
+      verifyPasswordResetCode(auth, oobCode)
+        .then(() => {
+          document.querySelector('.container').innerHTML = `
+            <h2>Reset Your Password</h2>
+            <input type="password" id="newPassword" placeholder="New Password">
+            <input type="password" id="confirmPassword" placeholder="Confirm Password">
+            <button id="resetPasswordButton">Submit</button>`;
+
+          document.getElementById("resetPasswordButton").addEventListener("click", async () => {
+            const newPassword = document.getElementById("newPassword").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (newPassword !== confirmPassword) {
+              alert('Passwords do not match.');
+              return;
+            }
+
+            try {
+              await confirmPasswordReset(auth, oobCode, newPassword);
+              document.querySelector('.container').innerHTML = `
+                <h2>Success!</h2>
+                <p>Your password has been reset successfully. Redirecting to login...</p>`;
+              setTimeout(() => {
+                window.location.href = 'login.html';
+              }, 3000);
+            } catch {
+              displayError('An error occurred while resetting your password. Please try again.');
+            }
+          });
+        })
+        .catch(() => {
+          displayError('This link has expired or is invalid. Try resetting your password again.');
+          setTimeout(() => {
+            window.location.href = 'forgot-password.html';
+          }, 3000);
+        });
+    }
+
+    function displayError(message) {
+      document.querySelector('.container').innerHTML = `
+        <h2>Error</h2>
+        <p>${message}</p>`;
+    }
+  </script>
+</body>
+</html>

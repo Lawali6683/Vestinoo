@@ -1,0 +1,23 @@
+{
+  "name": "Vestinoo",
+  "short_name": "Vestinoo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f2e2e",
+  "theme_color": "#00ffd5",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "description": "Vestinoo - A modern digital mine experience.",
+  "orientation": "portrait",
+  "scope": "/"
+}
