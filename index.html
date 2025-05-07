@@ -501,7 +501,8 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   deleteUser,
-  sendEmailVerification
+  sendEmailVerification,
+  fetchSignInMethodsForEmail
 } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 const auth = getAuth(app);
@@ -538,6 +539,12 @@ document.getElementById('registration-form').addEventListener('submit', async (e
   let userCredential = null;
 
   try {
+    // Check if the email is already in use
+    const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+    if (signInMethods.length > 0) {
+      throw new Error("This email is already in use.");
+    }
+
     // Create Firebase user
     userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await sendEmailVerification(userCredential.user);
@@ -574,7 +581,7 @@ document.getElementById('registration-form').addEventListener('submit', async (e
     // Display readable Firebase errors
     let message = "An error occurred, please try again.";
 
-    if (error.code === "auth/email-already-in-use") {
+    if (error.message.includes("email is already in use")) {
       message = "This email is already in use.";
     } else if (error.code === "auth/invalid-email") {
       message = "Invalid email format.";
