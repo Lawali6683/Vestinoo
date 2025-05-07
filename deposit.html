@@ -3,107 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Dashboard</title>
+    <title>Vestinoo Payment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   
     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
 
-<script src="https://ligheechoagool.com/88/tag.min.js" data-zone="145615" async data-cfasync="false"></script>
-<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
-    <style>
+        <style>
         
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: radial-gradient(circle at 30% 30%, #0f2e2e, #051616);
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
-            color: #ffffff;
-        }
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: radial-gradient(circle at 30% 30%, #0f2e2e, #051616);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    color: #ffffff;
+}
 
-         /* Loading Screen */
-        .loading-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 9999;
-        }
+/* Loading Screen Styling */
+.loading-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+}
 
-        .logo {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: rgba(0, 255, 180, 0.05);
-            padding: 15px;
-            box-shadow: 0 0 25px rgba(0, 255, 180, 0.3);
-            animation: pulse 2s infinite ease-in-out;
-        }
+.logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(0, 255, 180, 0.05);
+    padding: 15px;
+    box-shadow: 0 0 25px rgba(0, 255, 180, 0.3);
+    animation: pulse 2s infinite ease-in-out;
+}
 
-        .logo img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-        }
+.logo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
 
-        .spinner {
-            margin: 20px auto 0;
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(0, 255, 180, 0.2);
-            border-top: 4px solid #00ffb4;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
+.spinner {
+    margin: 20px auto 0;
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 255, 180, 0.2);
+    border-top: 4px solid #00ffb4;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
 
-        .text {
-            margin-top: 15px;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            color: #00ffb4;
-        }
+.text {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    color: #00ffb4;
+}
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
-            50% { box-shadow: 0 0 30px rgba(0, 255, 180, 0.5); }
-            100% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
-        }
-        
+@keyframes pulse {
+    0% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
+    50% { box-shadow: 0 0 30px rgba(0, 255, 180, 0.5); }
+    100% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
+}
 
-        /* Main Content */
-        #mainContent {
-            display: none;
-        }
+/* Banner Section */
+.banner {
+    position: relative;
+    text-align: center;
+}
 
-        .banner {
-            position: relative;
-            text-align: center;
-        }
-
-        .banner img {
-            width: 100%;
-            height: auto;
-            
-            background-size: cover;
+.banner img {
+    width: 100%;
+    height: auto;
+    background-size: cover;
     border-bottom: 2px solid #00ffcc; 
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
-    
-box-shadow: 0 0 10px #00ffcc;
-        }
+    box-shadow: 0 0 10px #00ffcc;
+}
 
-     
-       .package-container {
+.banner-content {
+    position: absolute;
+    top: 25px;
+    right: 47px;
+    display: flex;
+    gap: 55px;
+    z-index: 999;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+ .package-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 20px;
@@ -114,104 +117,111 @@ box-shadow: 0 0 10px #00ffcc;
     background-size: contain; 
     background-repeat: no-repeat;
     background-position: center;
-    
     border: 2px solid #00ffcc;
     border-radius: 15px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
     width: 100%;
     height: 100px;
     cursor: pointer;
     position: relative;
-    
     background-color: rgba(255, 255, 255, 0.05);
-    display: block;
 }
 
 .package:hover {
     border-color: #ffffff;
 }
 
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 10px;
-            width: 95%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: #0f2e2e;
-            padding: 20px;
-            text-align: center;
-            border: 2px solid #00ffcc;
-            border-radius: 5px;
-            position: relative;
-        }
-
-        .modal-content .close-btn {
-            position: absolute;
-            top: 0px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #00ffcc;
-            font-size: 1.5em;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .alert {
-            color: red;
-            font-size: 20px;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        
-       
-
- button {
-            margin-top: 0px;
-            padding: 8px 15px;
-            background-color: #00ffcc;
-            border: none;
-            color: #000;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-       button:hover {
-            background-color: #ffffff;
-        }
-        
-         .banner-content {
-           position: absolute;
-            top: 25px;
-            right: 47px;
-            display: flex;
-            gap: 55px;
-            z-index: 999;
-            font-size: 1.2rem;
-            font-weight: bold;
-            
-        }
-
-       
-        
-.h{
-     box-shadow: 0 0 10px #00ffcc;
-     font-size: 20px;
- }
-    </style>
-    <style>
-  .toast {
+/* Modal Styling */
+.modal {
+    display: none;
     position: fixed;
+    z-index: 9999;
+    left: 0; top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.75);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #0c1a1a;
+    padding: 3px;
+    max-width: 600px;
+    width: 90%;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,255,204,0.3);
+    position: relative;
+    text-align: center;
+    color: #fff;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+.deposit-text {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #00ffcc;
+    margin-bottom: 20px;
+}
+
+.note {
+    font-size: 22px;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.wallet-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 500px;  
+    margin: 0 auto;
+    background: #101c1c;
+    border: 2px solid #00ffcc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+    padding: 1px 0px;
+}
+
+.wallet-box input {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+.wallet-box button {
+    padding: 10px 20px;
+    background: #00ffcc;
+    color: #000;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.wallet-box button:hover {
+    background: blue;
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;    
     bottom: 30px;
     right: 30px;
     background-color: #323232;
@@ -223,130 +233,165 @@ box-shadow: 0 0 10px #00ffcc;
     transform: translateY(20px);
     transition: opacity 0.3s ease, transform 0.3s ease;
     z-index: 9999;
-  }
+}
 
-  .toast.show {
+.toast.show {
     opacity: 1;
     transform: translateY(0);
-  }
-
-  .hidden {
-    display: none;
-  }
-  
-  .wallet-section {
-  text-align: center;
-  margin: 30px 20px;
 }
 
-.wallet-section h3 {
-  margin-bottom: 15px;
-  font-size: 1.4rem;
-  color: #00ffcc;
+/* Coin Selection Container */
+.coin-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
 }
 
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  left: 0; top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.75);
-  justify-content: center;
-  align-items: center;
+/* Individual Coin Box */
+.coin-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    background-color: rgba(0, 255, 180, 0.1);
+    border: 2px solid #00ffcc;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 255, 180, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.modal-content {
-  background-color: #0c1a1a;
-  padding: 3px;
-  max-width: 600px;
-  width: 90%;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,255,204,0.3);
-  position: relative;
-  text-align: center;
-  color: #fff;
+.coin-box:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 255, 180, 0.5);
+    border-color: #ffffff;
 }
 
-.close-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  color: #fff;
-  cursor: pointer;
+/* Coin Icon */
+.coin-icon {
+    font-size: 2.5rem;
+    color: #00ffcc;
+    margin-bottom: 10px;
 }
 
-.deposit-text {
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #00ffcc;
-  margin-bottom: 20px;
-}
-
-.note {
-  font-size: 22px;
-  color: #ccc;
-  margin-bottom: 20px;
-}
-
-.wallet-box {
- display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 500px;  
-  margin: 0 auto;
-  background: #101c1c;
-  border: 2px solid #00ffcc;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
-  padding: 1px 0px;
-}
-
-.wallet-box span {
-  flex: 0.9;
-  color: #00ffcc;
-  font-weight: bold;
-  text-align: left;
-}
-
-.wallet-box input {
-  flex: 1;
-  padding: 10px 16px;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: #ffffff;
-  font-size: 1rem;
-}
-
-.wallet-box button {
- padding: 10px 20px;
-  background: #00ffcc;
-  color: #000;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.wallet-box button:hover {
-  background: blue;
-}
-P{
-    font-size: 20px;
+/* Coin Name */
+.coin-name {
+    font-size: 1rem;
     font-weight: bold;
+    color: #ffffff;
+    text-align: center;
 }
 
-</style>
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #323232;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    opacity: 0; 
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 9999; 
+}
 
+.toast.show {
+    opacity: 1; 
+    transform: translateY(0);
+}
+h1{
+    Font-size: 20px;
+}
+
+/* Coin Selection Container */
+.coin-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Individual Coin Box */
+.coin-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 150px;
+    background-color: rgba(0, 255, 180, 0.1);
+    border: 2px solid #00ffcc;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 255, 180, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.coin-box:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 255, 180, 0.5);
+    border-color: #ffffff;
+}
+
+/* Coin Image */
+.coin-image {
+    width: 80px; 
+    height: 70px; 
+    margin-bottom: 10px; 
+     border-radius: 50%;
+    object-fit: cover; 
+}
+
+/* Coin Name */
+.coin-name {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+}
+
+.image-row {
+      display: flex;
+      align-items: center;
+      position: relative;
+      
+    }
+
+    .image-row img {
+      width: 100px;
+      height: 100px;
+     left: 35px;
+      border-radius: 50%;
+      border-bottom: 2px solid #00ffcc; 
+      border: 2px solid 00ffcc;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0 10px #00ffcc;
+      position: relative;
+      margin-left: -36px;
+      transition: transform 0.3s;
+    }
+
+    .image-row img:first-child {
+      margin-left: 0;
+    }
+
+    .image-row img:hover {
+      transform: scale(1.1);
+      z-index: 2;
+    }
+
+    </style>
+    
 </head>
 <body>
-     <!-- Loading Screen -->
+    <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
         <div class="logo">
             <img src="logo.png" alt="Vestinoo Logo">
@@ -358,296 +403,258 @@ P{
     <!-- Main Content -->
     <div id="mainContent">
         <div class="banner">
-            <h1 class="h">Welcome to Vestinoo <i id="welcomeMessage"> Guest  </i> </h1>
-            <img src="Banner.png" alt="Banner">
+            <h1 class="h">Welcome to Vestinoo <i id="welcomeMessage"> </i></h1>
+            <img src="banner4.png" alt="Banner">
             
             <div class="banner-content">
-                <p>wallet: <span id="userBalance">$0.00</span></p>
+                <p>Wallet: <span id="userBalance">$0.00</span></p>
                 <p>Found: <span id="userDeposit">$0.00</span></p>
-                
-                
-            
             </div>
-           
-            </div>
-            
- 
-<div class="wallet-section">
-  <p>Copy your Vestinoo deposit wallet addresses to deposit your funds:</p>
-  <div id="toast" class="toast hidden">Wallet address copied successfully!</div>
-  
-<h3>USDT (TRC20)</h3>
-  <div class="wallet-box">    
-    <input id="wallet_usdt_trc20" type="text" readonly value="---">
-    <button data-copy="wallet_usdt_trc20">Copy</button>
-  </div>
-  
-<h3>BNB (BEP20)</h3>
-  <div class="wallet-box">    
-    <input id="wallet_bnb_bep20" type="text" readonly value="---">
-    <button data-copy="wallet_bnb_bep20">Copy</button>
-  </div>
-
-<h3>BTC</h3>
-  <div class="wallet-box">    
-    <input id="wallet_btc" type="text" readonly value="---">
-    <button data-copy="wallet_btc">Copy</button>
-  </div>
-  
-<h3>USDT (BEP20)</h3>
-  <div class="wallet-box">    
-    <input id="wallet_usdt_bep20" type="text" readonly value="---">
-    <button data-copy="wallet_usdt_bep20">Copy</button>
-  </div>
-
-  <p class="alert">Please ensure you send the correct coin to the correct address.</p>
-</div>
-
-<!-- Toast Notification -->
-<div id="toast" class="toast hidden">Wallet address copied successfully!</div>
-</div>
-
-    
         </div>
+<h2><center>
+Click on your preferred “Vestinoo Machine” to easily deposit your funds!  
+You have the full right to transfer your funds to your Vestinoo wallet using:  
+<strong>BTC, USDT (BEP20), USDT (TRC20), or BNB</strong>.  
+
+Take advantage of this opportunity now!
+</center></h2>
+<div class="image-row">
+    <img src="b1.png" alt="b1">
+    <img src="b2.png" alt="b2">
+    <img src="b3.png" alt="b3">
+    <img src="b4.png" alt="b4">
+  </div>
 
         <!-- Packages -->
-        <div class="package-container" id="packageContainer"></div>
+        <div class="package-container" id="packageContainer">
+            <!-- Packages will be dynamically generated -->
+        </div>
     </div>
 
-    
-<!-- Modern Modal -->
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <button class="close-btn" id="closeModal">✖️</button>
- 
-    <!-- Toast Notification -->
-    <div id="toast-modal" class="toast hidden">Wallet address copied successfully!</div>
-
-    <h2 style="color:#00ffcc; text-align:center;">Deposit Details</h2>
-    <p class="deposit-text">Deposit Amount: <span id="modalDeposit">$0.00</span></p>
-    <p class="note">Choose the coin and copy the wallet address to make your deposit:</p>
-
-    <!-- Wallet Boxes -->
-    <span>USDT (TRC20)</span>
-    <div class="wallet-box">      
-      <input id="walletAddress_usdt_trc20" type="text" readonly value="---" />
-      <button data-copy="walletAddress_usdt_trc20">Copy</button>
-    </div>
-    
-<span>BNB (BEP20)</span>
-    <div class="wallet-box">      
-      <input id="walletAddress_bnb_bep20" type="text" readonly value="---" />
-      <button data-copy="walletAddress_bnb_bep20">Copy</button>
-    </div>
-    
- <span>BTC</span>
-    <div class="wallet-box">     
-      <input id="walletAddress_btc" type="text" readonly value="---" />
-      <button data-copy="walletAddress_btc">Copy</button>
-    </div>
-    
-<span>USDT (BEP20)</span>
-    <div class="wallet-box">      
-      <input id="walletAddress_usdt_bep20" type="text" readonly value="---" />
-      <button data-copy="walletAddress_usdt_bep20">Copy</button>
+    <!-- Modal for Coin Selection -->
+    <div class="modal" id="coinModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeCoinModal">✖️</button>
+            <h2 style="color:#00ffcc; text-align:center;">Choose a Coin</h2>
+            <div class="coin-container" id="coinContainer">
+                <!-- Coin options will be dynamically generated -->
+            </div>
+        </div>
     </div>
 
-    <p class="alert">
-      Please ensure you send the correct coin to the correct address. Wrong deposits may be lost.
-    </p>
-  </div>
-</div>
+   <div class="modal" id="paymentModal">
+    <div class="modal-content">
+        <button class="close-btn" id="closePaymentModal">✖️</button>
+        <h2 style="color:#00ffcc; text-align:center;" id="paymentDescription"></h2>
+        <p class="deposit-text">Deposit Amount: <span id="paymentAmount">$0.00</span></p>
+        <div class="wallet-box">
+            <input id="walletAddress" type="text" readonly value="---">
+            <button onclick="copyWalletAddress()">Copy</button>
+        </div>
+        <p class="note">Use the wallet address above to complete your payment.</p>
+    </div>
+    </div>
 
-    <script type="module">
-import { app, analytics, firebaseConfig } from './firebase.js';
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+   <!-- Toast Notification -->
+<div id="toast-modal" class="toast hidden">Wallet address copied successfully!</div>
+<script type="module">
+  // Firebase Initialization
+import { app } from './firebase.js';
+import {
+    getDatabase,
+    ref,
+    onValue
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-    const auth = getAuth();
-    const database = getDatabase();
+const auth = getAuth(app);
+const db = getDatabase(app);
 
-    const loadingScreen = document.getElementById("loadingScreen");
-    const mainContent = document.getElementById("mainContent");
-    const packageContainer = document.getElementById("packageContainer");
-    const modal = document.getElementById("modal");
-    const closeModal = document.getElementById("closeModal");
-    const modalDeposit = document.getElementById("modalDeposit");
+// DOM Elements
+const loadingScreen = document.getElementById("loadingScreen");
+const mainContent = document.getElementById("mainContent");
+const packageContainer = document.getElementById("packageContainer");
+const coinModal = document.getElementById("coinModal");
+const coinContainer = document.getElementById("coinContainer");
+const paymentModal = document.getElementById("paymentModal");
+const walletAddress = document.getElementById("walletAddress");
+const paymentAmount = document.getElementById("paymentAmount");
+const paymentDescription = document.getElementById("paymentDescription"); // Added for wallet message
+const userBalance = document.getElementById("userBalance");
+const userDeposit = document.getElementById("userDeposit");
+const welcomeMessage = document.getElementById("welcomeMessage");
+const toast = document.getElementById("toast"); // Toast notification element
 
-    const userAddresses = {
-        usdttrc20: "---",
-        bnb: "---",
-        btc: "---",
-        usdtbep20: "---"
-    };
+// Sample Data
+const packages = [
+    { img: "pac1.png", deposit: 2 },
+    { img: "pac2.png", deposit: 4 },
+    { img: "pac3.png", deposit: 8 },
+    { img: "pac4.png", deposit: 15 },
+    { img: "pac5.png", deposit: 30 },
+    { img: "pac6.png", deposit: 50 },
+    { img: "pac7.png", deposit: 100 },
+    { img: "pac8.png", deposit: 200 },
+    { img: "pac9.png", deposit: 400 },
+    { img: "pac10.png", deposit: 800 }
+];
 
-    // Show loading
-    setTimeout(() => {
-        loadingScreen.style.display = "none";
-        mainContent.style.display = "block";
-    }, 2000);
+const coins = [
+    { name: "BTC", icon: "b1.png" },
+    { name: "USDT-BEP20", icon: "b2.png" },
+    { name: "USDT-TRC20", icon: "b4.png" },
+    { name: "BNB", icon: "b3.png" }
+];
 
-    // Auth
-    onAuthStateChanged(auth, (user) => {
-        if (!user) return;
+// Show Coin Modal
+function showCoinModal(pkg) {
+    const modalHeader = document.createElement("h2");
+    modalHeader.style.color = "#00ffcc";
+    modalHeader.style.textAlign = "center";
+    modalHeader.textContent = `Choose a coin to deposit ($${pkg.deposit})`;
+    coinContainer.innerHTML = "";
+    coinContainer.appendChild(modalHeader);
 
-        const userRef = ref(database, `users/${user.uid}`);
-        onValue(userRef, (snapshot) => {
-            const data = snapshot.val();
-            if (!data) return;
-
-            document.getElementById("userBalance").textContent = `$${(data.userBalance || 0).toFixed(2)}`;
-            document.getElementById("userDeposit").textContent = `$${(data.deposit || 0).toFixed(2)}`;
-            document.getElementById("welcomeMessage").textContent = `Hi, ${data.fullName || "Guest"}`;
-
-            userAddresses.usdttrc20 = data.usdttrc20Address || "---";
-            userAddresses.bnb = data.bnbAddress || "---";
-            userAddresses.btc = data.btcAddress || "---";
-            userAddresses.usdtbep20 = data.usdtbep20Address || "---";
-
-            // Update wallet
-            document.getElementById("wallet_usdt_trc20").textContent = userAddresses.usdttrc20;
-            document.getElementById("wallet_bnb_bep20").textContent = userAddresses.bnb;
-            document.getElementById("wallet_btc").textContent = userAddresses.btc;
-            document.getElementById("wallet_usdt_bep20").textContent = userAddresses.usdtbep20;
-
-            document.getElementById("walletAddress_usdt_trc20").textContent = userAddresses.usdttrc20;
-            document.getElementById("walletAddress_bnb_bep20").textContent = userAddresses.bnb;
-            document.getElementById("walletAddress_btc").textContent = userAddresses.btc;
-            document.getElementById("walletAddress_usdt_bep20").textContent = userAddresses.usdtbep20;
-        });
+    coins.forEach(coin => {
+        const coinDiv = document.createElement("div");
+        coinDiv.className = "coin-box";
+        coinDiv.innerHTML = `
+            <img src="${coin.icon}" alt="${coin.name}" class="coin-image" />
+            <span class="coin-name">${coin.name}</span>
+        `;
+        coinDiv.addEventListener("click", () => handleCoinSelection(coin, pkg.deposit));
+        coinContainer.appendChild(coinDiv);
     });
 
-    // Package list
-    const packages = [
-        { img: "pac1.png", deposit: "$2" },
-        { img: "pac2.png", deposit: "$4" },
-        { img: "pac3.png", deposit: "$8" },
-        { img: "pac4.png", deposit: "$15" },
-        { img: "pac5.png", deposit: "$30" },
-        { img: "pac6.png", deposit: "$50" },
-        { img: "pac7.png", deposit: "$100" },
-        { img: "pac8.png", deposit: "$200" },
-        { img: "pac9.png", deposit: "$400" },
-        { img: "pac10.png", deposit: "$800" },
-    ];
+    coinModal.style.display = "flex";
+}
 
-    // Render packages once
+
+// Render Packages
+function renderPackages() {
     packages.forEach(pkg => {
-        const div = document.createElement("div");
-        div.classList.add("package");
-        div.style.backgroundImage = `url(${pkg.img})`;
-        div.setAttribute("data-deposit", pkg.deposit);
-        div.addEventListener("click", () => {
-            modalDeposit.textContent = pkg.deposit;
-            modal.style.display = "flex";
-        });
-        packageContainer.appendChild(div);
+        const packageDiv = document.createElement("div");
+        packageDiv.className = "package";
+        packageDiv.style.backgroundImage = `url(${pkg.img})`;
+        packageDiv.addEventListener("click", () => showCoinModal(pkg));
+        packageContainer.appendChild(packageDiv);
     });
+}
 
-    // Close modal
-    closeModal.addEventListener("click", () => {
-        modal.style.display = "none";
-    });
-
-    // Copy wallet buttons
-    const copyConfigs = [
-        { btnId: "copy_usdt_trc20", spanId: "wallet_usdt_trc20", toastId: "toast" },
-        { btnId: "copy_bnb_bep20", spanId: "wallet_bnb_bep20", toastId: "toast2" },
-        { btnId: "copy_btc", spanId: "wallet_btc", toastId: "toast3" },
-        { btnId: "copy_usdt_bep20", spanId: "wallet_usdt_bep20", toastId: "toast4" },
-        { btnId: "copyModal_usdt_trc20", spanId: "walletAddress_usdt_trc20", toastId: "toast" },
-        { btnId: "copyModal_bnb_bep20", spanId: "walletAddress_bnb_bep20", toastId: "toast2" },
-        { btnId: "copyModal_btc", spanId: "walletAddress_btc", toastId: "toast3" },
-        { btnId: "copyModal_usdt_bep20", spanId: "walletAddress_usdt_bep20", toastId: "toast4" },
-    ];
-
-    copyConfigs.forEach(cfg => {
-        const btn = document.getElementById(cfg.btnId);
-        const span = document.getElementById(cfg.spanId);
-        const toast = document.getElementById(cfg.toastId);
-
-        if (btn && span && toast) {
-            btn.addEventListener("click", () => {
-                navigator.clipboard.writeText(span.textContent).then(() => {
-                    toast.classList.remove("hidden");
-                    toast.classList.add("show");
-                    setTimeout(() => {
-                        toast.classList.remove("show");
-                        toast.classList.add("hidden");
-                    }, 3000);
-                });
-            });
+// Fetch User Data from Firebase
+function fetchUserData(uid) {
+    const userRef = ref(db, `users/${uid}`);
+    onValue(userRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+            userBalance.textContent = `$${data.wallet || "0.00"}`;
+            userDeposit.textContent = `$${data.deposit || "0.00"}`;
+            welcomeMessage.textContent = data.fullName || "Guest";
+        } else {
+            welcomeMessage.textContent = "Guest";
         }
     });
-});
+}
 
 
-  
-            
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const toast = document.getElementById("toast");
 
-  // Kowane button yana da data-copy
-  document.querySelectorAll("button[data-copy]").forEach(button => {
-    button.addEventListener("click", () => {
-      const inputId = button.getAttribute("data-copy");
-      const input = document.getElementById(inputId);
-      if (input) {
-        navigator.clipboard.writeText(input.value).then(() => {
-          showToast("Wallet address copied successfully!");
+// Handle Coin Selection
+async function handleCoinSelection(coin, amount) {
+    coinModal.style.display = "none";
+    showLoading();
+
+    try {
+        const user = auth.currentUser;
+        const email = user ? user.email : "guest@unknown.com";
+
+        const res = await fetch("https://vestinooproject.vercel.app/api/payment", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-api-key": "@haruna66"
+            },
+            body: JSON.stringify({ coin: coin.name, amount: amount, email: email })
         });
-      }
-    });
-  });
 
-  function showToast(message) {
-    toast.textContent = message;
-    toast.classList.remove("hidden");
-    toast.classList.add("show");
+        const data = await res.json();
+        hideLoading();
+
+        if (data.success) {
+            walletAddress.value = data.walletAddress;
+            paymentAmount.textContent = `$${amount}`;
+            paymentDescription.textContent = `Copy your ${coin.name} Vestinoo wallet address to deposit $${amount}`;
+            paymentModal.style.display = "flex";
+        } else {
+            showToast("Failed to process payment. Please try again later.");
+        }
+    } catch (error) {
+        hideLoading();
+        showToast("Network error. Please try again later.");
+    }
+}
+
+// Utilities
+function showLoading() {
+    loadingScreen.style.display = "flex";
+}
+
+function hideLoading() {
+    loadingScreen.style.display = "none";
+}
+
+// Show Toast Notification
+function showToast(message) {
+    const toast = document.getElementById("toast-modal");
+    toast.textContent = message; 
+    toast.classList.remove("hidden"); 
+    toast.classList.add("show"); 
+    
+    // Automatically hide the toast after 3 seconds
     setTimeout(() => {
-      toast.classList.remove("show");
-      toast.classList.add("hidden");
-    }, 3000);
-  }
+        toast.classList.remove("show");
+        toast.classList.add("hidden");
+    }, 10000);
+}
+
+// Example Usage
+function copyWalletAddress() {
+    walletAddress.select();
+    document.execCommand("copy");
+    showToast("Wallet address copied successfully!"); 
+}
+
+
+
+// Close Modals
+document.getElementById("closeCoinModal").addEventListener("click", () => {
+    coinModal.style.display = "none";
 });
-</script>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("modal");
-  const closeModal = document.getElementById("closeModal");
-  const toast = document.getElementById("toast-modal");
-
-  closeModal.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  document.querySelectorAll("button[data-copy]").forEach(button => {
-    button.addEventListener("click", () => {
-      const targetId = button.getAttribute("data-copy");
-      const input = document.getElementById(targetId);
-      if (input) {
-        navigator.clipboard.writeText(input.value).then(() => {
-          showToast("Wallet address copied successfully!");
-        });
-      }
-    });
-  });
-
-  function showToast(message) {
-    toast.textContent = message;
-    toast.classList.remove("hidden");
-    toast.classList.add("show");
-    setTimeout(() => {
-      toast.classList.remove("show");
-      toast.classList.add("hidden");
-    }, 3000);
-  }
+document.getElementById("closePaymentModal").addEventListener("click", () => {
+    paymentModal.style.display = "none";
 });
-</script>
 
+// Firebase Authentication State Listener
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        fetchUserData(user.uid); // Load user data if user is authenticated
+    } else {
+        welcomeMessage.textContent = "Guest"; // Default message for unauthenticated users
+    }
+
+    // Render packages regardless of Firebase data loading
+    renderPackages();
+
+    // Hide loading screen and show main content
+    hideLoading();
+    mainContent.style.display = "block";
+});
+
+// Initialize App
+showLoading();
+</script>
 </body>
 </html>
