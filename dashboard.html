@@ -6,6 +6,14 @@
     <title>Dashboard</title>
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
      
+     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
+
+<script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
+
+<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
+<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
     <style>
         body {
             margin: 0;
@@ -157,7 +165,7 @@ box-shadow: 0 0 10px #00ffcc;
 
  /* Bonus Icons */
 .bonus-section {
-    padding: 40px;
+    padding: 56px;
     text-align: center;
 }
 
@@ -170,7 +178,7 @@ box-shadow: 0 0 10px #00ffcc;
 
 .bonus-icon {
     width: 60px;
-    height: 60px;
+    height: 60px;    
     cursor: pointer;
     transition: transform 0.3s ease;
 }
@@ -602,6 +610,13 @@ box-shadow: 0 0 10px #00ffcc;
   cursor: pointer;
 }
 
+.vestbit-heading {
+ Font-size: 20px;
+  
+  
+}
+
+
     </style>
 </head>
 <body>
@@ -710,7 +725,9 @@ box-shadow: 0 0 10px #00ffcc;
 
         <!-- Bonus Icons Section -->
 <section id="bonus-section" class="bonus-section hidden">
-    <h2>Zabi Rabon ka Free VestBit</h2>
+   <h2 class="vestbit-heading">Click Your Free VestBit Reward</h2>
+
+
     <div class="bonus-icons">  
         <img src="vestBit1.png" alt="Bonus 1" class="bonus-icon">
         <img src="vestBit2.png" alt="Bonus 2" class="bonus-icon">
@@ -775,7 +792,6 @@ const mineElement = document.querySelector('.mine-info p');
 const availableBalanceElement = document.querySelector('.balance-info .available-balance');
 const timerElement = document.querySelector('.balance-info .timer');
 const notificationsContainer = document.querySelector('.notifications');
-const clearMineButton = document.createElement('button');
 const bonusIcons = document.querySelectorAll('.bonus-icon');
 const bonusSection = document.getElementById('bonus-section');
 const notificationContainer = document.getElementById('notification-container');
@@ -788,9 +804,9 @@ const countdownBtn = document.getElementById('countdown-btn');
 
 let lastSelectedTime = localStorage.getItem('lastSelectedTime');
 let timer;
+let currentUserEmail = "";
 
 const bonuses = [0.00112, 0.00129, 0.00132, 0.00132, 0.00147, 0.0014, 0.0012];
-
 const plans = [
   { amount: 800, dailyProfit: 30.8, days: 49 },
   { amount: 400, dailyProfit: 16.8, days: 45 },
@@ -819,11 +835,18 @@ const hideLoadingScreen = () => {
 };
 
 const updateUI = (userData) => {
-  const { deposit, depositTime, dailyProfit: originalDailyProfit, vestBit, userBalance, referralBonusLeve1, referralBonussLeve2, wellecomeBonus, vestinooID, email, fullName, lastClaimTime } = userData;
+  const {
+    deposit, depositTime, dailyProfit: originalDailyProfit, vestBit, userBalance,
+    referralBonusLeve1, referralBonussLeve2, wellecomeBonus,
+    vestinooID, email, fullName, lastClaimTime
+  } = userData;
+
+  currentUserEmail = email;
 
   const now = Date.now();
   const plan = findPlan(deposit);
   let remainingDays = 0;
+
   if (plan) {
     remainingDays = Math.max(plan.days - (now - depositTime) / (24 * 60 * 60 * 1000), 0);
   }
@@ -838,21 +861,22 @@ const updateUI = (userData) => {
     showClearMineButton(email, dailyProfit);
   }
 
-  if (plan) {
-    daysElement.textContent = `${remainingDays.toFixed(0)} Days`;
-    foundElement.textContent = `Found: $${deposit.toFixed(2)}`;
-  } else {
-    daysElement.textContent = `0 Days`;
-    foundElement.textContent = `Found: $0.00`;
-  }
-
+  daysElement.textContent = `${remainingDays.toFixed(0)} Days`;
+  foundElement.textContent = `Found: $${deposit.toFixed(2)}`;
   idElement.textContent = `ID: ${vestinooID}`;
   vestBitElement.textContent = vestBit.toFixed(5);
   mineElement.textContent = `Daily Mine: $${dailyProfit.toFixed(2)}`;
   availableBalanceElement.textContent = `$${userBalance.toFixed(2)}`;
-
+ if (depositTime) {
   const timerDate = new Date(depositTime + 24 * 60 * 60 * 1000 - now);
-  timerElement.textContent = `${timerDate.getHours()}:${timerDate.getMinutes().toString().padStart(2, '0')}`;
+  const hours = timerDate.getUTCHours().toString().padStart(2, '0');
+  const minutes = timerDate.getUTCMinutes().toString().padStart(2, '0');
+  timerElement.textContent = `${hours}:${minutes}`;
+  timerElement.style.display = 'inline-block'; 
+} else {
+  timerElement.style.display = 'none';
+}
+
 
   if (plan && remainingDays <= 0) {
     clearExpiredPackage(email, fullName, deposit);
@@ -863,10 +887,14 @@ const updateUI = (userData) => {
 
 const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, email }) => {
   notificationsContainer.innerHTML = "";
-  if (wellecomeBonus > 0) showNotification(fullName, 'clear your Welcome Bonus', 'bonus.png', wellecomeBonus, () => clearBonus(email, 'wellecomeBonus'));
-  if (referralBonusLeve1 > 0) showNotification(fullName, 'Clear your New Level 1 Referral Bonus', 'level1.png', referralBonusLeve1, () => clearBonus(email, 'referralBonusLeve1'));
-  if (referralBonussLeve2 > 0) showNotification(fullName, 'Clear Your Level 2 Referral bonus', 'level2.png', referralBonussLeve2, () => clearBonus(email, 'referralBonussLeve2'));
-  if (vestBit >= 1) showNotification(fullName, 'You can sell your vestBit coin now', 'con.png', vestBit, () => sellVestBit(email, vestBit));
+  if (wellecomeBonus > 0)
+    showNotification(fullName, 'clear your Welcome Bonus', 'bonus.png', wellecomeBonus, () => clearBonus(email, 'wellecomeBonus'));
+  if (referralBonusLeve1 > 0)
+    showNotification(fullName, 'Clear your Level 1 Referral Bonus', 'level1.png', referralBonusLeve1, () => clearBonus(email, 'referralBonusLeve1'));
+  if (referralBonussLeve2 > 0)
+    showNotification(fullName, 'Clear Your Level 2 Referral Bonus', 'level2.png', referralBonussLeve2, () => clearBonus(email, 'referralBonussLeve2'));
+  if (vestBit >= 1)
+    showNotification(fullName, 'You can sell your vestBit coin now', 'con.png', vestBit, () => sellVestBit(email, vestBit));
 };
 
 const showNotification = (name, message, img, amount, callback) => {
@@ -881,9 +909,7 @@ const showNotification = (name, message, img, amount, callback) => {
   `;
   notificationsContainer.appendChild(box);
   box.querySelector('.close-btn').onclick = () => box.remove();
-  box.querySelector('button:last-child').onclick = async () => {
-  await callback();
-  box.remove();
+  box.querySelector('button:last-child').onclick = () => { callback(); box.remove(); };
 };
 
 const clearBonus = async (email, field) => {
@@ -898,7 +924,7 @@ const sellVestBit = async (email, vestBit) => {
   await fetch("https://vestinooproject.vercel.app/api/userUpdate", {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
-    body: JSON.stringify({ email, vestBit: vestBit.toFixed(5) })
+    body: JSON.stringify({ email, vestBit: 0 })
   });
 };
 
@@ -908,83 +934,51 @@ const clearExpiredPackage = async (email, fullName, deposit) => {
     headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
     body: JSON.stringify({ email, deposit: 0, dailyProfit: 0, depositTime: null })
   });
-  showNotification(fullName, "Your package is end days", "end.png", deposit, () => {});
+  showNotification(fullName, "Your package has expired", "end.png", deposit, () => {});
 };
 
 const showClearMineButton = (email, dailyProfit) => {
-  clearMineButton.textContent = "Clear Daily Mine";
-  clearMineButton.classList.add('mine-button');
-  mainContent.appendChild(clearMineButton);
-
-  clearMineButton.addEventListener('click', async () => {
+  const btn = document.createElement('button');
+  btn.textContent = "Clear Daily Mine";
+  btn.className = 'mine-button';
+  btn.onclick = async () => {
     await fetch("https://vestinooproject.vercel.app/api/userUpdate", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": "@haruna66"
-      },
-      body: JSON.stringify({
-        email,
-        dailyProfit,
-        lastClaimTime: Date.now()
-      })
+      headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
+      body: JSON.stringify({ email, dailyProfit, lastClaimTime: Date.now() })
     });
-    clearMineButton.style.display = "none";
-  });
+    btn.remove();
+  };
+  mainContent.appendChild(btn);
 };
 
 const getRandomBonus = () => bonuses[Math.floor(Math.random() * bonuses.length)];
 
 const sendVestBitBonus = async (email, bonusAmount) => {
-  try {
-    const response = await fetch("https://bonus-gamma.vercel.app/api/vestBit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": "@haruna66"
-      },
-      body: JSON.stringify({ email, bonusAmount })
-    });
-
-    if (!response.ok) {
-      throw new Error("Bonus sending failed.");
-    }
-    
-    console.log("Bonus sent successfully!");
-  } catch (error) {
-    console.error("Error:", error);
-  }
+  await fetch("https://bonus-gamma.vercel.app/api/vestBit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
+    body: JSON.stringify({ email, bonusAmount })
+  });
+  hideNotification();
 };
-
 
 const hideNotification = () => notificationContainer.classList.add('hidden');
 
-bonusIcons.forEach((icon) => {
+bonusIcons.forEach(icon => {
   icon.onclick = () => {
     const randomBonus = getRandomBonus();
-    const email = auth.currentUser?.email;
-    if (!email) return;
-
-    // Nuna bayani a cikin notification
-    userFullName.textContent = email;
+    if (!currentUserEmail) return;
+    userFullName.textContent = currentUserEmail;
     selectedBonusIcon.src = icon.src;
     bonusAmount.textContent = `VestBit ${randomBonus.toFixed(5)}`;
-
-    // Nuna container
     notificationContainer.classList.remove('hidden');
     bonusSection.classList.add('hidden');
     countdownContainer.classList.remove('hidden');
-
-    // Ajiye lokacin
     lastSelectedTime = Date.now();
     localStorage.setItem('lastSelectedTime', lastSelectedTime);
-
-    // Lokacin da user ya danna Clear
-    clearBonusBtn.onclick = async () => {
-      await sendVestBitBonus(email, randomBonus); // Tura bonus
-      notificationContainer.classList.add('hidden'); // Boye bayanin
-      startCountdown(); // Fara sabuwar kirga
-    };
+    clearBonusBtn.onclick = () => sendVestBitBonus(currentUserEmail, randomBonus);
+    startCountdown();
   };
 });
 
@@ -992,7 +986,7 @@ function startCountdown() {
   clearInterval(timer);
   timer = setInterval(() => {
     const diff = (Date.now() - lastSelectedTime) / 1000;
-    const remaining = 5 * 60 - diff; // An sauya daga 3 awa zuwa 5 mintuna
+    const remaining = 5 * 60 - diff;
     if (remaining <= 0) {
       clearInterval(timer);
       countdownContainer.classList.add('hidden');
@@ -1000,7 +994,7 @@ function startCountdown() {
     } else {
       const m = Math.floor(remaining / 60);
       const s = Math.floor(remaining % 60);
-      countdownBtn.textContent = `Wait ${m}m ${s}s`; // An cire h don ba a da bukata
+      countdownBtn.textContent = `Wait ${m}m ${s}s`;
     }
   }, 1000);
 }
@@ -1008,7 +1002,7 @@ function startCountdown() {
 window.onload = () => {
   if (lastSelectedTime) {
     const diff = (Date.now() - lastSelectedTime) / 1000;
-    if (diff >= 5 * 60) { // An sauya daga 3 awa zuwa 5 mintuna
+    if (diff >= 5 * 60) {
       bonusSection.classList.remove('hidden');
       countdownContainer.classList.add('hidden');
     } else {
@@ -1021,20 +1015,17 @@ window.onload = () => {
   }
 };
 
-
 onAuthStateChanged(auth, (user) => {
   showLoadingScreen();
-
   if (user) {
     const uid = user.uid;
     const userRef = ref(db, `users/${uid}`);
-
     onValue(userRef, (snapshot) => {
       const userData = snapshot.val();
       if (userData) {
         updateUI(userData);
       } else {
-        console.warn("User data not found in the database.");
+        console.warn("User data not found.");
       }
       hideLoadingScreen();
     }, (error) => {
@@ -1046,8 +1037,6 @@ onAuthStateChanged(auth, (user) => {
     hideLoadingScreen();
   }
 });
-}
 </script>
-
 </body>
 </html>
