@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-     
-     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
 
-<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
-
-    <style>
         body {
             margin: 0;
             padding: 0;
@@ -87,9 +85,7 @@
         }
         
       
-        
-        
-/* Notification Styles */
+       /* Notification Styles */
 .notifications {
     display: flex;
     flex-direction: column;
@@ -128,6 +124,8 @@
     font-size: 1.5em;
     cursor: pointer;
 }
+
+        
 
 /* Footer */
 footer {
@@ -189,9 +187,12 @@ box-shadow: 0 0 10px #00ffcc;
 
 
 /* Countdown */
-.countdown-container {
+#countdown-container {
     margin-top: 200px;
     text-align: center;
+    top: 50%;
+    lert: 50%;
+
 }
 
 #countdown-btn {
@@ -280,7 +281,7 @@ box-shadow: 0 0 10px #00ffcc;
 }
 
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
+
 
 .vestbit-info {
     position: absolute;
@@ -320,50 +321,6 @@ box-shadow: 0 0 10px #00ffcc;
 }
 
 
-.balance-image {
-    position: absolute;
-    top: 130px;         
-    left: 30%;
-    width: 3px;
-    height: 3px;
-                   z-index: 1;
-    border-radius: 100%;
-    border: 2px solid #00ffcc; 
-  box-shadow: 0 0 10px #00ffcc;
-}
-.balance-info {
-    position: absolute;
-    top: 180px;        
-    left: 38%;
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #000;
-    z-index: 2;
-    pointer-events: none;
-}
-
-.available-balance {
-    font-size: 30px;
-    font-weight: bold;
-    font-weight: 700;
-    margin: 0;
-}
-
-.balance-info p:nth-child(2) {
-    font-size: 13px;
-    font-weight: bold;
-    color: #555;
-    font-style: italic;
-    margin: 0;
-}
-
-.timer {
-    font-size: 20px;
-    Font-weight: bold;
-    color: #007bff;
-    font-weight: 500;
-    margin: 0;
-}
 
 
  .menu-button {
@@ -466,78 +423,9 @@ box-shadow: 0 0 10px #00ffcc;
     }
  
 
-.notifications hidden {
-  position: fixed;
-    top: 0;
-    left: 10px;
-    width: 95%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.notifications hidden h2 {
-  font-size: 18px;
-  margin: 10px 0;
-}
-
-.notifications hidden img {
-  width: 100%;
-  height: 100%;
-  border-radius: 6px;
-  margin: 10px 0;
-}
-
-.notifications hidden .amount {
-  font-weight: bold;
-  color: #00ffcc;
-  margin-bottom: 10px;
-  font-size: 16px;
-}
-
-.notifications hidden button {
-  background-color: #00ffcc;
-  color: #0f2e2e;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
-  margin-right: 10px;
-}
-
-.notifications hidden button:hover {
-  background-color: #00e6b3;
-}
-
-.notifications hidden .close-btn {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  background: transparent;
-  color: #ffffff;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-}
 
 
-.notification {
+    .notification {
   position: fixed;
   top: 0px;
   right: 10px;
@@ -551,6 +439,10 @@ box-shadow: 0 0 10px #00ffcc;
   width: 300px;
   animation: slideIn 0.4s ease;
   font-family: 'Segoe UI', sans-serif;
+}
+
+.hidden {
+  display: none !important;
 }
 
 @keyframes slideIn {
@@ -570,8 +462,8 @@ box-shadow: 0 0 10px #00ffcc;
 }
 
 .notification img {
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 80%;
   border-radius: 6px;
   margin: 10px 0;
 }
@@ -611,89 +503,186 @@ box-shadow: 0 0 10px #00ffcc;
 }
 
 .vestbit-heading {
- Font-size: 17px;
- Font-weight: bold:
-  
-  
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.vestbit-notification {
+  position: fixed;
+  top: 40px;
+  right: 20px;
+  z-index: 9999;
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.notification-box {
+   position: fixed;
+  top: 0px;
+  right: 10px;
+  background: #0f2e2e;
+  color: #ffffff;
+  border: 2px solid #00ffcc;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+  z-index: 9999;
+  width: 300px;
+  animation: slideIn 0.4s ease;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.notification-box h2 {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.notification-box img {
+  width: 80%;
+  height: 80%;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+
+.notification-box .amount {
+  font-weight: bold;
+  color: #00ffcc;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.notification-box button {
+  background-color: #00ffcc;
+  color: #0f2e2e;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.notification-box button:hover {
+  background-color: #2600ff;
+}
+
+.close-btn {
+ position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #00ffcc;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.vestbit-heading {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.countdown {
+  margin-top: 20px;
+}
+
+#countdownBtn {
+  background: #0f2e2e;
+  color: #00ffcc;
+  border: 1px solid #00ffcc;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
 }
 
 
-    </style>
+
+.balance-image {
+    position: absolute;
+    top: 120px;         
+    left: 30%;
+    width: 3px;
+    height: 3px;
+                   z-index: 1;
+    border-radius: 100%;
+    border: 2px solid #00ffcc; 
+  box-shadow: 0 0 10px #00ffcc;
+}
+.balance-info {
+    position: absolute;
+    top: 170px;        
+    left: 38%;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #000;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.available-balance {
+    font-size: 30px;
+    font-weight: bold;
+    font-weight: 700;
+    margin: 0;
+}
+
+.balance-info p:nth-child(2) {
+    font-size: 13px;
+    font-weight: bold;
+    color: #555;
+    font-style: italic;
+    margin: 0;
+}
+
+.timer {
+    font-size: 20px;
+    Font-weight: bold;
+    color: #007bff;
+    font-weight: 500;
+    margin: 0;
+}
+
+    button:hover{
+        background-color: #2600ff;
+    }
+  </style>
 </head>
 <body>
-      <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="logo">
-            <img src="logo.png" alt="Vestinoo Logo">
-        </div>
-        <div class="spinner"></div>
-        <div class="text">Loading Vestinoo...</div>
-    </div>
-    
-    
-    <!-- Main Content -->
-    <div id="main-content" style="display: none;">
-        <!-- Button to open menu -->
-<div class="menu-button" id="openMenu">
-  <i class="fas fa-bars"></i>
-</div>
 
-<!-- Floating menu container -->
-<div class="menu-container" id="menuContainer">
-  <div class="menu-header">
-    <span>Menu</span>
-    <i class="fas fa-times" id="closeMenu"></i> 
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="logo"><img src="logo.png" alt="Vestinoo Logo" /></div>
+    <div class="spinner"></div>
+    <div class="text">Loading Vestinoo...</div>
   </div>
-  <ul class="menu-list">
-    <li>
-      <a href="homepage.html">
-        <i class="fas fa-home"></i> Home Page
-      </a>
-    </li>
-    <li>
-      <a href="contact.html">
-        <i class="fas fa-envelope"></i> Support
-      </a>
-    </li>
-    <li>
-      <a href="referral.html">
-        <i class="fas fa-user-friends"></i> Referrals
-      </a>
-    </li>
-    <li>
-      <a href="payment.html">
-        <i class="fas fa-arrow-up"></i> Withdrawal
-      </a>
-    </li>
-    <li>
-      <a href="deposit.html">
-        <i class="fas fa-arrow-down"></i> Deposit
-      </a>
-    </li>
+
+  <!-- Main Content -->
+  <div id="main-content" style="display: none;">
+    
+    <!-- Menu Button -->
+    <div class="menu-button" id="openMenu"><i class="fas fa-bars"></i></div>
+
+    <!-- Menu Container -->
+    <div class="menu-container" id="menuContainer">
+      <div class="menu-header">
+        <span>Menu</span>
+        <i class="fas fa-times" id="closeMenu"></i>
+      </div>
+      <ul class="menu-list">
+        <li><a href="homepage.html"><i class="fas fa-home"></i> Home Page</a></li>
+        <li><a href="contact.html"><i class="fas fa-envelope"></i> Support</a></li>
+        <li><a href="referral.html"><i class="fas fa-user-friends"></i> Referrals</a></li>
+        <li><a href="payment.html"><i class="fas fa-arrow-up"></i> Withdrawal</a></li>
+        <li><a href="deposit.html"><i class="fas fa-arrow-down"></i> Deposit</a></li>
       </ul>
-  
-</div>
+    </div>
 
-<script>
-  // Get elements
-  const openMenu = document.getElementById('openMenu');
-  const closeMenu = document.getElementById('closeMenu');
-  const menuContainer = document.getElementById('menuContainer');
-
-  // Open menu
-  openMenu.addEventListener('click', () => {
-    menuContainer.classList.add('active');
-  });
-
-  // Close menu
-  closeMenu.addEventListener('click', () => {
-    menuContainer.classList.remove('active');
-  });
-</script>
-        
-        <!-- Banner Section -->
+     <!-- Banner Section -->
         <div class="banner">
-            <img src="banner3.png" alt="Banner" class="banner-image">
+            <img src="banner3.png" alt="Banner" class="banner-image"></div>
             
             <!-- Circular Info Container -->
             <div class="info-circle">
@@ -713,7 +702,7 @@ box-shadow: 0 0 10px #00ffcc;
                 <p>Daily Mine: $0.00</p>
             </div>
 
-          <!-- Balance Image -->
+         <!-- Balance Image -->
 <div class="balance-containe">
     <img src="balance.png" alt="Balance" class="balance-image" style="width: 150px; height: 150px; ">
     <div class="balance-info">
@@ -723,57 +712,71 @@ box-shadow: 0 0 10px #00ffcc;
     </div>
             </div>
         </div>
-
-        <!-- Bonus Icons Section -->
+        
+  <!-- Bonus Section -->
 <section id="bonus-section" class="bonus-section hidden">
-   <h2 class="vestbit-heading">Click Your Free VestBit Reward</h2>
-
-
-    <div class="bonus-icons">  
-        <img src="vestBit1.png" alt="Bonus 1" class="bonus-icon">
-        <img src="vestBit2.png" alt="Bonus 2" class="bonus-icon">
-        <img src="vestBit3.png" alt="Bonus 3" class="bonus-icon">
-        <img src="vestBit4.png" alt="Bonus 4" class="bonus-icon">
-        <img src="vestBit5.png" alt="Bonus 5" class="bonus-icon">
-        <img src="vestBit6.png" alt="Bonus 6" class="bonus-icon">
-    </div>
+  <h2 class="vestbit-heading">Click Your Free VestBit Reward</h2>
+  <div class="bonus-icons">
+    <img src="vestBit1.png" alt="Bonus 1" class="bonus-icon" />
+    <img src="vestBit2.png" alt="Bonus 2" class="bonus-icon" />
+    <img src="vestBit3.png" alt="Bonus 3" class="bonus-icon" />
+    <img src="vestBit4.png" alt="Bonus 4" class="bonus-icon" />
+    <img src="vestBit5.png" alt="Bonus 5" class="bonus-icon" />
+    <img src="vestBit6.png" alt="Bonus 6" class="bonus-icon" />
+  </div>
 </section>
 
-<!-- Notification After Selection -->
-<div class="notifications hidden" id="notification-container">
-    <div class="notification">
-        <button class="close-btn" onclick="hideNotification()">✖️</button>
-        <h2>Congratulations to your Success VestBit<span id="userFullName">User</span>!</h2>
-        <img id="selectedBonusIcon" src="con.png" alt="Selected Bonus">
-        <div class="amount" id="bonusAmount">VestBit 0.00000</div>
-        <button id="clearBonusBtn">Clear</button>
-    </div>
+<!-- VestBit Notification -->
+<div id="vestbit-notification-container" class="vestbit-notification hidden">
+  <div class="notification-box">
+    <button class="close-bt" onclick="hideNotification()"></button>
+    <h2><span id="userFullName">User</span>, congratulations to win! VestBit Coin</h2>
+    <img id="selectedBonusIcon" src="con.png" alt="Selected Bonus">
+    <div class="amount" id="bonusAmount">VestBit 0.00000</div>
+    <button id="clearBonusBtn">Clear bonus</button>
+  </div>
 </div>
 
-<!-- Countdown Button -->
+<!-- Countdown Display -->
 <section class="dop">
-<div class="countdown-container hidden" id="countdown-container">
-    <button id="countdown-btn">Trying 5 mistus </button></section>
+<div id="countdown-container" class="countdown hidden">
+  <button id="countdownBtn">Wait...</button>
+</div>
+</section>
+
+   
+    
+    <div id="notifications">
+  <div id="welcome-notification" class="notification hidden"></div>
+  <div id="ref1-notification" class="notification hidden"></div>
+  <div id="ref2-notification" class="notification hidden"></div>
+  <div id="vestbit-notification" class="notification hidden"></div>
 </div>
 
+    
 
-                <!-- Footer -->
-        <footer>
-    <div class="footer-menu">
-        <a href="Withdrawal.html">
-            <img src="withdrawal.png" alt="Withdraw" class="footer-icon">
-        </a>
-        <a href="deposit.html">
-            <img src="deposit.png" alt="Deposit" class="footer-icon">
-        </a>
-        <a href="referral.html">
-            <img src="referral.png" alt="Referrals" class="footer-icon">
-        </a>
-    </div>
-</footer>
+    <!-- Footer -->
+    <footer>
+      <div class="footer-menu">
+        <a href="withdrawal.html"><img src="withdrawal.png" alt="Withdraw" class="footer-icon"/></a>
+        <a href="deposit.html"><img src="deposit.png" alt="Deposit" class="footer-icon"/></a>
+        <a href="referral.html"><img src="referral.png" alt="Referrals" class="footer-icon"/></a>
+      </div>
+    </footer>
 
-    </div>
+  </div>
+
+  <!-- Menu Script -->
+  <script>
+    document.getElementById('openMenu').onclick = () => {
+      document.getElementById('menuContainer').classList.add('active');
+    };
+    document.getElementById('closeMenu').onclick = () => {
+      document.getElementById('menuContainer').classList.remove('active');
+    };
+  </script>
   
+
 <script type="module">
 import { app } from './firebase.js';
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
@@ -794,20 +797,30 @@ const availableBalanceElement = document.querySelector('.balance-info .available
 const timerElement = document.querySelector('.balance-info .timer');
 const notificationsContainer = document.querySelector('.notifications');
 const bonusIcons = document.querySelectorAll('.bonus-icon');
-const bonusSection = document.getElementById('bonus-section');
+
 const notificationContainer = document.getElementById('notification-container');
-const userFullName = document.getElementById('userFullName');
+
 const selectedBonusIcon = document.getElementById('selectedBonusIcon');
 const bonusAmount = document.getElementById('bonusAmount');
-const clearBonusBtn = document.getElementById('clearBonusBtn');
-const countdownContainer = document.getElementById('countdown-container');
-const countdownBtn = document.getElementById('countdown-btn');
 
-let lastSelectedTime = localStorage.getItem('lastSelectedTime');
-let timer;
-let currentUserEmail = "";
+
+const vestbitNotification = document.getElementById('vestbit-notification-container');
+const bonusSection = document.getElementById('bonus-section');
+const countdownContainer = document.getElementById('countdown-container');
+const countdownBtn = document.getElementById('countdownBtn');
+const clearBonusBtn = document.getElementById('clearBonusBtn');
+const userFullName = document.getElementById('userFullName');
+
+const userFullNameDisplay = document.getElementById("fullName");
+
+  
+  if (userFullNameDisplay) userFullNameDisplay.textContent = currentUserFullName;
+
 
 const bonuses = [0.00112, 0.00129, 0.00132, 0.00132, 0.00147, 0.0014, 0.0012];
+const getRandomBonus = () => bonuses[Math.floor(Math.random() * bonuses.length)];
+
+
 const plans = [
   { amount: 800, dailyProfit: 30.8, days: 49 },
   { amount: 400, dailyProfit: 16.8, days: 45 },
@@ -835,6 +848,10 @@ const hideLoadingScreen = () => {
   }, 1500);
 };
 
+
+ 
+
+
 const updateUI = (userData) => {
   const {
     deposit, depositTime, dailyProfit: originalDailyProfit, vestBit, userBalance,
@@ -842,7 +859,12 @@ const updateUI = (userData) => {
     vestinooID, email, fullName, lastClaimTime
   } = userData;
 
-  currentUserEmail = email;
+  
+  
+  let currentUserFullName = "";
+let currentUserEmail = "";
+
+  
 
   const now = Date.now();
   const plan = findPlan(deposit);
@@ -887,31 +909,54 @@ const updateUI = (userData) => {
 };
 
 const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, email }) => {
-  notificationsContainer.innerHTML = "";
   if (wellecomeBonus > 0)
-    showNotification(fullName, 'clear your Welcome Bonus', 'bonus.png', wellecomeBonus, () => clearBonus(email, 'wellecomeBonus'));
+    showNotification('welcome-notification', fullName, 'clear your Welcome Bonus', 'bonus.png', wellecomeBonus, () => clearBonus(email, 'wellecomeBonus'));
+
   if (referralBonusLeve1 > 0)
-    showNotification(fullName, 'Clear your Level 1 Referral Bonus', 'level1.png', referralBonusLeve1, () => clearBonus(email, 'referralBonusLeve1'));
+    showNotification('ref1-notification', fullName, 'Clear your Level 1 Referral Bonus', 'level1.png', referralBonusLeve1, () => clearBonus(email, 'referralBonusLeve1'));
+
   if (referralBonussLeve2 > 0)
-    showNotification(fullName, 'Clear Your Level 2 Referral Bonus', 'level2.png', referralBonussLeve2, () => clearBonus(email, 'referralBonussLeve2'));
+    showNotification('ref2-notification', fullName, 'Clear Your Level 2 Referral Bonus', 'level2.png', referralBonussLeve2, () => clearBonus(email, 'referralBonussLeve2'));
+
   if (vestBit >= 1)
-    showNotification(fullName, 'You can sell your vestBit coin now', 'con.png', vestBit, () => sellVestBit(email, vestBit));
+    showNotification('vestbit-notification', fullName, 'You can sell your vestBit coin now', 'con.png', vestBit, () => sellVestBit(email, vestBit));
 };
 
-const showNotification = (name, message, img, amount, callback) => {
-  const box = document.createElement('div');
-  box.className = 'notification';
-  box.innerHTML = `
+const showNotification = (containerId, name, message, img, amount, callback) => {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.classList.remove('hidden');
+  container.innerHTML = `
     <button class="close-btn">✖️</button>
     <h2>${name}, ${message}</h2>
     <img src="${img}" alt="${message}">
     <div class="amount">$${amount.toFixed(2)}</div>
     <button>Clear</button>
   `;
-  notificationsContainer.appendChild(box);
-  box.querySelector('.close-btn').onclick = () => box.remove();
-  box.querySelector('button:last-child').onclick = () => { callback(); box.remove(); };
+
+  container.querySelector('.close-btn').onclick = () => container.classList.add('hidden');
+  container.querySelector('button:last-child').onclick = () => { callback(); container.classList.add('hidden'); };
 };
+
+
+const showNotificationBox = (boxId, name, message, img, amount, callback) => {
+  const box = document.getElementById(boxId);
+  if (!box) return;
+
+  box.innerHTML = `
+    <button class="close-btn">×</button>
+    <h2>${name}, ${message}</h2>
+    <img src="${img}" alt="${message}">
+    <div class="amount">$${amount.toFixed(2)}</div>
+    <button>Clear</button>
+  `;
+  box.classList.add("visible");
+
+  box.querySelector('.close-btn').onclick = () => box.classList.remove("visible");
+  box.querySelector('button:last-child').onclick = () => { callback(); box.classList.remove("visible"); };
+};
+
 
 const clearBonus = async (email, field) => {
   await fetch("https://vestinooproject.vercel.app/api/userUpdate", {
@@ -953,36 +998,53 @@ const showClearMineButton = (email, dailyProfit) => {
   mainContent.appendChild(btn);
 };
 
-const getRandomBonus = () => bonuses[Math.floor(Math.random() * bonuses.length)];
 
-const sendVestBitBonus = async (email, bonusAmount) => {
+
+
+
+
+let currentUserEmail = null;
+let currentUserFullName = null;
+let lastSelectedTime = localStorage.getItem('lastSelectedTime') || null;
+let timer;
+
+
+
+const sendVestBitBonus = async (email, bonusAmountValue) => {
   await fetch("https://bonus-gamma.vercel.app/api/vestBit", {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
-    body: JSON.stringify({ email, bonusAmount })
+    body: JSON.stringify({ email, bonusAmount: bonusAmountValue })
   });
-  hideNotification();
+  hideNotification9();
 };
 
-const hideNotification = () => notificationContainer.classList.add('hidden');
+const hideNotification9 = () => {
+  vestbitNotification.classList.add('hidden');
+};
 
-bonusIcons.forEach(icon => {
-  icon.onclick = () => {
-    const randomBonus = getRandomBonus();
-    if (!currentUserEmail) return;
-    userFullName.textContent = currentUserEmail;
-    selectedBonusIcon.src = icon.src;
-    bonusAmount.textContent = `VestBit ${randomBonus.toFixed(5)}`;
-    notificationContainer.classList.remove('hidden');
-    bonusSection.classList.add('hidden');
-    countdownContainer.classList.remove('hidden');
-    lastSelectedTime = Date.now();
-    localStorage.setItem('lastSelectedTime', lastSelectedTime);
-    clearBonusBtn.onclick = () => sendVestBitBonus(currentUserEmail, randomBonus);
-    startCountdown();
-  };
+// Main Click Logic
+document.addEventListener('DOMContentLoaded', () => {
+  bonusIcons.forEach(icon => {
+    icon.onclick = () => {
+      if (!currentUserEmail || !currentUserFullName) return;
+
+      const randomBonus = getRandomBonus();
+      userFullName.textContent = `${currentUserFullName}`;  // Display full name
+      selectedBonusIcon.src = icon.src;
+      bonusAmount.textContent = `VestBit ${randomBonus.toFixed(5)}`;
+      vestbitNotification.classList.remove('hidden');
+      bonusSection.classList.add('hidden');
+      countdownContainer.classList.remove('hidden');
+      lastSelectedTime = Date.now();
+      localStorage.setItem('lastSelectedTime', lastSelectedTime);
+      clearBonusBtn.onclick = () => sendVestBitBonus(currentUserEmail, randomBonus);
+      startCountdown();
+    };
+  });
 });
 
+// Timer
 function startCountdown() {
   clearInterval(timer);
   timer = setInterval(() => {
@@ -1000,6 +1062,7 @@ function startCountdown() {
   }, 1000);
 }
 
+// Load Countdown on Refresh
 window.onload = () => {
   if (lastSelectedTime) {
     const diff = (Date.now() - lastSelectedTime) / 1000;
@@ -1016,6 +1079,7 @@ window.onload = () => {
   }
 };
 
+// Auth listener
 onAuthStateChanged(auth, (user) => {
   showLoadingScreen();
   if (user) {
@@ -1024,7 +1088,9 @@ onAuthStateChanged(auth, (user) => {
     onValue(userRef, (snapshot) => {
       const userData = snapshot.val();
       if (userData) {
-        updateUI(userData);
+        currentUserEmail = userData.email;
+        currentUserFullName = userData.fullName;
+        updateUI(userData); // idon kana da wani abu a UI
       } else {
         console.warn("User data not found.");
       }
@@ -1038,6 +1104,8 @@ onAuthStateChanged(auth, (user) => {
     hideLoadingScreen();
   }
 });
-</script>
+
+</script>      
+  
 </body>
 </html>
