@@ -962,7 +962,7 @@ const showNotificationBox = (boxId, name, message, img, amount, callback) => {
 
 
 const clearBonus = async (email, field) => {
-  await fetch("https://vestinooproject.vercel.app/api/userUpdate", {
+  await fetch("https://vestinooproject.vercel.app/api/bonusRe", {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
     body: JSON.stringify({ email, [field]: 0 })
@@ -1000,10 +1000,6 @@ const showClearMineButton = (email, dailyProfit) => {
   };
   mainContent.appendChild(btn);
 };
-
-
-
-
 
 
 let currentUserEmail = null;
