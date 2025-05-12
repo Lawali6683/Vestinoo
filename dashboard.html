@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-   <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
-    
-    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
+   <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
+<script src="https://ligheechoagool.com/88/tag.min.js" data-zone="145615" async data-cfasync="false"></script>
+<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
  
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
@@ -999,7 +999,7 @@ const processNotificationQueue = (queue, email) => {
 };
 
 const clearBonus = async (email, field) => {
-  await fetch("https://vestinooproject.vercel.app/api/bonusRe", {
+  await fetch("https://vestinoo-project.vercel.app/api/bonusRe", {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
     body: JSON.stringify({ email, [field]: 0 })
@@ -1007,7 +1007,7 @@ const clearBonus = async (email, field) => {
 };
 
 const sellVestBit = async (email, vestBit) => {
-  await fetch("https://vestinooproject.vercel.app/api/userUpdate", {
+  await fetch("https://vestinoo-project.vercel.app/api/userUpdate", {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
     body: JSON.stringify({ email, vestBit: 0 })
@@ -1036,7 +1036,7 @@ const showNotificationBox = (boxId, name, message, img, amount, callback) => {
 
 
 const clearExpiredPackage = async (email, fullName, deposit) => {
-  await fetch("https://vestinooproject.vercel.app/api/userUpdate", {
+  await fetch("https://vestinoo-project.vercel.app/api/userUpdate", {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
     body: JSON.stringify({ email, deposit: 0, dailyProfit: 0, depositTime: null })
@@ -1049,7 +1049,7 @@ const showClearMineButton = (email, dailyProfit) => {
   btn.textContent = "Clear Daily Mine";
   btn.className = 'mine-button';
   btn.onclick = async () => {
-    await fetch("https://vestinooproject.vercel.app/api/userUpdate", {
+    await fetch("https://vestinoo-project.vercel.app/api/userUpdate", {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
       body: JSON.stringify({ email, dailyProfit, lastClaimTime: Date.now() })
