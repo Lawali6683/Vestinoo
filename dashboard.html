@@ -5,14 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
- <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+   <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
     
     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
-
+ 
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
 
@@ -536,6 +535,7 @@ box-shadow: 0 0 10px #00ffcc;
   width: 300px;
   animation: slideIn 0.4s ease;
   font-family: 'Segoe UI', sans-serif;
+  text-align: center;
 }
 
 .notification-box h2 {
@@ -651,6 +651,10 @@ box-shadow: 0 0 10px #00ffcc;
     button:hover{
         background-color: #2600ff;
     }
+    
+   .amount{
+       font-size: 20px;
+   }
   </style>
 </head>
 <body>
@@ -816,7 +820,10 @@ const userFullName = document.getElementById('userFullName');
 
 const userFullNameDisplay = document.getElementById("fullName");
 
-    
+  
+  if (userFullNameDisplay) userFullNameDisplay.textContent = currentUserFullName;
+
+
 const bonuses = [0.00112, 0.00129, 0.00132, 0.00132, 0.00147, 0.0014, 0.0012];
 const getRandomBonus = () => bonuses[Math.floor(Math.random() * bonuses.length)];
 
@@ -859,7 +866,12 @@ const updateUI = (userData) => {
     vestinooID, email, fullName, lastClaimTime
   } = userData;
 
-   
+  
+  
+  let currentUserFullName = "";
+let currentUserEmail = "";
+
+  
 
   const now = Date.now();
   const plan = findPlan(deposit);
@@ -904,105 +916,103 @@ const updateUI = (userData) => {
 };
 
 const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, email }) => {
-  hideAllNotifications();
+  const queue = [];
 
   if (wellecomeBonus > 0) {
-    showNotification(
-      'welcome-notification',
-      fullName,
-      'Clear your Welcome Bonus',
-      'bonus.png',
-      wellecomeBonus,
-      () => clearWelcomeBonus(email)
-    );
+    queue.push({
+      id: "welcome-notification",
+      name: fullName,
+      message: "clear your Welcome Bonus",
+      img: "bonus.png",
+      amount: wellecomeBonus,
+      field: "wellecomeBonus"
+    });
   }
 
-  
   if (referralBonusLeve1 > 0) {
-    showNotification(
-      'ref1-notification',
-      fullName,
-      'Clear your Level 1 Referral Bonus',
-      'level1.png',
-      referralBonusLeve1,
-      () => clearReferralBonusLevel1(email)
-    );
+    queue.push({
+      id: "ref1-notification",
+      name: fullName,
+      message: "Clear your Level 1 Referral Bonus",
+      img: "level1.png",
+      amount: referralBonusLeve1,
+      field: "referralBonusLeve1"
+    });
   }
 
   if (referralBonussLeve2 > 0) {
-    showNotification(
-      'ref2-notification',
-      fullName,
-      'Clear your Level 2 Referral Bonus',
-      'level2.png',
-      referralBonussLeve2,
-      () => clearReferralBonusLevel2(email)
-    );
+    queue.push({
+      id: "ref2-notification",
+      name: fullName,
+      message: "Clear Your Level 2 Referral Bonus",
+      img: "level2.png",
+      amount: referralBonussLeve2,
+      field: "referralBonussLeve2"
+    });
   }
 
   if (vestBit >= 1) {
-    showNotification(
-      'vestbit-notification',
-      fullName,
-      'You can sell your vestBit coin now',
-      'con.png',
-      vestBit,
-      () => sellVestBit(email, vestBit)
-    );
+    queue.push({
+      id: "vestbit-notification",
+      name: fullName,
+      message: "You can sell your vestBit coin now",
+      img: "con.png",
+      amount: vestBit,
+      field: "vestBit"
+    });
   }
+
+  processNotificationQueue(queue, email);
 };
 
 
+const processNotificationQueue = (queue, email) => {
+  if (queue.length === 0) return;
 
-const showNotification = (containerId, name, message, img, amount, callback) => {
-  const container = document.getElementById(containerId);
+  const current = queue.shift();
+  const container = document.getElementById(current.id);
   if (!container) return;
 
-  // Clear previous notification content if any
-  container.innerHTML = '';
+  container.innerHTML = `
+    <button class="close-btn">✖️</button>
+    <h2>${current.name}, ${current.message}</h2>
+    <img src="${current.img}" alt="${current.message}">
+    <div class="amount">$${current.amount.toFixed(2)}</div>
+    <button>Clear</button>
+  `;
   container.classList.remove('hidden');
 
-  const closeButton = document.createElement('button');
-  closeButton.className = 'close-btn';
-  closeButton.textContent = '×';
-  closeButton.onclick = (e) => {
-    e.stopPropagation();
+  container.querySelector('.close-btn').onclick = () => {
     container.classList.add('hidden');
+    processNotificationQueue(queue, email);
   };
 
-  const title = document.createElement('h2');
-  title.textContent = `${name}, ${message}`;
-
-  const image = document.createElement('img');
-  image.src = img;
-  image.alt = message;
-
-  const amountEl = document.createElement('div');
-  amountEl.className = 'amount';
-  amountEl.textContent = `$${amount.toFixed(2)}`;
-
-  const clearButton = document.createElement('button');
-  clearButton.textContent = 'Clear Bonus';
-  clearButton.onclick = (e) => {
-    e.stopPropagation();
-    callback();
+  container.querySelector('button:last-child').onclick = async () => {
+    if (current.field === "vestBit") {
+      await sellVestBit(email, current.amount);
+    } else {
+      await clearBonus(email, current.field);
+    }
     container.classList.add('hidden');
+    processNotificationQueue(queue, email);
   };
-
-  container.appendChild(closeButton);
-  container.appendChild(title);
-  container.appendChild(image);
-  container.appendChild(amountEl);
-  container.appendChild(clearButton);
 };
 
-// Optionally ensure all notifications are isolated on display
-const hideAllNotifications = () => {
-  const all = document.querySelectorAll('.notification');
-  all.forEach(n => n.classList.add('hidden'));
+const clearBonus = async (email, field) => {
+  await fetch("https://vestinooproject.vercel.app/api/bonusRe", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
+    body: JSON.stringify({ email, [field]: 0 })
+  });
 };
 
-
+const sellVestBit = async (email, vestBit) => {
+  await fetch("https://vestinooproject.vercel.app/api/userUpdate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
+    body: JSON.stringify({ email, vestBit: 0 })
+  });
+};
 
 
 const showNotificationBox = (boxId, name, message, img, amount, callback) => {
@@ -1014,87 +1024,12 @@ const showNotificationBox = (boxId, name, message, img, amount, callback) => {
     <h2>${name}, ${message}</h2>
     <img src="${img}" alt="${message}">
     <div class="amount">$${amount.toFixed(2)}</div>
-    <button>Clear</button>
+    <button>Clear Bonus </button>
   `;
   box.classList.add("visible");
 
   box.querySelector('.close-btn').onclick = () => box.classList.remove("visible");
   box.querySelector('button:last-child').onclick = () => { callback(); box.classList.remove("visible"); };
-};
-
-
-
-
-// Aiki don share wellecomeBonus
-const clearWelcomeBonus = async (email) => {
-  try {
-    const res = await fetch("https://vestinooproject.vercel.app/api/bonusRe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": "@haruna66"
-      },
-      body: JSON.stringify({ email, wellecomeBonus: 0 })
-    });
-    if (!res.ok) throw new Error("Failed");
-    document.getElementById('welcome-notification').classList.add('hidden');
-  } catch (err) {
-    console.error("Error:", err);
-  }
-};
-
-// Aiki don share referralBonusLeve1
-const clearReferralBonusLevel1 = async (email) => {
-  try {
-    const res = await fetch("https://vestinooproject.vercel.app/api/bonusRe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": "@haruna66"
-      },
-      body: JSON.stringify({ email, referralBonusLeve1: 0 })
-    });
-    if (!res.ok) throw new Error("Failed");
-    document.getElementById('ref1-notification').classList.add('hidden');
-  } catch (err) {
-    console.error("Error:", err);
-  }
-};
-
-// Aiki don share referralBonussLeve2
-const clearReferralBonusLevel2 = async (email) => {
-  try {
-    const res = await fetch("https://vestinooproject.vercel.app/api/bonusRe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": "@haruna66"
-      },
-      body: JSON.stringify({ email, referralBonussLeve2: 0 })
-    });
-    if (!res.ok) throw new Error("Failed");
-    document.getElementById('ref2-notification').classList.add('hidden');
-  } catch (err) {
-    console.error("Error:", err);
-  }
-};
-
-// Aiki don sayar da vestBit
-const sellVestBit = async (email, amount) => {
-  try {
-    const res = await fetch("https://vestinooproject.vercel.app/api/vestBit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": "@haruna66"
-      },
-      body: JSON.stringify({ email, vestBit: amount })
-    });
-    if (!res.ok) throw new Error("Failed");
-    document.getElementById('vestbit-notification').classList.add('hidden');
-  } catch (err) {
-    console.error("Error selling vestBit:", err);
-  }
 };
 
 
@@ -1133,42 +1068,38 @@ let timer;
 
 
 const sendVestBitBonus = async (email, bonusAmountValue) => {
-  try {
-    const res = await fetch("https://bonus-gamma.vercel.app/api/vestBit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
-      body: JSON.stringify({ email, bonusAmount: bonusAmountValue })
-    });
-    if (!res.ok) throw new Error("Failed to send bonus");
-    hideNotification9();
-    setTimeout(() => window.location.reload(), 1000); // Reload to refresh balance
-  } catch (err) {
-    console.error("Error:", err);
-  }
+  await fetch("https://bonus-gamma.vercel.app/api/vestBit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
+    body: JSON.stringify({ email, bonusAmount: bonusAmountValue })
+  });
+  hideNotification9();
 };
 
+const hideNotification9 = () => {
+  vestbitNotification.classList.add('hidden');
+};
 
-bonusIcons.forEach(icon => {
-  icon.onclick = () => {
-    if (!isUserDataLoaded) {
-      alert("Please wait, loading user data...");
-      return;
-    }
+// Main Click Logic
+document.addEventListener('DOMContentLoaded', () => {
+  bonusIcons.forEach(icon => {
+    icon.onclick = () => {
+      if (!currentUserEmail || !currentUserFullName) return;
 
-    const randomBonus = getRandomBonus();
-    userFullName.textContent = `${currentUserFullName}`;
-    selectedBonusIcon.src = icon.src;
-    bonusAmount.textContent = `VestBit ${randomBonus.toFixed(5)}`;
-    vestbitNotification.classList.remove('hidden');
-    bonusSection.classList.add('hidden');
-    countdownContainer.classList.remove('hidden');
-    lastSelectedTime = Date.now();
-    localStorage.setItem('lastSelectedTime', lastSelectedTime);
-    clearBonusBtn.onclick = () => sendVestBitBonus(currentUserEmail, randomBonus);
-    startCountdown();
-  };
+      const randomBonus = getRandomBonus();
+      userFullName.textContent = `${currentUserFullName}`;  // Display full name
+      selectedBonusIcon.src = icon.src;
+      bonusAmount.textContent = `VestBit ${randomBonus.toFixed(5)}`;
+      vestbitNotification.classList.remove('hidden');
+      bonusSection.classList.add('hidden');
+      countdownContainer.classList.remove('hidden');
+      lastSelectedTime = Date.now();
+      localStorage.setItem('lastSelectedTime', lastSelectedTime);
+      clearBonusBtn.onclick = () => sendVestBitBonus(currentUserEmail, randomBonus);
+      startCountdown();
+    };
+  });
 });
-
 
 // Timer
 function startCountdown() {
@@ -1205,8 +1136,7 @@ window.onload = () => {
   }
 };
 
-let isUserDataLoaded = false;
-
+// Auth listener
 onAuthStateChanged(auth, (user) => {
   showLoadingScreen();
   if (user) {
@@ -1216,19 +1146,22 @@ onAuthStateChanged(auth, (user) => {
       const userData = snapshot.val();
       if (userData) {
         currentUserEmail = userData.email;
-        if (userFullNameDisplay) userFullNameDisplay.textContent = currentUserFullName;
         currentUserFullName = userData.fullName;
-        isUserDataLoaded = true;
-        updateUI(userData);
+        updateUI(userData); // idon kana da wani abu a UI
+      } else {
+        console.warn("User data not found.");
       }
+      hideLoadingScreen();
+    }, (error) => {
+      console.error("Error fetching user data:", error);
       hideLoadingScreen();
     });
   } else {
+    console.warn("User not authenticated.");
     hideLoadingScreen();
   }
 });
 
-
-</script>        
+</script>      
 </body>
 </html>
