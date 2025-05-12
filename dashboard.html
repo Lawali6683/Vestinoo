@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
- <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
     
     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
+ 
 
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
@@ -1102,38 +1102,42 @@ let timer;
 
 
 const sendVestBitBonus = async (email, bonusAmountValue) => {
-  await fetch("https://bonus-gamma.vercel.app/api/vestBit", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
-    body: JSON.stringify({ email, bonusAmount: bonusAmountValue })
-  });
-  hideNotification9();
+  try {
+    const res = await fetch("https://bonus-gamma.vercel.app/api/vestBit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
+      body: JSON.stringify({ email, bonusAmount: bonusAmountValue })
+    });
+    if (!res.ok) throw new Error("Failed to send bonus");
+    hideNotification9();
+    setTimeout(() => window.location.reload(), 1000); // Reload to refresh balance
+  } catch (err) {
+    console.error("Error:", err);
+  }
 };
 
-const hideNotification9 = () => {
-  vestbitNotification.classList.add('hidden');
-};
 
-// Main Click Logic
-document.addEventListener('DOMContentLoaded', () => {
-  bonusIcons.forEach(icon => {
-    icon.onclick = () => {
-      if (!currentUserEmail || !currentUserFullName) return;
+bonusIcons.forEach(icon => {
+  icon.onclick = () => {
+    if (!isUserDataLoaded) {
+      alert("Please wait, loading user data...");
+      return;
+    }
 
-      const randomBonus = getRandomBonus();
-      userFullName.textContent = `${currentUserFullName}`;  // Display full name
-      selectedBonusIcon.src = icon.src;
-      bonusAmount.textContent = `VestBit ${randomBonus.toFixed(5)}`;
-      vestbitNotification.classList.remove('hidden');
-      bonusSection.classList.add('hidden');
-      countdownContainer.classList.remove('hidden');
-      lastSelectedTime = Date.now();
-      localStorage.setItem('lastSelectedTime', lastSelectedTime);
-      clearBonusBtn.onclick = () => sendVestBitBonus(currentUserEmail, randomBonus);
-      startCountdown();
-    };
-  });
+    const randomBonus = getRandomBonus();
+    userFullName.textContent = `${currentUserFullName}`;
+    selectedBonusIcon.src = icon.src;
+    bonusAmount.textContent = `VestBit ${randomBonus.toFixed(5)}`;
+    vestbitNotification.classList.remove('hidden');
+    bonusSection.classList.add('hidden');
+    countdownContainer.classList.remove('hidden');
+    lastSelectedTime = Date.now();
+    localStorage.setItem('lastSelectedTime', lastSelectedTime);
+    clearBonusBtn.onclick = () => sendVestBitBonus(currentUserEmail, randomBonus);
+    startCountdown();
+  };
 });
+
 
 // Timer
 function startCountdown() {
@@ -1170,7 +1174,8 @@ window.onload = () => {
   }
 };
 
-// Auth listener
+let isUserDataLoaded = false;
+
 onAuthStateChanged(auth, (user) => {
   showLoadingScreen();
   if (user) {
@@ -1181,20 +1186,16 @@ onAuthStateChanged(auth, (user) => {
       if (userData) {
         currentUserEmail = userData.email;
         currentUserFullName = userData.fullName;
-        updateUI(userData); // idon kana da wani abu a UI
-      } else {
-        console.warn("User data not found.");
+        isUserDataLoaded = true;
+        updateUI(userData);
       }
-      hideLoadingScreen();
-    }, (error) => {
-      console.error("Error fetching user data:", error);
       hideLoadingScreen();
     });
   } else {
-    console.warn("User not authenticated.");
     hideLoadingScreen();
   }
 });
+
 
 </script>      
   
