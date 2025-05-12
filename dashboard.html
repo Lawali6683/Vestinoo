@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
+ <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
     
     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
-
 
 
   <style>
@@ -912,17 +912,49 @@ let currentUserEmail = "";
 };
 
 const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, email }) => {
-  if (wellecomeBonus > 0)
-    showNotification('welcome-notification', fullName, 'clear your Welcome Bonus', 'bonus.png', wellecomeBonus, () => clearBonus(email, 'wellecomeBonus'));
+  if (wellecomeBonus > 0) {
+    showNotification(
+      'welcome-notification',
+      fullName,
+      'Clear your Welcome Bonus',
+      'bonus.png',
+      wellecomeBonus,
+      () => clearWelcomeBonus(email)
+    );
+  }
 
-  if (referralBonusLeve1 > 0)
-    showNotification('ref1-notification', fullName, 'Clear your Level 1 Referral Bonus', 'level1.png', referralBonusLeve1, () => clearBonus(email, 'referralBonusLeve1'));
+  if (referralBonusLeve1 > 0) {
+    showNotification(
+      'ref1-notification',
+      fullName,
+      'Clear your Level 1 Referral Bonus',
+      'level1.png',
+      referralBonusLeve1,
+      () => clearReferralBonusLevel1(email)
+    );
+  }
 
-  if (referralBonussLeve2 > 0)
-    showNotification('ref2-notification', fullName, 'Clear Your Level 2 Referral Bonus', 'level2.png', referralBonussLeve2, () => clearBonus(email, 'referralBonussLeve2'));
+  if (referralBonussLeve2 > 0) {
+    showNotification(
+      'ref2-notification',
+      fullName,
+      'Clear your Level 2 Referral Bonus',
+      'level2.png',
+      referralBonussLeve2,
+      () => clearReferralBonusLevel2(email)
+    );
+  }
 
-  if (vestBit >= 1)
-    showNotification('vestbit-notification', fullName, 'You can sell your vestBit coin now', 'con.png', vestBit, () => sellVestBit(email, vestBit));
+  if (vestBit >= 1) {
+    showNotification(
+      'vestbit-notification',
+      fullName,
+      'You can sell your vestBit coin now',
+      'con.png',
+      vestBit,
+      () => sellVestBit(email, vestBit)
+    );
+  }
 };
 
 const showNotification = (containerId, name, message, img, amount, callback) => {
@@ -931,11 +963,11 @@ const showNotification = (containerId, name, message, img, amount, callback) => 
 
   container.classList.remove('hidden');
   container.innerHTML = `
-    <button class="close-btn">✖️</button>
+    <button class="close-btn">×</button>
     <h2>${name}, ${message}</h2>
     <img src="${img}" alt="${message}">
     <div class="amount">$${amount.toFixed(2)}</div>
-    <button>Clear</button>
+    <button>Clear Bonus </button>
   `;
 
   container.querySelector('.close-btn').onclick = () => container.classList.add('hidden');
@@ -961,21 +993,81 @@ const showNotificationBox = (boxId, name, message, img, amount, callback) => {
 };
 
 
-const clearBonus = async (email, field) => {
-  await fetch("https://vestinooproject.vercel.app/api/bonusRe", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
-    body: JSON.stringify({ email, [field]: 0 })
-  });
+
+// Aiki don share wellecomeBonus
+const clearWelcomeBonus = async (email) => {
+  try {
+    const res = await fetch("https://vestinooproject.vercel.app/api/bonusRe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "@haruna66"
+      },
+      body: JSON.stringify({ email, wellecomeBonus: 0 })
+    });
+    if (!res.ok) throw new Error("Failed");
+    document.getElementById('welcome-notification').classList.add('hidden');
+  } catch (err) {
+    console.error("Error:", err);
+  }
 };
 
-const sellVestBit = async (email, vestBit) => {
-  await fetch("https://vestinooproject.vercel.app/api/userUpdate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
-    body: JSON.stringify({ email, vestBit: 0 })
-  });
+// Aiki don share referralBonusLeve1
+const clearReferralBonusLevel1 = async (email) => {
+  try {
+    const res = await fetch("https://vestinooproject.vercel.app/api/bonusRe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "@haruna66"
+      },
+      body: JSON.stringify({ email, referralBonusLeve1: 0 })
+    });
+    if (!res.ok) throw new Error("Failed");
+    document.getElementById('ref1-notification').classList.add('hidden');
+  } catch (err) {
+    console.error("Error:", err);
+  }
 };
+
+// Aiki don share referralBonussLeve2
+const clearReferralBonusLevel2 = async (email) => {
+  try {
+    const res = await fetch("https://vestinooproject.vercel.app/api/bonusRe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "@haruna66"
+      },
+      body: JSON.stringify({ email, referralBonussLeve2: 0 })
+    });
+    if (!res.ok) throw new Error("Failed");
+    document.getElementById('ref2-notification').classList.add('hidden');
+  } catch (err) {
+    console.error("Error:", err);
+  }
+};
+
+// Aiki don sayar da vestBit
+const sellVestBit = async (email, amount) => {
+  try {
+    const res = await fetch("https://vestinooproject.vercel.app/api/vestBit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "@haruna66"
+      },
+      body: JSON.stringify({ email, vestBit: amount })
+    });
+    if (!res.ok) throw new Error("Failed");
+    document.getElementById('vestbit-notification').classList.add('hidden');
+  } catch (err) {
+    console.error("Error selling vestBit:", err);
+  }
+};
+
+
+
 
 const clearExpiredPackage = async (email, fullName, deposit) => {
   await fetch("https://vestinooproject.vercel.app/api/userUpdate", {
