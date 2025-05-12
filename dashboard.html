@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
+ <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
     
     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
- 
 
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
@@ -816,10 +816,7 @@ const userFullName = document.getElementById('userFullName');
 
 const userFullNameDisplay = document.getElementById("fullName");
 
-  
-  if (userFullNameDisplay) userFullNameDisplay.textContent = currentUserFullName;
-
-
+    
 const bonuses = [0.00112, 0.00129, 0.00132, 0.00132, 0.00147, 0.0014, 0.0012];
 const getRandomBonus = () => bonuses[Math.floor(Math.random() * bonuses.length)];
 
@@ -862,12 +859,7 @@ const updateUI = (userData) => {
     vestinooID, email, fullName, lastClaimTime
   } = userData;
 
-  
-  
-  let currentUserFullName = "";
-let currentUserEmail = "";
-
-  
+   
 
   const now = Date.now();
   const plan = findPlan(deposit);
@@ -912,6 +904,8 @@ let currentUserEmail = "";
 };
 
 const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, email }) => {
+  hideAllNotifications();
+
   if (wellecomeBonus > 0) {
     showNotification(
       'welcome-notification',
@@ -923,6 +917,7 @@ const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonus
     );
   }
 
+  
   if (referralBonusLeve1 > 0) {
     showNotification(
       'ref1-notification',
@@ -957,22 +952,57 @@ const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonus
   }
 };
 
+
+
 const showNotification = (containerId, name, message, img, amount, callback) => {
   const container = document.getElementById(containerId);
   if (!container) return;
 
+  // Clear previous notification content if any
+  container.innerHTML = '';
   container.classList.remove('hidden');
-  container.innerHTML = `
-    <button class="close-btn">×</button>
-    <h2>${name}, ${message}</h2>
-    <img src="${img}" alt="${message}">
-    <div class="amount">$${amount.toFixed(2)}</div>
-    <button>Clear Bonus </button>
-  `;
 
-  container.querySelector('.close-btn').onclick = () => container.classList.add('hidden');
-  container.querySelector('button:last-child').onclick = () => { callback(); container.classList.add('hidden'); };
+  const closeButton = document.createElement('button');
+  closeButton.className = 'close-btn';
+  closeButton.textContent = '×';
+  closeButton.onclick = (e) => {
+    e.stopPropagation();
+    container.classList.add('hidden');
+  };
+
+  const title = document.createElement('h2');
+  title.textContent = `${name}, ${message}`;
+
+  const image = document.createElement('img');
+  image.src = img;
+  image.alt = message;
+
+  const amountEl = document.createElement('div');
+  amountEl.className = 'amount';
+  amountEl.textContent = `$${amount.toFixed(2)}`;
+
+  const clearButton = document.createElement('button');
+  clearButton.textContent = 'Clear Bonus';
+  clearButton.onclick = (e) => {
+    e.stopPropagation();
+    callback();
+    container.classList.add('hidden');
+  };
+
+  container.appendChild(closeButton);
+  container.appendChild(title);
+  container.appendChild(image);
+  container.appendChild(amountEl);
+  container.appendChild(clearButton);
 };
+
+// Optionally ensure all notifications are isolated on display
+const hideAllNotifications = () => {
+  const all = document.querySelectorAll('.notification');
+  all.forEach(n => n.classList.add('hidden'));
+};
+
+
 
 
 const showNotificationBox = (boxId, name, message, img, amount, callback) => {
@@ -991,6 +1021,7 @@ const showNotificationBox = (boxId, name, message, img, amount, callback) => {
   box.querySelector('.close-btn').onclick = () => box.classList.remove("visible");
   box.querySelector('button:last-child').onclick = () => { callback(); box.classList.remove("visible"); };
 };
+
 
 
 
@@ -1185,6 +1216,7 @@ onAuthStateChanged(auth, (user) => {
       const userData = snapshot.val();
       if (userData) {
         currentUserEmail = userData.email;
+        if (userFullNameDisplay) userFullNameDisplay.textContent = currentUserFullName;
         currentUserFullName = userData.fullName;
         isUserDataLoaded = true;
         updateUI(userData);
@@ -1197,7 +1229,6 @@ onAuthStateChanged(auth, (user) => {
 });
 
 
-</script>      
-  
+</script>        
 </body>
 </html>
