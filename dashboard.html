@@ -999,7 +999,7 @@ const processNotificationQueue = (queue, email) => {
 };
 
 const clearBonus = async (email, field) => {
-  await fetch("https://bonus-gamma.vercel.app/api/bonusRe", {
+  await fetch("https://vestinoo-project.vercel.app/bonusRe", {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
     body: JSON.stringify({ email, [field]: 0 })
