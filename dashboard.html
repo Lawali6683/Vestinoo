@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-   <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
+
+<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
 
- 
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
 
@@ -655,6 +655,51 @@ box-shadow: 0 0 10px #00ffcc;
    .amount{
        font-size: 20px;
    }
+   
+   .mine-button {
+  position: fixed;
+  top: 210px;
+  left: 20px;
+  z-index: 9999;
+  background: linear-gradient(135deg, #FFD700, #FFB800);
+  color: #000;
+  font-weight: bold;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: slideIn 0.5s ease forwards;
+}
+
+.mine-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .mine-button {
+    left: 10px;
+    right: 10px;
+    width: calc(100% - 20px);
+    text-align: center;
+    font-size: 14px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -719,6 +764,10 @@ box-shadow: 0 0 10px #00ffcc;
     </div>
             </div>
         </div>
+        
+        <!-- Placeholder, optional -->
+<div id="mine-button-container"></div>
+
         
   <!-- Bonus Section -->
 <section id="bonus-section" class="bonus-section hidden">
@@ -856,22 +905,12 @@ const hideLoadingScreen = () => {
 };
 
 
- 
-
-
 const updateUI = (userData) => {
   const {
-    deposit, depositTime, dailyProfit: originalDailyProfit, vestBit, userBalance,
+    deposit, depositTime, dailyProfit: originalDailyProfit, vestBit, userBalance, email, 
     referralBonusLeve1, referralBonussLeve2, wellecomeBonus,
-    vestinooID, email, fullName, lastClaimTime
+    vestinooID, fullName, uid, lastClaimTime
   } = userData;
-
-  
-  
-  let currentUserFullName = "";
-let currentUserEmail = "";
-
-  
 
   const now = Date.now();
   const plan = findPlan(deposit);
@@ -886,10 +925,8 @@ let currentUserEmail = "";
     dailyProfit = plan.dailyProfit;
   }
 
-  const lastClaimElapsed = now - (lastClaimTime || 0);
-  if (dailyProfit > 0 && plan && remainingDays > 0 && lastClaimElapsed >= 24 * 60 * 60 * 1000) {
-    showClearMineButton(email, dailyProfit);
-  }
+  // Show Mine Button
+  showClearMineButton(uid, dailyProfit, depositTime, lastClaimTime);
 
   daysElement.textContent = `${remainingDays.toFixed(0)} Days`;
   foundElement.textContent = `Found: $${deposit.toFixed(2)}`;
@@ -897,76 +934,83 @@ let currentUserEmail = "";
   vestBitElement.textContent = vestBit.toFixed(5);
   mineElement.textContent = `Daily Mine: $${dailyProfit.toFixed(2)}`;
   availableBalanceElement.textContent = `$${userBalance.toFixed(2)}`;
- if (depositTime) {
-  const timerDate = new Date(depositTime + 24 * 60 * 60 * 1000 - now);
-  const hours = timerDate.getUTCHours().toString().padStart(2, '0');
-  const minutes = timerDate.getUTCMinutes().toString().padStart(2, '0');
-  timerElement.textContent = `${hours}:${minutes}`;
-  timerElement.style.display = 'inline-block'; 
-} else {
-  timerElement.style.display = 'none';
-}
 
-
-  if (plan && remainingDays <= 0) {
-    clearExpiredPackage(email, fullName, deposit);
+  if (depositTime) {
+    const timerDate = new Date(depositTime + 24 * 60 * 60 * 1000 - now);
+    const hours = timerDate.getUTCHours().toString().padStart(2, '0');
+    const minutes = timerDate.getUTCMinutes().toString().padStart(2, '0');
+    timerElement.textContent = `${hours}:${minutes}`;
+    timerElement.style.display = 'inline-block';
+  } else {
+    timerElement.style.display = 'none';
   }
 
-  handleNotifications({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, email });
+  if (plan && remainingDays <= 0) {
+    clearExpiredPackage(uid, fullName, deposit);
+  }
+
+  handleNotifications({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, uid });
 };
 
-const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, email }) => {
+const clearExpiredPackage = async (uid, fullName, deposit) => {
+  await fetch("https://vestinoo-project.vercel.app/api/enddays", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
+    body: JSON.stringify({ uid })
+  });
+  showNotification(fullName, "Your package has expired", "end.png", deposit, () => {});
+};
+
+const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, uid }) => {
   const queue = [];
 
   if (wellecomeBonus > 0) {
-    queue.push({
-      id: "welcome-notification",
-      name: fullName,
-      message: "clear your Welcome Bonus",
-      img: "bonus.png",
-      amount: wellecomeBonus,
-      field: "wellecomeBonus"
-    });
+    queue.push({ id: "welcome-notification", name: fullName, message: "clear your Welcome Bonus", img: "bonus.png", amount: wellecomeBonus, field: "wellecomeBonus" });
   }
 
   if (referralBonusLeve1 > 0) {
-    queue.push({
-      id: "ref1-notification",
-      name: fullName,
-      message: "Clear your Level 1 Referral Bonus",
-      img: "level1.png",
-      amount: referralBonusLeve1,
-      field: "referralBonusLeve1"
-    });
+    queue.push({ id: "ref1-notification", name: fullName, message: "Clear your Level 1 Referral Bonus", img: "level1.png", amount: referralBonusLeve1, field: "referralBonusLeve1" });
   }
 
   if (referralBonussLeve2 > 0) {
-    queue.push({
-      id: "ref2-notification",
-      name: fullName,
-      message: "Clear Your Level 2 Referral Bonus",
-      img: "level2.png",
-      amount: referralBonussLeve2,
-      field: "referralBonussLeve2"
-    });
+    queue.push({ id: "ref2-notification", name: fullName, message: "Clear Your Level 2 Referral Bonus", img: "level2.png", amount: referralBonussLeve2, field: "referralBonussLeve2" });
   }
 
   if (vestBit >= 1) {
-    queue.push({
-      id: "vestbit-notification",
-      name: fullName,
-      message: "You can sell your vestBit coin now",
-      img: "con.png",
-      amount: vestBit,
-      field: "vestBit"
-    });
+    queue.push({ id: "vestbit-notification", name: fullName, message: "You can sell your vestBit coin now", img: "con.png", amount: vestBit, field: "vestBit" });
   }
 
-  processNotificationQueue(queue, email);
+  processNotificationQueue(queue, uid);
 };
 
 
-const processNotificationQueue = (queue, email) => {
+const showClearMineButton = (uid, dailyProfit, depositTime, lastClaimTime) => {
+  const now = Date.now();
+  const nextClaimTime = (lastClaimTime || depositTime) + 24 * 60 * 60 * 1000;
+
+  if (now < nextClaimTime || dailyProfit <= 0) return;
+
+  const existingBtn = document.querySelector('.mine-button');
+  if (existingBtn) existingBtn.remove();
+
+  const btn = document.createElement('button');
+  btn.textContent = `🪙 Get Your Daily Mine: $${dailyProfit.toFixed(2)}`;
+  btn.className = 'mine-button fixed top-5 left-5 p-2 bg-yellow-400 text-black rounded-lg shadow-md z-50';
+
+  btn.onclick = async () => {
+    await fetch("https://vestinoo-project.vercel.app/api/dailymine", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
+      body: JSON.stringify({ uid, dailyProfit })
+    });
+    btn.remove();
+  };
+
+  document.body.appendChild(btn);
+};
+
+
+const processNotificationQueue = (queue, uid) => {
   if (queue.length === 0) return;
 
   const current = queue.shift();
@@ -978,94 +1022,55 @@ const processNotificationQueue = (queue, email) => {
     <h2>${current.name}, ${current.message}</h2>
     <img src="${current.img}" alt="${current.message}">
     <div class="amount">$${current.amount.toFixed(2)}</div>
-    <button>Clear</button>
+    <button>Clear Bonus</button>
   `;
   container.classList.remove('hidden');
 
   container.querySelector('.close-btn').onclick = () => {
     container.classList.add('hidden');
-    processNotificationQueue(queue, email);
+    processNotificationQueue(queue, uid);
   };
 
   container.querySelector('button:last-child').onclick = async () => {
-    if (current.field === "vestBit") {
-      await sellVestBit(email, current.amount);
-    } else {
-      await clearBonus(email, current.field);
+    let endpoint = "";
+    let body = { uid };
+
+    switch (current.field) {
+      case "wellecomeBonus":
+        endpoint = "/api/welcome";
+        body.wellecomeBonus = current.amount;
+        break;
+      case "referralBonusLeve1":
+        endpoint = "/api/level1";
+        body.referralBonusLeve1 = current.amount;
+        break;
+      case "referralBonussLeve2":
+        endpoint = "/api/level2";
+        body.referralBonussLeve2 = current.amount;
+        break;
+      case "vestBit":
+        endpoint = "/api/chengevestbit";
+        body.vestBit = current.amount;
+        break;
+      default:
+        return;
     }
-    container.classList.add('hidden');
-    processNotificationQueue(queue, email);
-  };
-};
 
-const clearBonus = async (email, field) => {
-  await fetch("https://vestinoo-project.vercel.app/bonusRe", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
-    body: JSON.stringify({ email, [field]: 0 })
-  });
-};
-
-const sellVestBit = async (email, vestBit) => {
-  await fetch("https://vestinoo-project.vercel.app/api/userUpdate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
-    body: JSON.stringify({ email, vestBit: 0 })
-  });
-};
-
-
-const showNotificationBox = (boxId, name, message, img, amount, callback) => {
-  const box = document.getElementById(boxId);
-  if (!box) return;
-
-  box.innerHTML = `
-    <button class="close-btn">×</button>
-    <h2>${name}, ${message}</h2>
-    <img src="${img}" alt="${message}">
-    <div class="amount">$${amount.toFixed(2)}</div>
-    <button>Clear Bonus </button>
-  `;
-  box.classList.add("visible");
-
-  box.querySelector('.close-btn').onclick = () => box.classList.remove("visible");
-  box.querySelector('button:last-child').onclick = () => { callback(); box.classList.remove("visible"); };
-};
-
-
-
-
-const clearExpiredPackage = async (email, fullName, deposit) => {
-  await fetch("https://vestinoo-project.vercel.app/api/userUpdate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
-    body: JSON.stringify({ email, deposit: 0, dailyProfit: 0, depositTime: null })
-  });
-  showNotification(fullName, "Your package has expired", "end.png", deposit, () => {});
-};
-
-const showClearMineButton = (email, dailyProfit) => {
-  const btn = document.createElement('button');
-  btn.textContent = "Clear Daily Mine";
-  btn.className = 'mine-button';
-  btn.onclick = async () => {
-    await fetch("https://vestinoo-project.vercel.app/api/userUpdate", {
+    await fetch(`https://vestinoo-project.vercel.app${endpoint}`, {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
-      body: JSON.stringify({ email, dailyProfit, lastClaimTime: Date.now() })
+      body: JSON.stringify(body)
     });
-    btn.remove();
-  };
-  mainContent.appendChild(btn);
-};
 
+    container.classList.add('hidden');
+    processNotificationQueue(queue, uid);
+  };
+};
 
 let currentUserEmail = null;
 let currentUserFullName = null;
 let lastSelectedTime = localStorage.getItem('lastSelectedTime') || null;
 let timer;
-
-
 
 const sendVestBitBonus = async (email, bonusAmountValue) => {
   await fetch("https://bonus-gamma.vercel.app/api/vestBit", {
