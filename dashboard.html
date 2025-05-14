@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
 
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
@@ -890,7 +890,15 @@ const plans = [
   { amount: 2, dailyProfit: 0.16, days: 22 }
 ];
 
-const findPlan = (amount) => plans.find(plan => amount >= plan.amount) || null;
+const findPlan = (amount) => {
+  // Find the best plan the user qualifies for
+  for (let i = 0; i < plans.length; i++) {
+    if (amount >= plans[i].amount) {
+      return plans[i];
+    }
+  }
+  return null;
+};
 
 const showLoadingScreen = () => {
   loadingScreen.style.display = 'flex';
@@ -904,85 +912,79 @@ const hideLoadingScreen = () => {
   }, 1500);
 };
 
-
 const updateUI = (userData) => {
   const {
-    deposit, depositTime, dailyProfit: originalDailyProfit, vestBit, userBalance, email, 
-    referralBonusLeve1, referralBonussLeve2, wellecomeBonus,
-    vestinooID, fullName, uid, lastClaimTime
+    deposit, depositTime, dailyProfit: originalDailyProfit, vestBit,
+    userBalance, email, referralBonusLeve1, referralBonussLeve2,
+    wellecomeBonus, vestinooID, fullName, uid, lastClaimTime, createdAt
   } = userData;
 
   const now = Date.now();
   const plan = findPlan(deposit);
+  let dailyProfit = originalDailyProfit || 0;
+  let baseTime = depositTime || createdAt || null;
   let remainingDays = 0;
 
-  if (plan) {
-    remainingDays = Math.max(plan.days - (now - depositTime) / (24 * 60 * 60 * 1000), 0);
+  if (plan && baseTime) {
+    const daysPassed = (now - baseTime) / (1000 * 60 * 60 * 24);
+    remainingDays = Math.max(plan.days - daysPassed, 0);
+    if (remainingDays > 0 && dailyProfit === 0) {
+      dailyProfit = plan.dailyProfit;
+    }
   }
 
-  let dailyProfit = originalDailyProfit || 0;
-  if (plan && remainingDays > 0 && dailyProfit === 0) {
-    dailyProfit = plan.dailyProfit;
-  }
-
-  // Show Mine Button
-  showClearMineButton(uid, dailyProfit, depositTime, lastClaimTime);
-
+  // Filler UI
   daysElement.textContent = `${remainingDays.toFixed(0)} Days`;
   foundElement.textContent = `Found: $${deposit.toFixed(2)}`;
   idElement.textContent = `ID: ${vestinooID}`;
   vestBitElement.textContent = vestBit.toFixed(5);
   mineElement.textContent = `Daily Mine: $${dailyProfit.toFixed(2)}`;
   availableBalanceElement.textContent = `$${userBalance.toFixed(2)}`;
+  
+  
+  // Show Timer only if user has active plan and already mined
+if (plan && lastClaimTime) {
+  const nextMineTime = lastClaimTime + 24 * 60 * 60 * 1000;
+  const timeDiff = nextMineTime - now;
 
-  if (depositTime) {
-    const timerDate = new Date(depositTime + 24 * 60 * 60 * 1000 - now);
+  if (timeDiff > 0) {
+    const timerDate = new Date(timeDiff);
     const hours = timerDate.getUTCHours().toString().padStart(2, '0');
     const minutes = timerDate.getUTCMinutes().toString().padStart(2, '0');
     timerElement.textContent = `${hours}:${minutes}`;
     timerElement.style.display = 'inline-block';
-  } else {
+  } else {    
     timerElement.style.display = 'none';
   }
+} else {  
+  timerElement.style.display = 'none';
+}
 
-  if (plan && remainingDays <= 0) {
-    clearExpiredPackage(uid, fullName, deposit);
+  
+
+  // Show clear mine button
+  showClearMineButton(uid, dailyProfit, baseTime, lastClaimTime);
+
+  // If expired, clear the plan
+  if (plan && baseTime && remainingDays <= 0) {
+    clearExpiredPackage(uid, fullName, deposit, baseTime, plan.dailyProfit);
   }
 
   handleNotifications({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, uid });
 };
 
-const clearExpiredPackage = async (uid, fullName, deposit) => {
+const clearExpiredPackage = async (uid, fullName, deposit, depositTime, dailyProfit) => {
   await fetch("https://vestinoo-project.vercel.app/api/enddays", {
     method: "POST",
-    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
-    body: JSON.stringify({ uid })
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": "@haruna66"
+    },
+    body: JSON.stringify({ uid, deposit, depositTime, dailyProfit })
   });
+
   showNotification(fullName, "Your package has expired", "end.png", deposit, () => {});
 };
-
-const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, uid }) => {
-  const queue = [];
-
-  if (wellecomeBonus > 0) {
-    queue.push({ id: "welcome-notification", name: fullName, message: "clear your Welcome Bonus", img: "bonus.png", amount: wellecomeBonus, field: "wellecomeBonus" });
-  }
-
-  if (referralBonusLeve1 > 0) {
-    queue.push({ id: "ref1-notification", name: fullName, message: "Clear your Level 1 Referral Bonus", img: "level1.png", amount: referralBonusLeve1, field: "referralBonusLeve1" });
-  }
-
-  if (referralBonussLeve2 > 0) {
-    queue.push({ id: "ref2-notification", name: fullName, message: "Clear Your Level 2 Referral Bonus", img: "level2.png", amount: referralBonussLeve2, field: "referralBonussLeve2" });
-  }
-
-  if (vestBit >= 1) {
-    queue.push({ id: "vestbit-notification", name: fullName, message: "You can sell your vestBit coin now", img: "con.png", amount: vestBit, field: "vestBit" });
-  }
-
-  processNotificationQueue(queue, uid);
-};
-
 
 const showClearMineButton = (uid, dailyProfit, depositTime, lastClaimTime) => {
   const now = Date.now();
@@ -1000,15 +1002,68 @@ const showClearMineButton = (uid, dailyProfit, depositTime, lastClaimTime) => {
   btn.onclick = async () => {
     await fetch("https://vestinoo-project.vercel.app/api/dailymine", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "@haruna66"
+      },
       body: JSON.stringify({ uid, dailyProfit })
     });
+
     btn.remove();
   };
 
   document.body.appendChild(btn);
 };
 
+const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, uid }) => {
+  const queue = [];
+
+  if (wellecomeBonus > 0) {
+    queue.push({
+      id: "welcome-notification",
+      name: fullName,
+      message: "Clear your Welcome Bonus",
+      img: "bonus.png",
+      amount: wellecomeBonus,
+      field: "wellecomeBonus"
+    });
+  }
+
+  if (referralBonusLeve1 > 0) {
+    queue.push({
+      id: "ref1-notification",
+      name: fullName,
+      message: "Clear your Level 1 Referral Bonus",
+      img: "level1.png",
+      amount: referralBonusLeve1,
+      field: "referralBonusLeve1"
+    });
+  }
+
+  if (referralBonussLeve2 > 0) {
+    queue.push({
+      id: "ref2-notification",
+      name: fullName,
+      message: "Clear Your Level 2 Referral Bonus",
+      img: "level2.png",
+      amount: referralBonussLeve2,
+      field: "referralBonussLeve2"
+    });
+  }
+
+  if (vestBit >= 1) {
+    queue.push({
+      id: "vestbit-notification",
+      name: fullName,
+      message: "You can sell your vestBit coin now",
+      img: "con.png",
+      amount: vestBit,
+      field: "vestBit"
+    });
+  }
+
+  processNotificationQueue(queue, uid);
+};
 
 const processNotificationQueue = (queue, uid) => {
   if (queue.length === 0) return;
@@ -1058,7 +1113,10 @@ const processNotificationQueue = (queue, uid) => {
 
     await fetch(`https://vestinoo-project.vercel.app${endpoint}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "@haruna66"
+      },
       body: JSON.stringify(body)
     });
 
@@ -1066,6 +1124,10 @@ const processNotificationQueue = (queue, uid) => {
     processNotificationQueue(queue, uid);
   };
 };
+
+
+
+
 
 let currentUserEmail = null;
 let currentUserFullName = null;
