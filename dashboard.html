@@ -1015,6 +1015,7 @@ const showClearMineButton = (uid, dailyProfit, depositTime, lastClaimTime) => {
   document.body.appendChild(btn);
 };
 
+
 const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, uid }) => {
   const queue = [];
 
@@ -1088,42 +1089,53 @@ const processNotificationQueue = (queue, uid) => {
 
   container.querySelector('button:last-child').onclick = async () => {
     let endpoint = "";
-    let body = { uid };
+    let body = {};
 
     switch (current.field) {
       case "wellecomeBonus":
         endpoint = "/api/welcome";
-        body.wellecomeBonus = current.amount;
+        body = { uid, wellecomeBonus: current.amount };
         break;
       case "referralBonusLeve1":
         endpoint = "/api/level1";
-        body.referralBonusLeve1 = current.amount;
+        body = { uid, referralBonusLeve1: current.amount };
         break;
       case "referralBonussLeve2":
         endpoint = "/api/level2";
-        body.referralBonussLeve2 = current.amount;
+        body = { uid, referralBonussLeve2: current.amount };
         break;
       case "vestBit":
         endpoint = "/api/chengevestbit";
-        body.vestBit = current.amount;
+        body = { uid, vestBit: current.amount };
         break;
       default:
+        console.warn("Unknown bonus type");
         return;
     }
 
-    await fetch(`https://vestinoo-project.vercel.app${endpoint}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": "@haruna66"
-      },
-      body: JSON.stringify(body)
-    });
+    try {
+      const res = await fetch(`https://vestinoo-project.vercel.app${endpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "@haruna66"
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Request failed:", res.status, errorText);
+      }
+    } catch (err) {
+      console.error("Fetch error:", err);
+    }
 
     container.classList.add('hidden');
     processNotificationQueue(queue, uid);
   };
 };
+
 
 
 
