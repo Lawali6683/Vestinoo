@@ -507,10 +507,10 @@ const packages = [
 ];
 
 const coins = [
-    { name: "BTC", icon: "b1.png" },
-    { name: "USDT-BEP20", icon: "b2.png" },
-    { name: "USDT-TRC20", icon: "b4.png" },
-    { name: "BNB", icon: "b3.png" }
+    { name: "BTC", coin: "BTC", network: null, icon: "b1.png" },
+    { name: "USDT (BEP20)", coin: "USDT", network: "BEP20", icon: "b2.png" },
+    { name: "USDT (TRC20)", coin: "USDT", network: "TRC20", icon: "b4.png" },
+    { name: "BNB", coin: "BNB", network: null, icon: "b3.png" }
 ];
 
 // Show Coin Modal
@@ -535,7 +535,6 @@ function showCoinModal(pkg) {
 
     coinModal.style.display = "flex";
 }
-
 
 // Render Packages
 function renderPackages() {
@@ -563,8 +562,6 @@ function fetchUserData(uid) {
     });
 }
 
-
-
 // Handle Coin Selection
 async function handleCoinSelection(coin, amount) {
     coinModal.style.display = "none";
@@ -580,25 +577,31 @@ async function handleCoinSelection(coin, amount) {
                 "Content-Type": "application/json",
                 "x-api-key": "@haruna66"
             },
-            body: JSON.stringify({ coin: coin.name, amount: amount, email: email })
+            body: JSON.stringify({
+                email,
+                amount,
+                coin: coin.coin,        // e.g., "USDT"
+                network: coin.network    // e.g., "BEP20" or null
+            })
         });
 
         const data = await res.json();
         hideLoading();
 
         if (data.success) {
-            walletAddress.value = data.walletAddress;
+            walletAddress.value = data.walletAddress || "";
             paymentAmount.textContent = `$${amount}`;
             paymentDescription.textContent = `Copy your ${coin.name} Vestinoo wallet address to deposit $${amount}`;
             paymentModal.style.display = "flex";
         } else {
-            showToast("Failed to process payment. Please try again later.");
+            showToast(data.error || "Failed to process payment. Please try again later.");
         }
     } catch (error) {
         hideLoading();
         showToast("Network error. Please try again later.");
     }
 }
+
 
 // Utilities
 function showLoading() {
