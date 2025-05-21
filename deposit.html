@@ -310,7 +310,11 @@ body {
     transform: translateY(0);
 }
 h1{
-    Font-size: 20px;
+    Font-size: 15px;
+}
+
+h3{
+    Font-size: 15px;
 }
 
 /* Coin Selection Container */
@@ -390,6 +394,29 @@ h1{
       transform: scale(1.1);
       z-index: 2;
     }
+    /* Modern Toast Notification Style */
+#toast-modal.toast {
+     position: fixed;
+     
+            bottom: 30px;
+            right: 30px;
+            background-color: #323232;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(2px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 9999;
+        }
+
+
+/* Toast when visible */
+#toast-modal.show {
+    opacity: 1;
+            transform: translateY(0);
+}
 
     </style>
     
@@ -415,23 +442,22 @@ h1{
                 <p>Found: <span id="userDeposit">$0.00</span></p>
             </div>
         </div>
-<h2><center>
+<h3><center>
 Click on your preferred “Vestinoo Machine” to easily deposit your funds!  
 You have the full right to transfer your funds to your Vestinoo wallet using:  
-<strong>BTC, USDT (BEP20), USDT (TRC20), or BNB</strong>.  
+<strong>BNB (BEP20), USDT (BEP20), USDC (BEP20), or TRX (TRC20)</strong>.  
 
 Take advantage of this opportunity now!
-</center></h2>
+</center></h3>
 <div class="image-row">
-    <img src="b1.png" alt="b1">
-    <img src="b2.png" alt="b2">
-    <img src="b3.png" alt="b3">
-    <img src="b4.png" alt="b4">
+    <img src="bnb.png" alt="b1">
+    <img src="usdt.png" alt="b2">
+    <img src="usdc.png" alt="b3">
+    <img src="trx.png" alt="b4">
   </div>
 
         <!-- Packages -->
-        <div class="package-container" id="packageContainer">
-            <!-- Packages will be dynamically generated -->
+        <div class="package-container" id="packageContainer">           
         </div>
     </div>
 
@@ -440,29 +466,38 @@ Take advantage of this opportunity now!
         <div class="modal-content">
             <button class="close-btn" id="closeCoinModal">✖️</button>
             <h2 style="color:#00ffcc; text-align:center;">Choose a Coin</h2>
-            <div class="coin-container" id="coinContainer">
-                <!-- Coin options will be dynamically generated -->
+            <div class="coin-container" id="coinContainer">              
             </div>
         </div>
     </div>
 
-   <div class="modal" id="paymentModal">
+   <!-- Payment Modal -->
+<div class="modal" id="paymentModal">
     <div class="modal-content">
         <button class="close-btn" id="closePaymentModal">✖️</button>
-        <h2 style="color:#00ffcc; text-align:center;" id="paymentDescription"></h2>
+        
+        <!-- Description of payment -->
+        <h2 style="color:#00ffcc; text-align:center;" id="paymentDescription">Send exactly $0.00 using ...</h2>
+        
+        <!-- Amount to be paid -->
         <p class="deposit-text">Deposit Amount: <span id="paymentAmount">$0.00</span></p>
+        
+        <!-- Wallet address and copy button -->
         <div class="wallet-box">
             <input id="walletAddress" type="text" readonly value="---">
-            <button onclick="copyWalletAddress()">Copy</button>
+            <button id="copyWalletBtn">Copy</button>
         </div>
-        <p class="note">Use the wallet address above to complete your payment.</p>
+        
+        <p class="note">Copy Your Vestinoo Wellet Address to Deposit Your Yunds</p>
     </div>
-    </div>
+</div>
+
+
 
    <!-- Toast Notification -->
 <div id="toast-modal" class="toast hidden">Wallet address copied successfully!</div>
+
 <script type="module">
-  // Firebase Initialization
 import { app } from './firebase.js';
 import {
     getDatabase,
@@ -477,7 +512,6 @@ import {
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// DOM Elements
 const loadingScreen = document.getElementById("loadingScreen");
 const mainContent = document.getElementById("mainContent");
 const packageContainer = document.getElementById("packageContainer");
@@ -486,13 +520,14 @@ const coinContainer = document.getElementById("coinContainer");
 const paymentModal = document.getElementById("paymentModal");
 const walletAddress = document.getElementById("walletAddress");
 const paymentAmount = document.getElementById("paymentAmount");
-const paymentDescription = document.getElementById("paymentDescription"); // Added for wallet message
+const paymentDescription = document.getElementById("paymentDescription");
 const userBalance = document.getElementById("userBalance");
 const userDeposit = document.getElementById("userDeposit");
 const welcomeMessage = document.getElementById("welcomeMessage");
-const toast = document.getElementById("toast"); // Toast notification element
+const toast = document.getElementById("toast-modal");
 
-// Sample Data
+let currentUserData = null;
+
 const packages = [
     { img: "pac1.png", deposit: 2 },
     { img: "pac2.png", deposit: 4 },
@@ -507,13 +542,12 @@ const packages = [
 ];
 
 const coins = [
-    { name: "BTC", coin: "BTC", network: null, icon: "b1.png" },
-    { name: "USDT (BEP20)", coin: "USDT", network: "BEP20", icon: "b2.png" },
-    { name: "USDT (TRC20)", coin: "USDT", network: "TRC20", icon: "b4.png" },
-    { name: "BNB", coin: "BNB", network: null, icon: "b3.png" }
+    { name: "BNB (BEP20)", field: "bnbBep20Address", icon: "bnb.png" },
+    { name: "USDT (BEP20)", field: "usdtBep20Address", icon: "usdt.png" },
+    { name: "USDC (BEP20)", field: "usdcBep20Address", icon: "usdc.png" },
+    { name: "TRX (BEP20)", field: "trxBep20Address", icon: "trx.png" }
 ];
 
-// Show Coin Modal
 function showCoinModal(pkg) {
     const modalHeader = document.createElement("h2");
     modalHeader.style.color = "#00ffcc";
@@ -536,7 +570,6 @@ function showCoinModal(pkg) {
     coinModal.style.display = "flex";
 }
 
-// Render Packages
 function renderPackages() {
     packages.forEach(pkg => {
         const packageDiv = document.createElement("div");
@@ -547,12 +580,12 @@ function renderPackages() {
     });
 }
 
-// Fetch User Data from Firebase
 function fetchUserData(uid) {
     const userRef = ref(db, `users/${uid}`);
     onValue(userRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
+            currentUserData = data;
             userBalance.textContent = `$${data.wallet || "0.00"}`;
             userDeposit.textContent = `$${data.deposit || "0.00"}`;
             welcomeMessage.textContent = data.fullName || "Guest";
@@ -562,48 +595,20 @@ function fetchUserData(uid) {
     });
 }
 
-// Handle Coin Selection
-async function handleCoinSelection(coin, amount) {
+function handleCoinSelection(coin, amount) {
     coinModal.style.display = "none";
     showLoading();
 
-    try {
-        const user = auth.currentUser;
-        const email = user ? user.email : "guest@unknown.com";
-
-        const res = await fetch("https://vestinoo-project.vercel.app/api/payment", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-api-key": "@haruna66"
-            },
-            body: JSON.stringify({
-                email,
-                amount,
-                coin: coin.coin,        // e.g., "USDT"
-                network: coin.network    // e.g., "BEP20" or null
-            })
-        });
-
-        const data = await res.json();
+    setTimeout(() => {
+        const address = currentUserData?.[coin.field] || "Not available";
+        walletAddress.value = address;
+        paymentAmount.textContent = `$${amount}`;
+        paymentDescription.textContent = `Send exactly $${amount} using ${coin.name}`;
+        paymentModal.style.display = "flex";
         hideLoading();
-
-        if (data.success) {
-            walletAddress.value = data.walletAddress || "";
-            paymentAmount.textContent = `$${amount}`;
-            paymentDescription.textContent = `Copy your ${coin.name} Vestinoo wallet address to deposit $${amount}`;
-            paymentModal.style.display = "flex";
-        } else {
-            showToast(data.error || "Failed to process payment. Please try again later.");
-        }
-    } catch (error) {
-        hideLoading();
-        showToast("Network error. Please try again later.");
-    }
+    }, 500);
 }
 
-
-// Utilities
 function showLoading() {
     loadingScreen.style.display = "flex";
 }
@@ -612,56 +617,45 @@ function hideLoading() {
     loadingScreen.style.display = "none";
 }
 
-// Show Toast Notification
 function showToast(message) {
-    const toast = document.getElementById("toast-modal");
-    toast.textContent = message; 
-    toast.classList.remove("hidden"); 
-    toast.classList.add("show"); 
-    
-    // Automatically hide the toast after 3 seconds
+    toast.textContent = message;
+    toast.classList.remove("hidden");
+    toast.classList.add("show");
     setTimeout(() => {
         toast.classList.remove("show");
         toast.classList.add("hidden");
-    }, 10000);
+    }, 3000);
 }
 
-// Example Usage
 function copyWalletAddress() {
     walletAddress.select();
     document.execCommand("copy");
-    showToast("Wallet address copied successfully!"); 
+    showToast("Wallet address copied successfully!");
 }
 
-
-
-// Close Modals
+document.getElementById("copyWalletBtn").addEventListener("click", copyWalletAddress);
 document.getElementById("closeCoinModal").addEventListener("click", () => {
     coinModal.style.display = "none";
 });
-
 document.getElementById("closePaymentModal").addEventListener("click", () => {
     paymentModal.style.display = "none";
 });
 
-// Firebase Authentication State Listener
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        fetchUserData(user.uid); // Load user data if user is authenticated
+        fetchUserData(user.uid);
     } else {
-        welcomeMessage.textContent = "Guest"; // Default message for unauthenticated users
+        welcomeMessage.textContent = "Guest";
     }
-
-    // Render packages regardless of Firebase data loading
     renderPackages();
-
-    // Hide loading screen and show main content
     hideLoading();
     mainContent.style.display = "block";
 });
 
-// Initialize App
 showLoading();
+
+
 </script>
+
 </body>
 </html>
