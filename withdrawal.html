@@ -474,7 +474,7 @@ box-shadow: 0 0 10px #00ffcc;
 
     <script type="module">
   import { app } from './firebase.js';
-  import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
   const auth = getAuth(app);
@@ -490,23 +490,25 @@ box-shadow: 0 0 10px #00ffcc;
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const userRef = ref(db, `users/${user.uid}`);
-      onValue(userRef, (snapshot) => {
+      get(userRef).then((snapshot) => {
         const data = snapshot.val();
         if (data) {
           userBalanceElem.textContent = data.userBalance.toFixed(2);
           fullNameElem.textContent = data.fullName;
         }
       });
-    }
 
-    setTimeout(() => {
-      loadingScreen.style.display = "none";
-      mainContent.classList.remove("hidden");
-    }, 3000);
+      setTimeout(() => {
+        loadingScreen.style.display = "none";
+        mainContent.classList.remove("hidden");
+      }, 3000);
+    }
   });
 
   document.getElementById("withdrawalForm").addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    loadingScreen.style.display = "flex"; // Show loading
 
     const amount = parseFloat(document.getElementById("amount").value);
     const walletAddress = document.getElementById("walletAddress").value.trim();
@@ -514,72 +516,84 @@ box-shadow: 0 0 10px #00ffcc;
     const coin = document.getElementById("coinSelect").value;
 
     const user = auth.currentUser;
-    if (!user) return;
+    if (!user) {
+      showToast("❌Error: Not authenticated.");
+      loadingScreen.style.display = "none";
+      return;
+    }
 
-    const userRef = ref(db, `users/${user.uid}`);
-    onValue(userRef, async (snapshot) => {
+    try {
+      const userRef = ref(db, `users/${user.uid}`);
+      const snapshot = await get(userRef);
       const data = snapshot.val();
 
       if (!coin) {
         showToast("❌Error: Please select a coin.");
+        loadingScreen.style.display = "none";
         return;
       }
 
       if (amount < 1.25) {
         showToast("❌Error: Minimum withdrawal is $1.25");
+        loadingScreen.style.display = "none";
         return;
       }
 
       if (amount > 50) {
         showToast("❌Error: Maximum daily withdrawal is $50");
+        loadingScreen.style.display = "none";
         return;
       }
 
       if (data.userBalance < amount) {
         showToast("❌Error: Insufficient balance");
+        loadingScreen.style.display = "none";
         return;
       }
 
       if (data.pendingWithdrawals) {
         showToast("❌Error: You have a pending withdrawal");
+        loadingScreen.style.display = "none";
         return;
       }
 
       if (password !== data.password) {
         showToast("❌Error: Incorrect password");
+        loadingScreen.style.display = "none";
         return;
       }
 
       const gasFee = amount * 0.06;
       const finalAmount = amount - gasFee;
-      const networkId = "56"; 
+      const networkId = "56";
 
-      try {
-        const response = await fetch("https://vestinoo-project.vercel.app/api/withdraw", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": "@haruna66"
-          },
-          body: JSON.stringify({
-            email: user.email,
-            amount: finalAmount.toFixed(2),
-            walletAddress,
-            coin,
-            networkId,
-            withdrawalTime: new Date().toISOString()
-          })
-        });
+      const response = await fetch("https://vestinoo-project.vercel.app/api/withdraw", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "@haruna66"
+        },
+        body: JSON.stringify({
+          email: user.email,
+          amount: finalAmount.toFixed(2),
+          walletAddress,
+          coin,
+          networkId,
+          withdrawalTime: new Date().toISOString()
+        })
+      });
 
-        if (response.ok) {
-          showToast("✔️Successfully: Your withdrawal has been processed. Please wait for 24 hours.");
-        } else {
-          showToast("❌Error: Failed to process your withdrawal.");
-        }
-      } catch (error) {
-        showToast("❌Error: An unexpected error occurred.");
+      if (response.ok) {
+        showToast("✔️Successfully: Your withdrawal has been processed. Please wait for 24 hours.");
+        document.getElementById("withdrawalForm").reset(); // Clear form
+      } else {
+        showToast("❌Error: Failed to process your withdrawal.");
       }
-    });
+    } catch (error) {
+      showToast("❌Error: An unexpected error occurred.");
+    } finally {
+      loadingScreen.style.display = "none"; // Always hide loading
+    }
   });
 
   function showToast(message) {
@@ -588,6 +602,7 @@ box-shadow: 0 0 10px #00ffcc;
     setTimeout(() => toastElem.classList.remove("show"), 3000);
   }
 </script>
+
 
 </body>
 </html>
