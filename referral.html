@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vestinoo Referral</title>
-    script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
+    
+    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
-
 
     <style>
         body {
@@ -70,25 +70,7 @@ box-shadow: 0 0 10px #00ffcc;
         }
 
       
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: #323232;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            z-index: 9999;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+       
         
          /* Loading Screen */
         .loading-screen {
@@ -283,6 +265,33 @@ box-shadow: 0 0 10px #00ffcc;
       left: 276px;
     }
     
+    .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #323232;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 9999;
+    pointer-events: none; 
+}
+
+.hidden {
+    display: none;
+}
+
+.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
   </style>
 </head>
 <body>
@@ -322,7 +331,7 @@ box-shadow: 0 0 10px #00ffcc;
     <button id="copyReferral">Copy</button>
   </div>
 </div>
-
+  <div id="toast" class="toast hidden">Referral link copied successfully!</div>
 
         <div class="referral-banner">
     <img src="ba2.png" alt="Referral Bonus Banner">
@@ -346,8 +355,8 @@ box-shadow: 0 0 10px #00ffcc;
     <p><strong>Don’t miss this opportunity — build your network and grow your bonuses!</strong></p>
   </div>
 
-        <!-- Toast Notification -->
-        <div id="toast" class="toast hidden">Referral link copied successfully!</div>
+        
+      
     </div>
 
     <script type="module">
