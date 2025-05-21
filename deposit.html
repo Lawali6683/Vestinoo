@@ -438,8 +438,8 @@ h3{
             <img src="banner4.png" alt="Banner">
             
             <div class="banner-content">
-                <p>Wallet: <span id="userBalance">$0.00</span></p>
-                <p>Found: <span id="userDeposit">$0.00</span></p>
+                <p>Wallet: <span id="userBalance"></span></p>
+                <p>Found: <span id="userDeposit"></span></p>
             </div>
         </div>
 <h3><center>
@@ -488,7 +488,7 @@ Take advantage of this opportunity now!
             <button id="copyWalletBtn">Copy</button>
         </div>
         
-        <p class="note">Copy Your Vestinoo Wellet Address to Deposit Your Yunds</p>
+        <p class="note">Copy Your Vestinoo Wellet Address to Deposit Your Founds</p>
     </div>
 </div>
 
@@ -586,7 +586,7 @@ function fetchUserData(uid) {
         const data = snapshot.val();
         if (data) {
             currentUserData = data;
-            userBalance.textContent = `$${data.wallet || "0.00"}`;
+            userBalance.textContent = `$${data.userBalance || "0.00"}`;
             userDeposit.textContent = `$${data.deposit || "0.00"}`;
             welcomeMessage.textContent = data.fullName || "Guest";
         } else {
