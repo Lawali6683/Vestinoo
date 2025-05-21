@@ -649,7 +649,7 @@ box-shadow: 0 0 10px #00ffcc;
 }
 
     button:hover{
-        background-color: #2600ff;
+        background-color: blue;
     }
     
    .amount{
@@ -703,6 +703,13 @@ box-shadow: 0 0 10px #00ffcc;
 .tu{
     font-size: 13px;
 }
+
+.disabled-button {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
   </style>
 </head>
 <body>
@@ -1090,7 +1097,12 @@ const processNotificationQueue = (queue, uid) => {
     processNotificationQueue(queue, uid);
   };
 
-  container.querySelector('button:last-child').onclick = async () => {
+    container.querySelector('button:last-child').onclick = async (e) => {
+    const clearBtn = e.target;
+    clearBtn.disabled = true; // disable button
+    clearBtn.textContent = "Processing...";
+    clearBtn.classList.add("disabled-button"); // optional: CSS style
+
     let endpoint = "";
     let body = {};
 
@@ -1138,10 +1150,6 @@ const processNotificationQueue = (queue, uid) => {
     processNotificationQueue(queue, uid);
   };
 };
-
-
-
-
 
 let lastSelectedTime = localStorage.getItem('lastSelectedTime') || null;
 let timer;
