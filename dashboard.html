@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
+  
   <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
 <script type="text/javascript">
     aclib.runInterstitial({
         zoneId: '9974150',
     });
 </script>
+
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
@@ -1200,15 +1201,16 @@ function startCountdown() {
   clearInterval(timer);
   timer = setInterval(() => {
     const diff = (Date.now() - lastSelectedTime) / 1000;
-    const remaining = 5 * 60 - diff;
+    const remaining = 60 * 60 - diff; // 1 hour
     if (remaining <= 0) {
       clearInterval(timer);
       countdownContainer.classList.add('hidden');
       bonusSection.classList.remove('hidden');
     } else {
-      const m = Math.floor(remaining / 60);
+      const h = Math.floor(remaining / 3600);
+      const m = Math.floor((remaining % 3600) / 60);
       const s = Math.floor(remaining % 60);
-      countdownBtn.textContent = `Wait ${m}m ${s}s`;
+      countdownBtn.textContent = `Wait ${h}h ${m}m ${s}s`;
     }
   }, 1000);
 }
@@ -1217,7 +1219,7 @@ function startCountdown() {
 window.onload = () => {
   if (lastSelectedTime) {
     const diff = (Date.now() - lastSelectedTime) / 1000;
-    if (diff >= 5 * 60) {
+    if (diff >= 60 * 60) { // 1 hour
       bonusSection.classList.remove('hidden');
       countdownContainer.classList.add('hidden');
     } else {
