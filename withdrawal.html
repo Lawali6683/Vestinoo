@@ -201,25 +201,28 @@ box-shadow: 0 0 10px #00ffcc;
             transform: scale(1.05);
         }
 
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: #323232;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            z-index: 9999;
-        }
+      .toast {
+  position: fixed;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%) translateY(20px);
+  background-color: #323232;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 10000;
+  font-size: 16px;
+  pointer-events: none; /* Don't block other elements */
+}
 
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
         
          /* Loading Screen */
         .loading-screen {
@@ -371,6 +374,8 @@ box-shadow: 0 0 10px #00ffcc;
     
 </head>
 <body>
+     <!-- Toast Notification -->
+        <div id="toast" class="toast hidden"></div>
      <!-- Loading Screen -->
     <div id="loadingScreen" class="loading-screen">
         <div class="loading-logo">
@@ -457,8 +462,7 @@ box-shadow: 0 0 10px #00ffcc;
             </form>
         </div>
 
-        <!-- Toast Notification -->
-        <div id="toast" class="toast hidden"></div>
+       
     </div>
 
 
@@ -595,14 +599,19 @@ box-shadow: 0 0 10px #00ffcc;
       loadingScreen.style.display = "none"; // Always hide loading
     }
   });
-
+  
   function showToast(message) {
-    toastElem.textContent = message;
-    toastElem.classList.add("show");
-    setTimeout(() => toastElem.classList.remove("show"), 3000);
-  }
+  toastElem.textContent = message;
+  toastElem.classList.remove("hidden");
+  toastElem.classList.add("show");
+
+  setTimeout(() => {
+    toastElem.classList.remove("show");
+    toastElem.classList.add("hidden");
+  }, 3000);
+}
+
+  
 </script>
-
-
 </body>
 </html>
