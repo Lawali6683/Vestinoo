@@ -24,6 +24,7 @@
     });
 </script>
 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
@@ -336,45 +337,69 @@ background-position: center;
   }
 
 
-  
-  .install-banner {
+  .custom-install-banner {
   position: fixed;
-  top: 0;
-  width: 100%;
-  background-color: #0f2e2e;
+  top: 60px; 
+  left: 20px; 
+  background-color: rgba(15, 46, 46, 0.95);
   color: white;
+  padding: 10px 16px;
+  border-radius: 12px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
+  gap: 12px;
   z-index: 9999;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  font-family: sans-serif;
-  animation: slideDown 0.5s ease-out;
+  box-shadow: 0 4px 12px rgba(0, 255, 213, 0.3);
+  animation: pulse 2s infinite;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.install-banner button {
+.custom-install-banner.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-20px);
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-install-banner .message {
+  font-size: 14px;
+}
+
+.custom-install-banner button {
+  border: none;
   background-color: #00ffd5;
   color: black;
-  border: none;
-  padding: 8px 12px;
-  margin-left: 10px;
-  border-radius: 4px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
-#dismissBtn {
+.custom-install-banner button:hover {
+  background-color: #00c4a7;
+}
+
+.close-btn {
   background: transparent;
-  font-size: 20px;
+  font-size: 18px;
   color: white;
-  padding: 0 10px;
+  padding: 0 5px;
 }
 
-@keyframes slideDown {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(0); }
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 rgba(0, 255, 213, 0.4); }
+  50% { box-shadow: 0 0 15px rgba(0, 255, 213, 0.7); }
+  100% { box-shadow: 0 0 0 rgba(0, 255, 213, 0.4); }
 }
 
+  
 </style>
 
 </head>
@@ -388,10 +413,13 @@ background-position: center;
         <div class="text">Loading Vestinoo...</div>
     </div>
     
-    <div id="installBanner" style="display: none;" class="install-banner">
-  <p>Install Vestinoo app for a better experience.</p>
-  <button id="installBtn">Install Now</button>
-  <button id="dismissBtn" aria-label="Dismiss">×</button>
+    
+<div id="installBanner" class="custom-install-banner hidden">
+  <div class="banner-content">
+    <span class="message">Install Vestinoo app</span>
+    <button id="installBtn">Install</button>
+  </div>
+  <button id="dismissBtn" class="close-btn" aria-label="Dismiss">×</button>
 </div>
 
     
@@ -455,37 +483,45 @@ background-position: center;
         </form>
     </div>
     <script>
-  let deferredPrompt;
-  const banner = document.getElementById('installBanner');
-  const installBtn = document.getElementById('installBtn');
-  const dismissBtn = document.getElementById('dismissBtn');
+        let deferredPrompt;
+const banner = document.getElementById('installBanner');
+const installBtn = document.getElementById('installBtn');
+const dismissBtn = document.getElementById('dismissBtn');
 
-  window.addEventListener('beforeinstallprompt', (e) => {
-    // Tsaida default prompt din browser
-    e.preventDefault();
-    deferredPrompt = e;
-    // Nuna custom banner
-    banner.style.display = 'flex';
-  });
+// Show banner after delay (e.g. 3 seconds)
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    banner.classList.remove('hidden');
+  }, 100);
+});
 
-  installBtn.addEventListener('click', async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        console.log('User accepted the install prompt');
-      } else {
-        console.log('User dismissed the install prompt');
-      }
-      deferredPrompt = null;
-      banner.style.display = 'none';
+// Store prompt event
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+// On click install
+installBtn.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('User accepted the install prompt');
+    } else {
+      console.log('User dismissed the install prompt');
     }
-  });
+    deferredPrompt = null;
+  }
+  banner.classList.add('hidden');
+});
 
-  dismissBtn.addEventListener('click', () => {
-    banner.style.display = 'none';
-  });
-</script>
+// On click close
+dismissBtn.addEventListener('click', () => {
+  banner.classList.add('hidden');
+});
+
+    </script>
 <script>
 function togglePassword(fieldId) {
     const field = document.getElementById(fieldId);
