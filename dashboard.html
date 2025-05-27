@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  
+ 
   <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
 <script type="text/javascript">
     aclib.runInterstitial({
@@ -19,6 +19,8 @@
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
+ 
 
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
@@ -295,7 +297,7 @@ box-shadow: 0 0 10px #00ffcc;
 
 .vestbit-info {
     position: absolute;
-    top: 90px;
+    top: 60px;
     left: 50px;
     z-index: 99;
 
@@ -331,12 +333,10 @@ box-shadow: 0 0 10px #00ffcc;
 }
 
 
-
-
- .menu-button {
+  .menu-button {
       position: absolute; 
-      top: 20px;
-      left: 20px;
+      top: 10px;
+      Left: 10px;
       background: #4f46e5;
       color: #fff;
       font-size: 22px;
@@ -350,6 +350,11 @@ box-shadow: 0 0 10px #00ffcc;
       box-shadow: 0 0 10px #00ffcc;
     }
 
+    .menu-button:hover {
+      background: #4338ca;
+    }
+
+ 
    /* Menu container */
     .menu-container {
       position: absolute;
@@ -664,29 +669,64 @@ box-shadow: 0 0 10px #00ffcc;
        font-size: 20px;
    }
    
-   .mine-button {
+ .mine-button {
   position: fixed;
-  top: 210px;
+  top: 280px;
   left: 20px;
-  z-index: 9999;
+  z-index: 99;
   background: linear-gradient(135deg, #FFD700, #FFB800);
   color: #000;
   font-weight: bold;
-  padding: 14px 24px;
-  border: none;
+  padding: 8px 16px;
+  border: 2px solid #00ffcc;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  font-size: 16px;
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+  font-size: 20px;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  animation: slideIn 0.5s ease forwards;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  animation: slideIn 0.5s ease forwards, pulse 2s infinite ease-in-out;
+  position: fixed;
 }
 
+/* Button hover */
 .mine-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  transform: scale(1.1);
+  box-shadow: 
+    0 0 10px #00ffcc, 
+    0 0 20px #00ffcc, 
+    0 0 30px #00ffcc, 
+    0 0 40px #00ffcc;
+  animation: pulseHover 1.5s infinite ease-in-out;
+  position: fixed;
 }
 
+/* Tooltip text on hover */
+.mine-button:hover::after {
+  content: "Click me now!";
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #00ffcc;
+  color: #0f2e2e;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #00ffcc;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+/* Initial tooltip hidden */
+.mine-button::after {
+  opacity: 0;
+}
+
+/* Slide in animation for the button */
 @keyframes slideIn {
   from {
     transform: translateY(-30px);
@@ -698,18 +738,50 @@ box-shadow: 0 0 10px #00ffcc;
   }
 }
 
+/* Pulse animation (normal) */
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 255, 204, 1);
+  }
+}
+
+/* Stronger pulse on hover */
+@keyframes pulseHover {
+  0%, 100% {
+    box-shadow: 
+      0 0 10px #00ffcc, 
+      0 0 20px #00ffcc, 
+      0 0 30px #00ffcc, 
+      0 0 40px #00ffcc;
+  }
+  50% {
+    box-shadow: 
+      0 0 15px #00ffe0, 
+      0 0 25px #00ffe0, 
+      0 0 40px #00ffe0, 
+      0 0 50px #00ffe0;
+  }
+}
+
 @media (max-width: 600px) {
   .mine-button {
     left: 10px;
     right: 10px;
     width: calc(100% - 20px);
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
-.tu{
-    font-size: 13px;
+
+.tu {
+  position: absolute;
+    top: 28px;           
+     font-size: 13px;     
+  
 }
 
 .disabled-button {
@@ -717,6 +789,23 @@ box-shadow: 0 0 10px #00ffcc;
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.gima {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #ffffff;
+  gap: 2px; 
+}
+
+.vestbit-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
 
   </style>
 </head>
@@ -763,8 +852,10 @@ box-shadow: 0 0 10px #00ffcc;
 
            <!-- VestBit Info -->
 <div class="vestbit-info">
-    <p class="gima">VestBit: <span class="gima2">0.00000</span></p>
-    <p class="tu">Price: $1.00 Mine free views</p>
+  <p class="gima">
+  <img class="vestbit-icon" src="con.png" alt="VestBit" />
+  VestBit:  <span class="gima2">0.00000</span>
+    <p class="tu">Price: $1.00 Mine free views</p></p>
 </div>
 
             <!-- Mine Info -->
@@ -1006,32 +1097,46 @@ const clearExpiredPackage = async (uid, fullName, deposit, depositTime, dailyPro
 
 const showClearMineButton = (uid, dailyProfit, depositTime, lastClaimTime) => {
   const now = Date.now();
-  const nextClaimTime = (lastClaimTime || depositTime) + 24 * 60 * 60 * 1000;
 
-  if (now < nextClaimTime || dailyProfit <= 0) return;
+  // Kada a nuna button idan babu depositTime (saboda babu plan)
+  if (!depositTime || dailyProfit <= 0) return;
 
+  const canClaim = !lastClaimTime || now >= (lastClaimTime + 24 * 60 * 60 * 1000);
+
+  if (!canClaim) return;
+
+  
   const existingBtn = document.querySelector('.mine-button');
   if (existingBtn) existingBtn.remove();
 
+  // Ƙirƙiri sabon button
   const btn = document.createElement('button');
-  btn.textContent = `🪙 Get Your Daily Mine: $${dailyProfit.toFixed(2)}`;
+ btn.textContent = `💰Get Your Daily Mine: $${dailyProfit.toFixed(2)}✔️`;
   btn.className = 'mine-button fixed top-5 left-5 p-2 bg-yellow-400 text-black rounded-lg shadow-md z-50';
 
   btn.onclick = async () => {
-    await fetch("https://vestinoo-project.vercel.app/api/dailymine", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": "@haruna66"
-      },
-      body: JSON.stringify({ uid, dailyProfit })
-    });
+    try {
+      const res = await fetch("https://vestinoo-project.vercel.app/api/dailymine", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "@haruna66"
+        },
+        body: JSON.stringify({ uid, dailyProfit })
+      });
 
-    btn.remove();
+      if (!res.ok) throw new Error("Mining failed");
+
+      btn.remove(); // cire button bayan an danna
+    } catch (error) {
+      console.error("Mining Error:", error);
+      
+    }
   };
 
   document.body.appendChild(btn);
 };
+
 
 
 const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, uid }) => {
