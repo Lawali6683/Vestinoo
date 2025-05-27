@@ -806,6 +806,73 @@ box-shadow: 0 0 10px #00ffcc;
   vertical-align: middle;
 }
 
+  .notification-box1 {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #0f2e2e;
+      color: #ffffff;
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+      z-index: 9999;
+      width: 300px;
+      display: none;
+      animation: slideIn 0.4s ease;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+    }
+
+    .notification-box1 h2 {
+      font-size: 19px;
+      margin: 10px 0;
+    }
+
+    .notification-box1 p {
+      font-size: 19px;
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+    .notification-box1 img {
+      width: 80%;
+      border-radius: 6px;
+      margin: 10px 0;
+    }
+
+    .notification-box1 button.cta {
+      background-color: #00ffcc;
+      color: #0f2e2e;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+      margin-top: 8px;
+    }
+
+    .notification-box1 button.cta:hover {
+      background-color: #2600ff;
+      color: white;
+    }
+
+    .close-btn1 {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #00ffcc;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
 
   </style>
 </head>
@@ -825,19 +892,22 @@ box-shadow: 0 0 10px #00ffcc;
     <div class="menu-button" id="openMenu"><i class="fas fa-bars"></i></div>
 
     <!-- Menu Container -->
-    <div class="menu-container" id="menuContainer">
-      <div class="menu-header">
-        <span>Menu</span>
-        <i class="fas fa-times" id="closeMenu"></i>
-      </div>
-      <ul class="menu-list">
-        <li><a href="homepage.html"><i class="fas fa-home"></i> Home Page</a></li>
-        <li><a href="contact.html"><i class="fas fa-envelope"></i> Support</a></li>
-        <li><a href="referral.html"><i class="fas fa-user-friends"></i> Referrals</a></li>
-        <li><a href="payment.html"><i class="fas fa-arrow-up"></i> Withdrawal</a></li>
-        <li><a href="deposit.html"><i class="fas fa-arrow-down"></i> Deposit</a></li>
-      </ul>
-    </div>
+<div class="menu-container" id="menuContainer">
+  <div class="menu-header">
+    <span>Menu</span>
+    <i class="fas fa-times" id="closeMenu"></i>
+  </div>
+  <ul class="menu-list">
+    <li><a href="homepage.html"><i class="fas fa-home"></i> Home Page</a></li>
+    <li><a href="contact.html"><i class="fas fa-envelope"></i> Support</a></li>
+    <li><a href="referral.html"><i class="fas fa-user-friends"></i> Referrals</a></li>
+    <li><a href="payment.html"><i class="fas fa-arrow-up"></i> Withdrawal</a></li>
+    <li><a href="deposit.html"><i class="fas fa-arrow-down"></i> Deposit</a></li>
+    <li><a href="task.html"><i class="fas fa-gift"></i> Earn Dollars Tasks</a></li>
+    <li><a href="learn.html"><i class="fas fa-book-open"></i> Learn How to Use This App</a></li>
+  </ul>
+</div>
+
 
      <!-- Banner Section -->
         <div class="banner">
@@ -918,7 +988,13 @@ box-shadow: 0 0 10px #00ffcc;
   <div id="vestbit-notification" class="notification hidden"></div>
 </div>
 
-    
+     <div id="adBox" class="notification-box1">
+    <button class="close-btn1" id="closeAd">&#10006;</button>
+    <h2 id="adTitle">Title Here</h2>
+    <img id="adImage" src="" alt="Ad Image" />
+    <p id="adText">Text Here</p>
+    <button class="cta" id="adButton">Click & Earn Over $5</button>
+  </div>
 
     <!-- Footer -->
     <footer>
@@ -931,6 +1007,75 @@ box-shadow: 0 0 10px #00ffcc;
 
   </div>
 
+
+<script>
+    const adBox = document.getElementById("adBox");
+    const closeBtn = document.getElementById("closeAd");
+    const adTitle = document.getElementById("adTitle");
+    const adText = document.getElementById("adText");
+    const adImage = document.getElementById("adImage");
+    const adButton = document.getElementById("adButton");
+
+   const ads = [
+  {
+    title: "Make Over $5 Daily — No Experience Needed!",
+    text: "Vestinoo lets you earn daily by watching videos, visiting websites, completing surveys, and testing simple apps. It’s real, easy, and works from your phone or laptop. Why not try it today?",
+    image: "/ad1.png",
+    link: "task.html"
+  },
+  {
+    title: "Yes, People Are Really Getting Paid!",
+    text: "Thousands of users are earning money daily on Vestinoo just by completing simple tasks. Don’t take our word for it — test a few offers yourself and see real results in your wallet!",
+    image: "/ad2.png",
+    link: "task.html"
+  },
+  {
+    title: "Turn Your Free Time Into Real Cash!",
+    text: "Stop scrolling and start earning! Vestinoo turns your free minutes into dollars by letting you explore offers, test games, and watch short videos — all paying into your wallet directly.",
+    image: "/ad3.png",
+    link: "task.html"
+  }
+];
+
+
+    let currentAd = 0;
+    const adInterval = 60 * 1000; // 1 minute
+    const adBoxDelay = () => {
+      const lastTime = parseInt(localStorage.getItem("lastAdDismissed") || "0");
+      return Date.now() - lastTime >= adInterval;
+    };
+
+    const showAd = () => {
+      const ad = ads[currentAd];
+      adTitle.textContent = ad.title;
+      adText.textContent = ad.text;
+      adImage.src = ad.image;
+      adButton.onclick = () => window.location.href = ad.link;
+      adBox.style.display = "block";
+    };
+
+    const hideAd = () => {
+      adBox.style.display = "none";
+      localStorage.setItem("lastAdDismissed", Date.now().toString());
+    };
+
+    closeBtn.addEventListener("click", () => {
+      hideAd();
+    });
+
+    setTimeout(() => {
+      if (document.hasFocus() && adBoxDelay()) {
+        showAd();
+      }
+
+      setInterval(() => {
+        if (document.hasFocus() && adBoxDelay()) {
+          currentAd = (currentAd + 1) % ads.length;
+          showAd();
+        }
+      }, adInterval);
+    }, adInterval);
+  </script>
   <!-- Menu Script -->
   <script>
     document.getElementById('openMenu').onclick = () => {
@@ -941,7 +1086,6 @@ box-shadow: 0 0 10px #00ffcc;
     };
   </script>
   
-
 <script type="module">
 import { app } from './firebase.js';
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
