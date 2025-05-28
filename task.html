@@ -6,7 +6,8 @@
   <title>Vestinoo Offers</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Segoe+UI:400,700&display=swap">
   
-  <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
+  
+ <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
 <script type="text/javascript">
     aclib.runInterstitial({
         zoneId: '9974150',
@@ -19,7 +20,6 @@
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
- 
   
   <style>
     /* Body */
@@ -444,26 +444,25 @@
 
   
 <script type="module">
-    // Vestinoo AdGem Offers Page - JavaScript Full Code
+// Vestinoo AdGem Offers Page - Cleaned & Fixed Code
 
 import { app } from './firebase.js';
-import {
-  getDatabase,
-  ref,
-  onValue
-} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
-import {
-  getAuth,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 const auth = getAuth(app);
 const db = getDatabase(app);
 
+// Elements
 const userBalanceEl = document.getElementById('userBalance');
 const userDepositEl = document.getElementById('userDeposit');
 const welcomeMessageEl = document.getElementById('welcomeMessage');
 const loadingScreen = document.getElementById('loadingScreen');
+const referralLinkInput = document.getElementById("referralLink");
+const copyBtn = document.getElementById("copyReferralBtn");
+const copyNotif = document.getElementById("copyNotif");
+const claimBonusBtn = document.getElementById("claimTaskBonusBtn");
+const closeTaskBonusBtn = document.getElementById("closeTaskBonusBtn");
 
 const containers = {
   video: document.getElementById('videoOffers'),
@@ -474,36 +473,14 @@ const containers = {
 
 const SEEN_OFFERS_KEY = 'seenAdgemOffers';
 const SEEN_TIME_KEY = 'seenOffersTime';
-
 let currentUser = null;
 
-function saveOffersLocally(offers) {
-  localStorage.setItem(SEEN_OFFERS_KEY, JSON.stringify(offers));
-  localStorage.setItem(SEEN_TIME_KEY, Date.now());
-}
+// Helpers
+const showLoading = (state) => loadingScreen.style.display = state ? 'flex' : 'none';
 
-function getSavedOffers() {
-  const data = localStorage.getItem(SEEN_OFFERS_KEY);
-  const time = localStorage.getItem(SEEN_TIME_KEY);
-  return { offers: data ? JSON.parse(data) : null, time: time ? parseInt(time) : null };
-}
+const formatAmount = (amount) => `$${(parseFloat(amount) * 0.5).toFixed(2)}`;
 
-function shouldFetchOffers() {
-  const { time } = getSavedOffers();
-  if (!time) return true;
-  const now = Date.now();
-  return (now - time) > 24 * 60 * 60 * 1000;
-}
-
-function showLoading(state) {
-  loadingScreen.style.display = state ? 'flex' : 'none';
-}
-
-function formatAmount(amount) {
-  return `$${(parseFloat(amount) * 0.5).toFixed(2)}`;
-}
-
-function renderOffer(offer) {
+const renderOffer = (offer) => {
   const el = document.createElement('div');
   el.className = 'offer-card';
   el.innerHTML = `
@@ -514,27 +491,21 @@ function renderOffer(offer) {
       <span class="amount">Earn ${formatAmount(offer.payout)}</span>
     </div>
   `;
-  el.onclick = () => {
-    window.open(offer.offer_url, '_blank');
-  };
+  el.onclick = () => window.open(offer.offer_url, '_blank');
   return el;
-}
+};
 
-function clearContainers() {
-  Object.values(containers).forEach(c => c.innerHTML = '');
-}
+const clearContainers = () => Object.values(containers).forEach(c => c.innerHTML = '');
 
-function categorizeAndRenderOffers(offers) {
+const categorizeAndRenderOffers = (offers) => {
   clearContainers();
   let has = { video: false, website: false, app: false, survey: false };
 
   offers.forEach(offer => {
-    const category = offer.platform || 'app';
-    let target;
+    let target = 'app';
     if (/video/i.test(offer.name)) target = 'video';
     else if (/website/i.test(offer.name)) target = 'website';
     else if (/survey/i.test(offer.name)) target = 'survey';
-    else target = 'app';
 
     containers[target].appendChild(renderOffer(offer));
     has[target] = true;
@@ -543,9 +514,25 @@ function categorizeAndRenderOffers(offers) {
   for (const key in has) {
     containers[key].parentElement.style.display = has[key] ? 'block' : 'none';
   }
-}
+};
 
-async function fetchOffersFromBackend(email) {
+const saveOffersLocally = (offers) => {
+  localStorage.setItem(SEEN_OFFERS_KEY, JSON.stringify(offers));
+  localStorage.setItem(SEEN_TIME_KEY, Date.now());
+};
+
+const getSavedOffers = () => {
+  const data = localStorage.getItem(SEEN_OFFERS_KEY);
+  const time = parseInt(localStorage.getItem(SEEN_TIME_KEY) || '0');
+  return { offers: data ? JSON.parse(data) : null, time };
+};
+
+const shouldFetchOffers = () => {
+  const { time } = getSavedOffers();
+  return !time || (Date.now() - time > 24 * 60 * 60 * 1000);
+};
+
+const fetchOffersFromBackend = async (email) => {
   try {
     showLoading(true);
     const res = await fetch("https://vestinoo-project.vercel.app/api/adgem-offers", {
@@ -559,37 +546,14 @@ async function fetchOffersFromBackend(email) {
     const data = await res.json();
     saveOffersLocally(data);
     categorizeAndRenderOffers(data);
-  } catch (error) {
-    console.error('Error fetching offers:', error);
+  } catch (err) {
+    console.error("Offer Fetch Error:", err);
   } finally {
     showLoading(false);
   }
-}
+};
 
-function showTaskBonusNotification(amount) {
-  const notifBox = document.getElementById("taskBonusNotification");
-  const amountEl = document.getElementById("taskBonusAmount");
-  amountEl.textContent = `$${parseFloat(amount).toFixed(2)}`;
-  notifBox.style.display = "block";
-}
-
-function hideTaskBonus() {
-  document.getElementById("taskBonusNotification").style.display = "none";
-}
-
-function disableButton(btn) {
-  btn.disabled = true;
-  btn.style.opacity = "0.5";
-  btn.innerText = "Processing...";
-}
-
-function enableButton(btn) {
-  btn.disabled = false;
-  btn.style.opacity = "1";
-  btn.innerText = "Clear Your Bonus";
-}
-
-function sendTaskBonusData({ email, taskBonus, referralBy, level2ReferralBy, userCode }) {
+const sendTaskBonusData = ({ email, taskBonus, referralBy, level2ReferralBy, userCode }) => {
   return fetch("https://vestinoo-project.vercel.app/api/tacksBonus", {
     method: "POST",
     headers: {
@@ -604,15 +568,96 @@ function sendTaskBonusData({ email, taskBonus, referralBy, level2ReferralBy, use
       code: userCode || ''
     })
   });
-}
+};
 
+const showTaskBonusNotification = (amount) => {
+  document.getElementById("taskBonusAmount").textContent = `$${parseFloat(amount).toFixed(2)}`;
+  document.getElementById("taskBonusNotification").style.display = "block";
+};
 
-   
+const hideTaskBonus = () => {
+  document.getElementById("taskBonusNotification").style.display = "none";
+};
 
-const referralLinkInput = document.getElementById("referralLink");
-const copyBtn = document.getElementById("copyReferralBtn");
-const copyNotif = document.getElementById("copyNotif");
+const disableButton = (btn) => {
+  btn.disabled = true;
+  btn.style.opacity = "0.5";
+  btn.innerText = "Processing...";
+};
 
+const enableButton = (btn) => {
+  btn.disabled = false;
+  btn.style.opacity = "1";
+  btn.innerText = "Clear Your Bonus";
+};
+
+// Auth Flow
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    alert("User not authenticated.");
+    window.location.href = "/login.html";
+    return;
+  }
+
+  const uid = user.uid;
+  const userRef = ref(db, 'users/' + uid);
+
+  onValue(userRef, async snapshot => {
+    const userData = snapshot.val();
+    if (!userData) return;
+
+    currentUser = userData;
+    welcomeMessageEl.textContent = userData.fullName || '';
+    userBalanceEl.textContent = `$${(userData.userBalance || 0).toFixed(2)}`;
+    userDepositEl.textContent = `$${(userData.deposit || 0).toFixed(2)}`;
+    referralLinkInput.value = userData.referralLink || "Referral link not found.";
+
+    if (shouldFetchOffers()) {
+      await fetchOffersFromBackend(userData.email);
+    } else {
+      const { offers } = getSavedOffers();
+      if (offers) categorizeAndRenderOffers(offers);
+    }
+
+    const taskBonus = parseFloat(userData.taskBonus || 0);
+    if (taskBonus > 0) showTaskBonusNotification(taskBonus);
+  });
+});
+
+// Bonus Button Handler
+claimBonusBtn.addEventListener("click", async () => {
+  if (!currentUser) return;
+  const btn = claimBonusBtn;
+  disableButton(btn);
+
+  const taskBonus = parseFloat(currentUser.taskBonus || 0);
+  if (taskBonus <= 0) {
+    enableButton(btn);
+    return;
+  }
+
+  try {
+    const res = await sendTaskBonusData({
+      email: currentUser.email,
+      taskBonus,
+      referralBy: currentUser.referralBy || '',
+      level2ReferralBy: currentUser.level2ReferralBy || '',
+      userCode: currentUser.code || ''
+    });
+
+    if (res.ok) {
+      hideTaskBonus();
+    } else {
+      console.error("Bonus claim failed.");
+    }
+  } catch (err) {
+    console.error("Bonus request error:", err);
+  } finally {
+    enableButton(btn);
+  }
+});
+
+// Copy Referral Link
 copyBtn.addEventListener("click", () => {
   referralLinkInput.select();
   referralLinkInput.setSelectionRange(0, 99999);
@@ -626,85 +671,16 @@ copyBtn.addEventListener("click", () => {
   }, 2900);
 });
 
-onAuthStateChanged(auth, user => {
-  if (user) {
-    const uid = user.uid;
-    const userRef = ref(db, 'users/' + uid);
+// Close Bonus Notification
+if (closeTaskBonusBtn) {
+  closeTaskBonusBtn.addEventListener("click", hideTaskBonus);
+}
 
-    onValue(userRef, snapshot => {
-      const userData = snapshot.val();
-      if (!userData) return;
-
-      // ✅ Use referralLink from database directly
-      if (userData.referralLink) {
-        referralLinkInput.value = userData.referralLink;
-      } else {
-        referralLinkInput.value = "Referral link not found.";
-      }
-
-      userBalanceEl.textContent = `$${(userData.userBalance || 0).toFixed(2)}`;
-      userDepositEl.textContent = `$${(userData.deposit || 0).toFixed(2)}`;
-      welcomeMessageEl.textContent = userData.fullName || '';
-      currentUser = userData;
-
-      const taskBonus = parseFloat(userData.taskBonus || 0);
-      if (taskBonus > 0) {
-        showTaskBonusNotification(taskBonus);
-      }
-
-      
-      // Bonus Button Listener
-      document.getElementById("claimTaskBonusBtn").addEventListener("click", async () => {
-        const btn = document.getElementById("claimTaskBonusBtn");
-        disableButton(btn);
-
-        const taskBonus = parseFloat(currentUser.taskBonus || 0);
-        if (taskBonus <= 0) {
-          enableButton(btn);
-          return;
-        }
-
-        try {
-          const response = await sendTaskBonusData({
-            email: currentUser.email,
-            taskBonus,
-            referralBy: currentUser.referralBy || '',
-            level2ReferralBy: currentUser.level2ReferralBy || '',
-            userCode: currentUser.code || ''
-          });
-
-          if (response.ok) {
-            hideTaskBonus();
-          } else {
-            console.error('Failed to clear bonus');
-            enableButton(btn);
-          }
-        } catch (error) {
-          console.error("Error sending task bonus:", error);
-          enableButton(btn);
-        }
-      });
-
-    });
-
-  } else {
-    alert('User not authenticated');
-    window.location.href = '/login.html';
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const closeBtn = document.getElementById("closeTaskBonusBtn");
-  if (closeBtn) {
-    closeBtn.addEventListener("click", hideTaskBonus);
-  }
-});
-
+// Fallback loading timeout
 setTimeout(() => {
   showLoading(false);
-}, 20000);
+}, 10000);
+</script>
 
-
-    </script>
 </body>
 </html>
