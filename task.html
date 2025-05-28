@@ -444,8 +444,6 @@
 
   
 <script type="module">
-// Vestinoo AdGem Offers Page - Cleaned & Fixed Code
-
 import { app } from './firebase.js';
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
@@ -532,7 +530,8 @@ const shouldFetchOffers = () => {
   return !time || (Date.now() - time > 24 * 60 * 60 * 1000);
 };
 
-const fetchOffersFromBackend = async (email) => {
+// ✅ Yanzu ana amfani da UID a nan
+const fetchOffersFromBackend = async (uid) => {
   try {
     showLoading(true);
     const res = await fetch("https://vestinoo-project.vercel.app/api/adgem-offers", {
@@ -541,7 +540,7 @@ const fetchOffersFromBackend = async (email) => {
         'Content-Type': 'application/json',
         'x-api-key': '@haruna66'
       },
-      body: JSON.stringify({ email })
+      body: JSON.stringify({ uid })
     });
     const data = await res.json();
     saveOffersLocally(data);
@@ -613,7 +612,7 @@ onAuthStateChanged(auth, user => {
     referralLinkInput.value = userData.referralLink || "Referral link not found.";
 
     if (shouldFetchOffers()) {
-      await fetchOffersFromBackend(userData.email);
+      await fetchOffersFromBackend(uid); // 🆗 an tura UID maimakon email
     } else {
       const { offers } = getSavedOffers();
       if (offers) categorizeAndRenderOffers(offers);
@@ -681,6 +680,7 @@ setTimeout(() => {
   showLoading(false);
 }, 10000);
 </script>
+
 
 </body>
 </html>
