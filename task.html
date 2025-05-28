@@ -6,8 +6,7 @@
   <title>Vestinoo Offers</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Segoe+UI:400,700&display=swap">
   
-  
- <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
+  <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
 <script type="text/javascript">
     aclib.runInterstitial({
         zoneId: '9974150',
@@ -20,6 +19,9 @@
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+ 
+ 
+ 
   
   <style>
     /* Body */
@@ -230,8 +232,8 @@
 }
 
 .notification-box img {
-  width: 80%;
-  height: 80%;
+  width: 50%;
+  height: 50%;
   border-radius: 6px;
   margin: 10px 0;
 }
@@ -438,7 +440,7 @@
   <h2>🎉 Congratulations!</h2>
   <p>You completed an offer task and earned:</p>
   <div class="amount" id="taskBonusAmount"></div>
-  <img src="end.png" alt="Bonus Task">
+  <center><img src="end.png" alt="Bonus Task"></center>
   <button id="claimTaskBonusBtn">Clear Your Bonus</button>
 </div>
 
@@ -675,12 +677,6 @@ if (closeTaskBonusBtn) {
   closeTaskBonusBtn.addEventListener("click", hideTaskBonus);
 }
 
-// Fallback loading timeout
-setTimeout(() => {
-  showLoading(false);
-}, 10000);
 </script>
-
-
 </body>
 </html>
