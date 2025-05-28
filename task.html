@@ -444,7 +444,6 @@
   <button id="claimTaskBonusBtn">Clear Your Bonus</button>
 </div>
 
-  
 <script type="module">
 import { app } from './firebase.js';
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
@@ -454,10 +453,10 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 
 // Elements
+const loadingScreen = document.getElementById('loadingScreen');
 const userBalanceEl = document.getElementById('userBalance');
 const userDepositEl = document.getElementById('userDeposit');
 const welcomeMessageEl = document.getElementById('welcomeMessage');
-const loadingScreen = document.getElementById('loadingScreen');
 const referralLinkInput = document.getElementById("referralLink");
 const copyBtn = document.getElementById("copyReferralBtn");
 const copyNotif = document.getElementById("copyNotif");
@@ -471,11 +470,10 @@ const containers = {
   survey: document.getElementById('surveyOffers')
 };
 
+let currentUser = null;
 const SEEN_OFFERS_KEY = 'seenAdgemOffers';
 const SEEN_TIME_KEY = 'seenOffersTime';
-let currentUser = null;
 
-// Helpers
 const showLoading = (state) => loadingScreen.style.display = state ? 'flex' : 'none';
 
 const formatAmount = (amount) => `$${(parseFloat(amount) * 0.5).toFixed(2)}`;
@@ -532,10 +530,8 @@ const shouldFetchOffers = () => {
   return !time || (Date.now() - time > 24 * 60 * 60 * 1000);
 };
 
-// ✅ Yanzu ana amfani da UID a nan
 const fetchOffersFromBackend = async (uid) => {
   try {
-    showLoading(true);
     const res = await fetch("https://vestinoo-project.vercel.app/api/adgem-offers", {
       method: 'POST',
       headers: {
@@ -548,9 +544,7 @@ const fetchOffersFromBackend = async (uid) => {
     saveOffersLocally(data);
     categorizeAndRenderOffers(data);
   } catch (err) {
-    console.error("Offer Fetch Error:", err);
-  } finally {
-    showLoading(false);
+    console.error("❌ Offer Fetch Error:", err);
   }
 };
 
@@ -592,8 +586,9 @@ const enableButton = (btn) => {
   btn.innerText = "Clear Your Bonus";
 };
 
-// Auth Flow
-onAuthStateChanged(auth, user => {
+// ✅ MAIN LOADING FLOW
+onAuthStateChanged(auth, (user) => {
+  showLoading(true);
   if (!user) {
     alert("User not authenticated.");
     window.location.href = "/login.html";
@@ -603,9 +598,13 @@ onAuthStateChanged(auth, user => {
   const uid = user.uid;
   const userRef = ref(db, 'users/' + uid);
 
-  onValue(userRef, async snapshot => {
+  onValue(userRef, async (snapshot) => {
     const userData = snapshot.val();
-    if (!userData) return;
+    if (!userData) {
+      console.warn("User data not found.");
+      showLoading(false);
+      return;
+    }
 
     currentUser = userData;
     welcomeMessageEl.textContent = userData.fullName || '';
@@ -613,27 +612,33 @@ onAuthStateChanged(auth, user => {
     userDepositEl.textContent = `$${(userData.deposit || 0).toFixed(2)}`;
     referralLinkInput.value = userData.referralLink || "Referral link not found.";
 
+    // ✅ Offer Request
     if (shouldFetchOffers()) {
-      await fetchOffersFromBackend(uid); // 🆗 an tura UID maimakon email
+      await fetchOffersFromBackend(uid);
     } else {
       const { offers } = getSavedOffers();
       if (offers) categorizeAndRenderOffers(offers);
     }
 
+    // ✅ Bonus Notification
     const taskBonus = parseFloat(userData.taskBonus || 0);
     if (taskBonus > 0) showTaskBonusNotification(taskBonus);
+
+    showLoading(false);
+  }, (error) => {
+    console.error("User data fetch error:", error);
+    showLoading(false);
   });
 });
 
-// Bonus Button Handler
+// Bonus Button
 claimBonusBtn.addEventListener("click", async () => {
   if (!currentUser) return;
-  const btn = claimBonusBtn;
-  disableButton(btn);
+  disableButton(claimBonusBtn);
 
   const taskBonus = parseFloat(currentUser.taskBonus || 0);
   if (taskBonus <= 0) {
-    enableButton(btn);
+    enableButton(claimBonusBtn);
     return;
   }
 
@@ -649,12 +654,12 @@ claimBonusBtn.addEventListener("click", async () => {
     if (res.ok) {
       hideTaskBonus();
     } else {
-      console.error("Bonus claim failed.");
+      console.error("❌ Bonus claim failed.");
     }
   } catch (err) {
-    console.error("Bonus request error:", err);
+    console.error("❌ Bonus request error:", err);
   } finally {
-    enableButton(btn);
+    enableButton(claimBonusBtn);
   }
 });
 
@@ -676,7 +681,7 @@ copyBtn.addEventListener("click", () => {
 if (closeTaskBonusBtn) {
   closeTaskBonusBtn.addEventListener("click", hideTaskBonus);
 }
-
 </script>
+
 </body>
 </html>
