@@ -254,7 +254,6 @@ box-shadow: 0 0 10px #00ffcc;
   font-family: 'Inter', sans-serif;
     background: rgba(15, 23, 42, 0.8);
     
- 
   color: #f8fafc;
   display: flex;
   flex-direction: column;
@@ -314,14 +313,14 @@ box-shadow: 0 0 10px #00ffcc;
 
 .gima{
     margin: 0.2rem 0;
-    font-size: 17px;
+    font-size: 13px;
     font-weight: 500;
 }
 
 .gima2 {
     font-weight: 700;
     color: #22d3ee;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .mine-info {
@@ -358,7 +357,7 @@ box-shadow: 0 0 10px #00ffcc;
 
 .menu-container {
   position: absolute;
-  top: -1000px; /* Kadan ya fi -400 don kada ta leko ko kadan */
+  top: -1000px; 
   right: 20px;
   width: 260px;
   background: #ffffff;
@@ -369,19 +368,15 @@ box-shadow: 0 0 10px #00ffcc;
   z-index: 999;
   border: 2px solid #00ffc8;
   box-shadow: 0 0 10px #00ffcc;
-  opacity: 0; /* Saboda a ɓoye shi gaba daya */
-  pointer-events: none; /* Kada a iya dannawa ko interacting da shi */
+  opacity: 0; 
+  pointer-events: none; 
 }
 
-/* Idan active ne — sai ya bayyana da kyau */
 .menu-container.active {
   top: 70px;
   opacity: 1;
   pointer-events: auto;
 }
-
- 
- 
 
   
 
@@ -649,7 +644,7 @@ box-shadow: 0 0 10px #00ffcc;
 }
 
 .available-balance {
-    font-size: 30px;
+    font-size: 23px;
     font-weight: bold;
     font-weight: 700;
     margin: 0;
@@ -789,9 +784,9 @@ box-shadow: 0 0 10px #00ffcc;
 
 .tu {
   position: absolute;
-    top: 28px;           
-     font-size: 13px;     
-  
+    top: 24px;           
+     font-size: 11px;     
+  left: 35px;
 }
 
 .disabled-button {
@@ -803,10 +798,10 @@ box-shadow: 0 0 10px #00ffcc;
 .gima {
   display: flex;
   align-items: center;
-  font-size: 18px;
+  font-size: 13px;
   font-family: 'Segoe UI', sans-serif;
   color: #ffffff;
-  gap: 2px; 
+  gap: 3px; 
 }
 
 .vestbit-icon {
@@ -935,7 +930,7 @@ box-shadow: 0 0 10px #00ffcc;
   <p class="gima">
   <img class="vestbit-icon" src="con.png" alt="VestBit" />
   VestBit:  <span class="gima2">0.00000</span>
-    <p class="tu">Price: $1.00 Mine free views</p></p>
+    <p class="tu">Value: $1.00 Mine free </p></p>
 </div>
 
             <!-- Mine Info -->
@@ -949,7 +944,7 @@ box-shadow: 0 0 10px #00ffcc;
     <div class="balance-info">
         <p class="available-balance">$0.00</p>
         <p>Available Balance</p>
-        <p class="timer">00:00</p>
+        Time:<p class="timer">00:00</p>
     </div>
             </div>
         </div>
@@ -1381,7 +1376,7 @@ const processNotificationQueue = (queue, uid) => {
         body = { uid, referralBonusLeve1: current.amount };
         break;
       case "referralBonussLeve2":
-        endpoint = "/api/level2";
+        endpoint = "/api/level1";
         body = { uid, referralBonussLeve2: current.amount };
         break;
       case "vestBit":
