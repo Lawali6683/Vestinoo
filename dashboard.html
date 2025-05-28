@@ -333,6 +333,7 @@ box-shadow: 0 0 10px #00ffcc;
 }
 
 
+
   .menu-button {
       position: absolute; 
       top: 10px;
@@ -354,26 +355,35 @@ box-shadow: 0 0 10px #00ffcc;
       background: #4338ca;
     }
 
- 
-   /* Menu container */
-    .menu-container {
-      position: absolute;
-      top: -400px;
-      right: 20px;
-      width: 260px;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      padding: 20px;
-      transition: top 0.4s ease;
-      z-index: 999;
-       border: 2px solid #00ffc8;
-      box-shadow: 0 0 10px #00ffcc;
-    }
 
-    .menu-container.active {
-      top: 70px;
-    }
+.menu-container {
+  position: absolute;
+  top: -1000px; /* Kadan ya fi -400 don kada ta leko ko kadan */
+  right: 20px;
+  width: 260px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  padding: 20px;
+  transition: top 0.4s ease, opacity 0.4s ease;
+  z-index: 999;
+  border: 2px solid #00ffc8;
+  box-shadow: 0 0 10px #00ffcc;
+  opacity: 0; /* Saboda a ɓoye shi gaba daya */
+  pointer-events: none; /* Kada a iya dannawa ko interacting da shi */
+}
+
+/* Idan active ne — sai ya bayyana da kyau */
+.menu-container.active {
+  top: 70px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+ 
+ 
+
+  
 
     /* Menu header */
     .menu-header {
