@@ -6,12 +6,12 @@
   <title>Vestinoo Offers</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Segoe+UI:400,700&display=swap">
   
+ 
  <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
- 
 
   
   <style>
@@ -378,7 +378,7 @@
       When your referrals earn in the Vestinoo Complete his Tacks offer system, you get <strong>10%</strong> of their earnings daily.
     </p>
     <p>
-      💰 <strong>Level 1:</strong> 10% | <strong>Level 2:</strong> 4%
+      💰 <strong>Level 1:</strong> 4% | <strong>Level 2:</strong> 6%
     </p>
     <div class="referral-link-box">
       <input type="text" id="referralLink" readonly />
@@ -446,7 +446,6 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Elements
 const loadingScreen = document.getElementById('loadingScreen');
 const userBalanceEl = document.getElementById('userBalance');
 const userDepositEl = document.getElementById('userDeposit');
@@ -493,17 +492,14 @@ const clearContainers = () => Object.values(containers).forEach(c => c.innerHTML
 
 const categorizeAndRenderOffers = (offers) => {
   clearContainers();
-
   const noOffersMessageEl = document.getElementById('noOffersMessage');
   if (!offers || offers.length === 0) {
     if (noOffersMessageEl) noOffersMessageEl.style.display = 'block';
     return;
   }
-
   if (noOffersMessageEl) noOffersMessageEl.style.display = 'none';
 
-  let has = { video: false, website: false, app: false, survey: false };
-
+  const has = { video: false, website: false, app: false, survey: false };
   offers.forEach(offer => {
     let target = 'app';
     if (/video/i.test(offer.name)) target = 'video';
@@ -518,7 +514,6 @@ const categorizeAndRenderOffers = (offers) => {
     containers[key].parentElement.style.display = has[key] ? 'block' : 'none';
   }
 };
-
 
 const saveOffersLocally = (offers) => {
   localStorage.setItem(SEEN_OFFERS_KEY, JSON.stringify(offers));
@@ -537,41 +532,28 @@ const shouldFetchOffers = () => {
 };
 
 const fetchOffersFromBackend = async (uid) => {
-  const noOffersMessageEl = document.getElementById('noOffersMessage');
   try {
-    if (noOffersMessageEl) noOffersMessageEl.style.display = 'none';
-
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
-
     const res = await fetch("https://vestinoo-project.vercel.app/api/adgem-offers", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': '@haruna66'
       },
-      body: JSON.stringify({ uid }),
-      signal: controller.signal
+      body: JSON.stringify({ uid })
     });
-
-    clearTimeout(timeout);
 
     if (!res.ok) throw new Error("Server error " + res.status);
     const data = await res.json();
-
-    if (!Array.isArray(data) || data.length === 0) {
-      if (noOffersMessageEl) noOffersMessageEl.style.display = 'block';
-      return;
-    }
+    if (!Array.isArray(data) || data.length === 0) throw new Error("No offers found");
 
     saveOffersLocally(data);
     categorizeAndRenderOffers(data);
   } catch (err) {
     console.error("❌ Offer Fetch Error:", err.message);
+    const noOffersMessageEl = document.getElementById('noOffersMessage');
     if (noOffersMessageEl) noOffersMessageEl.style.display = 'block';
   }
 };
-
 
 const sendTaskBonusData = async ({ email, taskBonus, referralBy, level2ReferralBy, userCode }) => {
   try {
@@ -620,10 +602,8 @@ const enableButton = (btn) => {
   btn.innerText = "Clear Your Bonus";
 };
 
-// ✅ MAIN
+// MAIN
 onAuthStateChanged(auth, (user) => {
-  showLoading(true);
-
   if (!user) {
     alert("You are not logged in. Redirecting...");
     window.location.href = "/login.html";
@@ -639,6 +619,7 @@ onAuthStateChanged(auth, (user) => {
       if (!userData) throw new Error("User data not found");
 
       currentUser = userData;
+
       welcomeMessageEl.textContent = userData.fullName || '';
       userBalanceEl.textContent = `$${(userData.userBalance || 0).toFixed(2)}`;
       userDepositEl.textContent = `$${(userData.deposit || 0).toFixed(2)}`;
@@ -664,17 +645,14 @@ onAuthStateChanged(auth, (user) => {
   });
 });
 
-// Bonus claim
+// Bonus claim logic
 if (claimBonusBtn) {
   claimBonusBtn.addEventListener("click", async () => {
     if (!currentUser) return;
-    disableButton(claimBonusBtn);
-
     const taskBonus = parseFloat(currentUser.taskBonus || 0);
-    if (taskBonus <= 0) {
-      enableButton(claimBonusBtn);
-      return;
-    }
+    if (taskBonus <= 0) return;
+
+    disableButton(claimBonusBtn);
 
     const success = await sendTaskBonusData({
       email: currentUser.email,
@@ -684,7 +662,9 @@ if (claimBonusBtn) {
       userCode: currentUser.code || ''
     });
 
-    if (success) hideTaskBonus();
+    if (success) {
+      hideTaskBonus();
+    }
     enableButton(claimBonusBtn);
   });
 }
@@ -704,10 +684,11 @@ if (copyBtn && referralLinkInput) {
   });
 }
 
-// Close bonus popup
+// Close bonus
 if (closeTaskBonusBtn) {
   closeTaskBonusBtn.addEventListener("click", hideTaskBonus);
 }
 </script>
+
 </body>
 </html>
