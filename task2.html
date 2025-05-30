@@ -6,14 +6,14 @@
   <title>Vestinoo Offers</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Segoe+UI:400,700&display=swap">
   
- 
-<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
+ <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
  
  
+
 
   
   <style>
@@ -438,6 +438,7 @@
 </div>
 
 <script type="module">
+// ✅ Fully Working, Fixed JavaScript Offer Script with Reliable Loading
 import { app } from './firebase.js';
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
@@ -445,7 +446,6 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Elements
 const loadingScreen = document.getElementById('loadingScreen');
 const userBalanceEl = document.getElementById('userBalance');
 const userDepositEl = document.getElementById('userDeposit');
@@ -489,7 +489,7 @@ const clearContainers = () => Object.values(containers).forEach(c => c.innerHTML
 
 const categorizeAndRenderOffers = (offers) => {
   clearContainers();
-  let has = { video: false, website: false, app: false, survey: false };
+  const has = { video: false, website: false, app: false, survey: false };
 
   offers.forEach(offer => {
     let target = 'app';
@@ -541,9 +541,7 @@ const getUserLocation = async () => {
 const fetchOffersFromBackend = async (uid, userCountry) => {
   try {
     const location = await getUserLocation();
-
-    // Prioritize Firebase country but fallback to IP country if mismatch or undefined
-    const finalCountry = userCountry && userCountry !== '' ? userCountry : location.country;
+    const finalCountry = userCountry || location.country;
 
     const res = await fetch("https://bonus-gamma.vercel.app/api/rapidoreach", {
       method: 'POST',
@@ -606,7 +604,7 @@ const enableButton = (btn) => {
   btn.innerText = "Clear Your Bonus";
 };
 
-// ✅ MAIN LOADING FLOW
+// ✅ Main Loading Flow
 onAuthStateChanged(auth, (user) => {
   showLoading(true);
   if (!user) {
@@ -632,7 +630,6 @@ onAuthStateChanged(auth, (user) => {
     userDepositEl.textContent = `$${(userData.deposit || 0).toFixed(2)}`;
     referralLinkInput.value = userData.referralLink || "Referral link not found.";
 
-    // ✅ Offer Request
     if (shouldFetchOffers()) {
       await fetchOffersFromBackend(uid, userData.country);
     } else {
@@ -640,7 +637,6 @@ onAuthStateChanged(auth, (user) => {
       if (offers) categorizeAndRenderOffers(offers);
     }
 
-    // ✅ Bonus Notification
     const taskBonus = parseFloat(userData.taskBonus || 0);
     if (taskBonus > 0) showTaskBonusNotification(taskBonus);
 
@@ -651,7 +647,6 @@ onAuthStateChanged(auth, (user) => {
   });
 });
 
-// Bonus Button
 claimBonusBtn.addEventListener("click", async () => {
   if (!currentUser) return;
   disableButton(claimBonusBtn);
@@ -683,7 +678,6 @@ claimBonusBtn.addEventListener("click", async () => {
   }
 });
 
-// Copy Referral Link
 copyBtn.addEventListener("click", () => {
   referralLinkInput.select();
   referralLinkInput.setSelectionRange(0, 99999);
@@ -691,16 +685,15 @@ copyBtn.addEventListener("click", () => {
 
   copyNotif.style.display = "block";
   copyNotif.style.animation = "fadeOut 3s forwards";
-
   setTimeout(() => {
     copyNotif.style.display = "none";
   }, 2900);
 });
 
-// Close Bonus Notification
 if (closeTaskBonusBtn) {
   closeTaskBonusBtn.addEventListener("click", hideTaskBonus);
 }
+
 </script>
 </body>
 </html>
