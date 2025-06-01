@@ -560,11 +560,15 @@ const fetchOffersFromBackend = async (uid, userCountry) => {
     });
 
     const data = await res.json();
-    if (data && data.length > 0) {
-      saveOffersLocally(data);
+
+    if (Array.isArray(data) && data.length > 0) {
+      saveOffersLocally(data); // ✅ Save only if data exists
       categorizeAndRenderOffers(data);
       noOffersMessage.style.display = 'none';
     } else {
+      // ✅ Don't save time if there are no offers
+      localStorage.removeItem(SEEN_TIME_KEY);
+      localStorage.removeItem(SEEN_OFFERS_KEY);
       noOffersMessage.style.display = 'block';
     }
   } catch (err) {
@@ -572,6 +576,7 @@ const fetchOffersFromBackend = async (uid, userCountry) => {
     noOffersMessage.style.display = 'block';
   }
 };
+
 
 const sendTaskBonusData = ({ email, taskBonus, referralBy, level2ReferralBy, userCode }) => {
   return fetch("https://vestinoo-project.vercel.app/api/tacksBonus", {
