@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vestinoo Offers</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Segoe+UI:400,700&display=swap">
-   <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
+   
+<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
-
   
   <style>
     /* Body */
@@ -457,11 +457,17 @@ const claimBonusBtn = document.getElementById("claimTaskBonusBtn");
 const closeTaskBonusBtn = document.getElementById("closeTaskBonusBtn");
 const noOffersMessage = document.getElementById('noOffersMessage');
 
+
 const containers = {
   video: document.getElementById('videoOffers'),
   website: document.getElementById('websiteOffers'),
   app: document.getElementById('appOffers'),
   survey: document.getElementById('surveyOffers')
+};
+
+const clearSavedOffersIfInvalid = () => {
+  localStorage.removeItem(SEEN_OFFERS_KEY);
+  localStorage.removeItem(SEEN_TIME_KEY);
 };
 
 let currentUser = null;
@@ -560,19 +566,19 @@ const fetchOffersFromBackend = async (uid, userCountry) => {
     });
 
     const data = await res.json();
-
-    if (Array.isArray(data) && data.length > 0) {
-      saveOffersLocally(data); // ✅ Save only if data exists
+    if (data && data.length > 0) {
+      saveOffersLocally(data);
       categorizeAndRenderOffers(data);
       noOffersMessage.style.display = 'none';
     } else {
-      // ✅ Don't save time if there are no offers
-      localStorage.removeItem(SEEN_TIME_KEY);
-      localStorage.removeItem(SEEN_OFFERS_KEY);
+      // Babu offers: a goge local time da offers
+      clearSavedOffersIfInvalid();
       noOffersMessage.style.display = 'block';
     }
   } catch (err) {
     console.error("❌ Offer Fetch Error:", err);
+    // Error din da bai dawo da offers ba, a tabbatar an goge
+    clearSavedOffersIfInvalid();
     noOffersMessage.style.display = 'block';
   }
 };
