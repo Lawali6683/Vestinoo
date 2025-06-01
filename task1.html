@@ -437,6 +437,8 @@
 </div>
 
 <script type="module">
+// ✅ Updated JavaScript Code for Kiwi Wall Integration
+
 import { app } from './firebase.js';
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
@@ -453,7 +455,7 @@ const copyBtn = document.getElementById("copyReferralBtn");
 const copyNotif = document.getElementById("copyNotif");
 const claimBonusBtn = document.getElementById("claimTaskBonusBtn");
 const closeTaskBonusBtn = document.getElementById("closeTaskBonusBtn");
-const noOffersMessage = document.getElementById("noOffersMessage");
+const noOffersMessage = document.getElementById('noOffersMessage');
 
 const containers = {
   video: document.getElementById('videoOffers'),
@@ -463,7 +465,6 @@ const containers = {
 };
 
 let currentUser = null;
-
 const SEEN_OFFERS_KEY = 'seenKiwiOffers';
 const SEEN_TIME_KEY = 'seenKiwiOffersTime';
 
@@ -474,14 +475,14 @@ const renderOffer = (offer) => {
   const el = document.createElement('div');
   el.className = 'offer-card';
   el.innerHTML = `
-    <img src="${offer.icon}" alt="${offer.name}" />
+    <img src="${offer.logo}" alt="${offer.name}" />
     <div class="info">
       <h3>${offer.name}</h3>
-      <p>${offer.description}</p>
-      <span class="amount">Earn ${formatAmount(offer.payout)}</span>
+      <p>${offer.instructions}</p>
+      <span class="amount">Earn ${formatAmount(offer.amount)}</span>
     </div>
   `;
-  el.onclick = () => window.open(offer.offer_url, '_blank');
+  el.onclick = () => window.open(offer.link, '_blank');
   return el;
 };
 
@@ -490,7 +491,6 @@ const clearContainers = () => Object.values(containers).forEach(c => c.innerHTML
 const categorizeAndRenderOffers = (offers) => {
   clearContainers();
   const has = { video: false, website: false, app: false, survey: false };
-  let found = false;
 
   offers.forEach(offer => {
     let target = 'app';
@@ -500,14 +500,11 @@ const categorizeAndRenderOffers = (offers) => {
 
     containers[target].appendChild(renderOffer(offer));
     has[target] = true;
-    found = true;
   });
 
   for (const key in has) {
     containers[key].parentElement.style.display = has[key] ? 'block' : 'none';
   }
-
-  noOffersMessage.style.display = found ? 'none' : 'block';
 };
 
 const saveOffersLocally = (offers) => {
@@ -545,6 +542,8 @@ const getUserLocation = async () => {
 const fetchOffersFromBackend = async (uid, userCountry) => {
   try {
     const location = await getUserLocation();
+    const finalCountry = userCountry || location.country;
+
     const res = await fetch("https://vestinoo-project.vercel.app/api/kiwioffers", {
       method: 'POST',
       headers: {
@@ -555,20 +554,19 @@ const fetchOffersFromBackend = async (uid, userCountry) => {
         uid,
         ip: location.ip,
         city: location.city,
-        country: userCountry || location.country,
+        country: finalCountry,
         countryLang: location.countryLang
       })
     });
 
-    const offers = await res.json();
-
-    if (!Array.isArray(offers) || offers.length === 0) {
+    const data = await res.json();
+    if (data && data.length > 0) {
+      saveOffersLocally(data);
+      categorizeAndRenderOffers(data);
+      noOffersMessage.style.display = 'none';
+    } else {
       noOffersMessage.style.display = 'block';
-      return;
     }
-
-    saveOffersLocally(offers);
-    categorizeAndRenderOffers(offers);
   } catch (err) {
     console.error("❌ Offer Fetch Error:", err);
     noOffersMessage.style.display = 'block';
@@ -582,7 +580,13 @@ const sendTaskBonusData = ({ email, taskBonus, referralBy, level2ReferralBy, use
       "Content-Type": "application/json",
       "x-api-key": "@haruna66"
     },
-    body: JSON.stringify({ email, taskBonus, referralBy, level2ReferralBy, code: userCode || '' })
+    body: JSON.stringify({
+      email,
+      taskBonus,
+      referralBy,
+      level2ReferralBy,
+      code: userCode || ''
+    })
   });
 };
 
@@ -601,12 +605,13 @@ const disableButton = (btn) => {
   btn.innerText = "Processing...";
 };
 
-const enableButton = (btn, text = "Clear Your Bonus") => {
+const enableButton = (btn) => {
   btn.disabled = false;
   btn.style.opacity = "1";
-  btn.innerText = text;
+  btn.innerText = "Clear Your Bonus";
 };
 
+// ✅ Main Loading Flow
 onAuthStateChanged(auth, (user) => {
   showLoading(true);
   if (!user) {
@@ -619,32 +624,38 @@ onAuthStateChanged(auth, (user) => {
   const userRef = ref(db, 'users/' + uid);
 
   onValue(userRef, async (snapshot) => {
-    try {
-      const userData = snapshot.val();
-      if (!userData) throw new Error("User data missing.");
-
-      currentUser = userData;
-      welcomeMessageEl.textContent = userData.fullName || '';
-      userBalanceEl.textContent = `$${(userData.userBalance || 0).toFixed(2)}`;
-      userDepositEl.textContent = `$${(userData.deposit || 0).toFixed(2)}`;
-      referralLinkInput.value = userData.referralLink || "Referral link not found.";
-
-      if (shouldFetchOffers()) {
-        await fetchOffersFromBackend(uid, userData.country);
-      } else {
-        const { offers } = getSavedOffers();
-        if (offers) categorizeAndRenderOffers(offers);
-        else noOffersMessage.style.display = 'block';
-      }
-
-      const taskBonus = parseFloat(userData.taskBonus || 0);
-      if (taskBonus > 0) showTaskBonusNotification(taskBonus);
-    } catch (err) {
-      console.error("❌ Main user loading error:", err);
-      noOffersMessage.style.display = 'block';
-    } finally {
+    const userData = snapshot.val();
+    if (!userData) {
+      console.warn("User data not found.");
       showLoading(false);
+      return;
     }
+
+    currentUser = userData;
+    welcomeMessageEl.textContent = userData.fullName || '';
+    userBalanceEl.textContent = `$${(userData.userBalance || 0).toFixed(2)}`;
+    userDepositEl.textContent = `$${(userData.deposit || 0).toFixed(2)}`;
+    referralLinkInput.value = userData.referralLink || "Referral link not found.";
+
+    if (shouldFetchOffers()) {
+      await fetchOffersFromBackend(uid, userData.country);
+    } else {
+      const { offers } = getSavedOffers();
+      if (offers && offers.length > 0) {
+        categorizeAndRenderOffers(offers);
+        noOffersMessage.style.display = 'none';
+      } else {
+        noOffersMessage.style.display = 'block';
+      }
+    }
+
+    const taskBonus = parseFloat(userData.taskBonus || 0);
+    if (taskBonus > 0) showTaskBonusNotification(taskBonus);
+
+    showLoading(false);
+  }, (error) => {
+    console.error("User data fetch error:", error);
+    showLoading(false);
   });
 });
 
@@ -667,14 +678,18 @@ claimBonusBtn.addEventListener("click", async () => {
       userCode: currentUser.code || ''
     });
 
-    if (res.ok) hideTaskBonus();
-    else console.error("❌ Bonus claim failed.");
+    if (res.ok) {
+      hideTaskBonus();
+    } else {
+      console.error("❌ Bonus claim failed.");
+    }
   } catch (err) {
     console.error("❌ Bonus request error:", err);
   } finally {
     enableButton(claimBonusBtn);
   }
 });
+
 
 copyBtn.addEventListener("click", () => {
   referralLinkInput.select();
