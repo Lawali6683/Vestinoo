@@ -494,22 +494,44 @@ const renderOffer = (offer) => {
 
 const clearContainers = () => Object.values(containers).forEach(c => c.innerHTML = '');
 
+
+
 const categorizeAndRenderOffers = (offers) => {
   clearContainers();
   const has = { video: false, website: false, app: false, survey: false };
 
-  offers.forEach(offer => {
-    let target = 'app';
-    if (/video/i.test(offer.name)) target = 'video';
-    else if (/website/i.test(offer.name)) target = 'website';
-    else if (/survey/i.test(offer.name)) target = 'survey';
+  let validOffers = offers.filter(offer =>
+    offer.name && offer.logo && offer.amount && offer.link
+  );
 
-    containers[target].appendChild(renderOffer(offer));
-    has[target] = true;
+  // Raba su kashi biyu (50%) domin user ya san rabin kudi zai samu yanzu
+  const firstHalf = validOffers.slice(0, Math.ceil(validOffers.length / 2));
+
+  firstHalf.forEach(offer => {
+    let target = 'app';
+    const name = offer.name.toLowerCase();
+
+    if (name.includes("video")) target = 'video';
+    else if (name.includes("website") || name.includes("web")) target = 'website';
+    else if (name.includes("survey") || name.includes("quiz")) target = 'survey';
+
+    try {
+      const offerEl = renderOffer(offer);
+      containers[target].appendChild(offerEl);
+      has[target] = true;
+    } catch (err) {
+      console.error("⛔ Render failed for offer:", offer, err);
+    }
   });
 
   for (const key in has) {
     containers[key].parentElement.style.display = has[key] ? 'block' : 'none';
+  }
+
+  // Idan babu offer da aka iya render
+  const somethingRendered = Object.values(has).some(v => v);
+  if (!somethingRendered) {
+    noOffersMessage.style.display = 'block';
   }
 };
 
@@ -544,6 +566,21 @@ const getUserLocation = async () => {
     return { ip: '', city: '', country: '', countryLang: '' };
   }
 };
+
+try {
+  const data = localStorage.getItem('seenKiwiOffers');
+  if (data) {
+    const parsed = JSON.parse(data);
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      localStorage.removeItem('seenKiwiOffers');
+      localStorage.removeItem('seenKiwiOffersTime');
+    }
+  }
+} catch (e) {
+  localStorage.removeItem('seenKiwiOffers');
+  localStorage.removeItem('seenKiwiOffersTime');
+}
+
 
 const fetchOffersFromBackend = async (uid, userCountry) => {
   try {
