@@ -493,6 +493,9 @@ const fetchOffersFromBackend = async (uid, userCountry) => {
     const location = await getUserLocation();
     const finalCountry = userCountry || location.country;
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
     const res = await fetch("https://vestinoo-project.vercel.app/api/kiwioffers", {
       method: 'POST',
       headers: {
@@ -505,8 +508,15 @@ const fetchOffersFromBackend = async (uid, userCountry) => {
         city: location.city,
         country: finalCountry,
         countryLang: location.countryLang
-      })
+      }),
+      signal: controller.signal
     });
+
+    clearTimeout(timeout);
+
+    if (!res.ok) {
+      throw new Error(`Backend responded with status ${res.status}`);
+    }
 
     const data = await res.json();
     if (data && data.length > 0) {
@@ -517,11 +527,12 @@ const fetchOffersFromBackend = async (uid, userCountry) => {
       noOffersMessage.style.display = 'block';
     }
   } catch (err) {
-    console.error("❌ Offer Fetch Error:", err);
+    console.error("❌ Offer Fetch Error:", err.message || err);
     clearSavedOffersIfInvalid();
     noOffersMessage.style.display = 'block';
   }
 };
+
 
 const sendTaskBonusData = ({ email, taskBonus, referralBy, level2ReferralBy, userCode }) => {
   return fetch("https://vestinoo-project.vercel.app/api/tacksBonus", {
