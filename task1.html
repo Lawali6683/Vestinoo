@@ -6,11 +6,7 @@
   <title>Vestinoo Offers</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Segoe+UI:400,700&display=swap">
    
-<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
-<script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
-
-<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
   
   <style>
     /* Body */
@@ -116,74 +112,41 @@
     padding: 20px;
 }
 
-    /* Offer Containers */
-    .offers-section {
-      padding: 20px;
-    }
-    .offer-category {
-      margin-bottom: 30px;
-      background: #072121;
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 0 10px #00ffcc33;
-    }
-    .offer-category h2 {
-      color: #00ffcc;
-      margin-bottom: 15px;
-    }
-    .offer-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-    }
-    .offer-item {
-      background: #0e2b2b;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 0 10px #00ffcc22;
-      transition: transform 0.3s ease;
-      cursor: pointer;
-    }
-    .offer-item:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 15px #00ffcc55;
-    }
-    .offer-img {
-      width: 100%;
-      height: 160px;
-      object-fit: cover;
-    }
-    .offer-info {
-      padding: 10px;
-    }
-    .offer-title {
-      font-weight: bold;
-      font-size: 1.1rem;
-      color: #ffffff;
-      margin-bottom: 5px;
-    }
-    .offer-desc {
-      font-size: 0.9rem;
-      color: #cccccc;
-      margin-bottom: 10px;
-    }
-    .offer-reward {
-      color: #00ffcc;
-      font-weight: bold;
-    }
+    .offers-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+}
 
-    @media(max-width: 600px) {
-      .banner-content {
-        right: 10px;
-        font-size: 0.9rem;
-      }
-    }
-    
-    h1{
-         Font-size: 13px;
-         
-    }
-    
+.offer-card {
+  background: #1e1e2f;
+  border-radius: 12px;
+  padding: 12px;
+  width: 260px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s;
+  border: 1px solid #333;
+}
+.offer-card:hover {
+  transform: scale(1.03);
+}
+.offer-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+.offer-card .info {
+  margin-top: 10px;
+}
+.offer-card .amount {
+  color: #00ff88;
+  font-weight: bold;
+  display: block;
+  margin-top: 6px;
+}
+
    
 
 .close-btn {
@@ -342,6 +305,11 @@
 .learn-link:hover {
   color: #00a1cc;
 }
+  h1{
+         Font-size: 13px;
+         
+    }
+    
 
   </style>
 </head>
@@ -394,28 +362,11 @@
   <div id="copyNotif" class="copy-notification">Referral link copied successfully!</div>
 </section>
 
-<div id="noOffersMessage" style="display:none; text-align:center; color:#fff; padding:20px; font-size:1.2rem;">
-  🚫 Offers not available now, try again sometime.
-</div>
 
-<section class="offers-section">
-  <div class="offer-category">
-    <h2>🎬 Complete video tasks and earn funds</h2>
-    <div class="offer-list" id="videoOffers"></div>
-  </div>
-  <div class="offer-category">
-    <h2>🎮 Play games or install apps to earn</h2>
-    <div class="offer-list" id="gameOffers"></div>
-  </div>
-  <div class="offer-category">
-    <h2>🌐 Test websites and earn funds</h2>
-    <div class="offer-list" id="webOffers"></div>
-  </div>
-  <div class="offer-category">
-    <h2>📊 Complete surveys and earn funds</h2>
-    <div class="offer-list" id="surveyOffers"></div>
-  </div>
-</section>
+<div id="allOffers" class="offers-wrapper"></div>
+<p id="noOffersMessage" style="display: none; text-align:center; color:white;">🚫 Offers not available now, try again sometime.</p>
+
+
 
   
   
@@ -430,7 +381,6 @@
 </div>
 
 <script type="module">
-// ✅ Updated JavaScript Code for Kiwi Wall Integration
 
 import { app } from './firebase.js';
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
@@ -439,6 +389,7 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 const auth = getAuth(app);
 const db = getDatabase(app);
 
+// DOM Elements
 const loadingScreen = document.getElementById('loadingScreen');
 const userBalanceEl = document.getElementById('userBalance');
 const userDepositEl = document.getElementById('userDeposit');
@@ -449,26 +400,20 @@ const copyNotif = document.getElementById("copyNotif");
 const claimBonusBtn = document.getElementById("claimTaskBonusBtn");
 const closeTaskBonusBtn = document.getElementById("closeTaskBonusBtn");
 const noOffersMessage = document.getElementById('noOffersMessage');
+const allOffersContainer = document.getElementById('allOffers');
 
-
-const containers = {
-  video: document.getElementById('videoOffers'),
-  website: document.getElementById('websiteOffers'),
-  app: document.getElementById('appOffers'),
-  survey: document.getElementById('surveyOffers')
-};
-
-const clearSavedOffersIfInvalid = () => {
-  localStorage.removeItem(SEEN_OFFERS_KEY);
-  localStorage.removeItem(SEEN_TIME_KEY);
-};
-
-let currentUser = null;
+// Constants
 const SEEN_OFFERS_KEY = 'seenKiwiOffers';
 const SEEN_TIME_KEY = 'seenKiwiOffersTime';
 
+let currentUser = null;
+
 const showLoading = (state) => loadingScreen.style.display = state ? 'flex' : 'none';
-const formatAmount = (amount) => `$${(parseFloat(amount) * 0.5).toFixed(2)}`;
+
+const formatAmount = (amount) => {
+  const parsed = parseFloat(amount);
+  return isNaN(parsed) || parsed <= 0 ? "- fee" : `$${(parsed * 0.5).toFixed(2)}`;
+};
 
 const renderOffer = (offer) => {
   const el = document.createElement('div');
@@ -477,7 +422,7 @@ const renderOffer = (offer) => {
     <img src="${offer.logo}" alt="${offer.name}" />
     <div class="info">
       <h3>${offer.name}</h3>
-      <p>${offer.instructions}</p>
+      <p>${offer.instructions || 'Complete to earn'}</p>
       <span class="amount">Earn ${formatAmount(offer.amount)}</span>
     </div>
   `;
@@ -485,52 +430,35 @@ const renderOffer = (offer) => {
   return el;
 };
 
-const clearContainers = () => Object.values(containers).forEach(c => c.innerHTML = '');
+const clearOffers = () => {
+  allOffersContainer.innerHTML = '';
+};
 
-
-
-const categorizeAndRenderOffers = (offers) => {
-  clearContainers();
-  const has = { video: false, website: false, app: false, survey: false };
-
-  let validOffers = offers.filter(offer =>
-    offer.name && offer.logo && offer.amount && offer.link
-  );
-
-  // Raba su kashi biyu (50%) domin user ya san rabin kudi zai samu yanzu
-  const firstHalf = validOffers.slice(0, Math.ceil(validOffers.length / 2));
-
-  firstHalf.forEach(offer => {
-    let target = 'app';
-    const name = offer.name.toLowerCase();
-
-    if (name.includes("video")) target = 'video';
-    else if (name.includes("website") || name.includes("web")) target = 'website';
-    else if (name.includes("survey") || name.includes("quiz")) target = 'survey';
-
+const renderAllOffers = (offers) => {
+  clearOffers();
+  const validOffers = offers.filter(o => o.name && o.logo && o.link);
+  if (validOffers.length === 0) {
+    noOffersMessage.style.display = 'block';
+    return;
+  }
+  validOffers.forEach(o => {
     try {
-      const offerEl = renderOffer(offer);
-      containers[target].appendChild(offerEl);
-      has[target] = true;
+      allOffersContainer.appendChild(renderOffer(o));
     } catch (err) {
-      console.error("⛔ Render failed for offer:", offer, err);
+      console.error("⛔ Render failed for offer:", o, err);
     }
   });
-
-  for (const key in has) {
-    containers[key].parentElement.style.display = has[key] ? 'block' : 'none';
-  }
-
-  // Idan babu offer da aka iya render
-  const somethingRendered = Object.values(has).some(v => v);
-  if (!somethingRendered) {
-    noOffersMessage.style.display = 'block';
-  }
+  noOffersMessage.style.display = 'none';
 };
 
 const saveOffersLocally = (offers) => {
   localStorage.setItem(SEEN_OFFERS_KEY, JSON.stringify(offers));
   localStorage.setItem(SEEN_TIME_KEY, Date.now());
+};
+
+const clearSavedOffersIfInvalid = () => {
+  localStorage.removeItem(SEEN_OFFERS_KEY);
+  localStorage.removeItem(SEEN_TIME_KEY);
 };
 
 const getSavedOffers = () => {
@@ -560,21 +488,6 @@ const getUserLocation = async () => {
   }
 };
 
-try {
-  const data = localStorage.getItem('seenKiwiOffers');
-  if (data) {
-    const parsed = JSON.parse(data);
-    if (!Array.isArray(parsed) || parsed.length === 0) {
-      localStorage.removeItem('seenKiwiOffers');
-      localStorage.removeItem('seenKiwiOffersTime');
-    }
-  }
-} catch (e) {
-  localStorage.removeItem('seenKiwiOffers');
-  localStorage.removeItem('seenKiwiOffersTime');
-}
-
-
 const fetchOffersFromBackend = async (uid, userCountry) => {
   try {
     const location = await getUserLocation();
@@ -598,21 +511,17 @@ const fetchOffersFromBackend = async (uid, userCountry) => {
     const data = await res.json();
     if (data && data.length > 0) {
       saveOffersLocally(data);
-      categorizeAndRenderOffers(data);
-      noOffersMessage.style.display = 'none';
+      renderAllOffers(data);
     } else {
-      // Babu offers: a goge local time da offers
       clearSavedOffersIfInvalid();
       noOffersMessage.style.display = 'block';
     }
   } catch (err) {
     console.error("❌ Offer Fetch Error:", err);
-    // Error din da bai dawo da offers ba, a tabbatar an goge
     clearSavedOffersIfInvalid();
     noOffersMessage.style.display = 'block';
   }
 };
-
 
 const sendTaskBonusData = ({ email, taskBonus, referralBy, level2ReferralBy, userCode }) => {
   return fetch("https://vestinoo-project.vercel.app/api/tacksBonus", {
@@ -652,7 +561,7 @@ const enableButton = (btn) => {
   btn.innerText = "Clear Your Bonus";
 };
 
-// ✅ Main Loading Flow
+// ✅ Main App Logic
 onAuthStateChanged(auth, (user) => {
   showLoading(true);
   if (!user) {
@@ -673,6 +582,7 @@ onAuthStateChanged(auth, (user) => {
     }
 
     currentUser = userData;
+
     welcomeMessageEl.textContent = userData.fullName || '';
     userBalanceEl.textContent = `$${(userData.userBalance || 0).toFixed(2)}`;
     userDepositEl.textContent = `$${(userData.deposit || 0).toFixed(2)}`;
@@ -683,7 +593,7 @@ onAuthStateChanged(auth, (user) => {
     } else {
       const { offers } = getSavedOffers();
       if (offers && offers.length > 0) {
-        categorizeAndRenderOffers(offers);
+        renderAllOffers(offers);
         noOffersMessage.style.display = 'none';
       } else {
         noOffersMessage.style.display = 'block';
@@ -700,6 +610,7 @@ onAuthStateChanged(auth, (user) => {
   });
 });
 
+// 🔘 Task Bonus Claim
 claimBonusBtn.addEventListener("click", async () => {
   if (!currentUser) return;
   disableButton(claimBonusBtn);
@@ -731,7 +642,7 @@ claimBonusBtn.addEventListener("click", async () => {
   }
 });
 
-
+// 📋 Copy Referral Link
 copyBtn.addEventListener("click", () => {
   referralLinkInput.select();
   referralLinkInput.setSelectionRange(0, 99999);
@@ -747,6 +658,8 @@ copyBtn.addEventListener("click", () => {
 if (closeTaskBonusBtn) {
   closeTaskBonusBtn.addEventListener("click", hideTaskBonus);
 }
+
 </script>
+
 </body>
 </html>
