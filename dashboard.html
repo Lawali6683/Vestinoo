@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
- 
  <script type='text/javascript' src='//pl26830990.profitableratecpm.com/62/af/b8/62afb8105df6d37f62a3db196495e4b7.js'></script>
-
     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
+ 
 
 
   <style>
@@ -534,7 +534,7 @@ box-shadow: 0 0 10px #00ffcc;
 
 .notification-box {
    position: fixed;
-  top: 0px;
+  top: 20px;
   right: 10px;
   background: #0f2e2e;
   color: #ffffff;
@@ -667,7 +667,7 @@ box-shadow: 0 0 10px #00ffcc;
        font-size: 20px;
    }
    
- .mine-button {
+.mine-button {
   position: fixed;
   top: 280px;
   left: 20px;
@@ -854,6 +854,156 @@ box-shadow: 0 0 10px #00ffcc;
       to { transform: translateY(0); opacity: 1; }
     }
 
+
+
+/* Push Container Styling */
+#push-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  padding: 0;
+  margin: 0;
+}
+
+.push-inner {
+  background: rgba(20, 20, 30, 0.95);
+  border: 2px solid #00ffd5;
+  border-radius: 20px;
+  padding: 8px 4px;
+  box-shadow: 0 0 25px rgba(0, 255, 213, 0.3);
+  max-width: 420px;
+  text-align: center;
+  position: relative;
+  backdrop-filter: blur(10px);
+  animation: fadeInScale 0.4s ease;
+}
+
+.push-inner h2 {
+  color: #ffffff;
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.push-inner p {
+  color: #cccccc;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.push-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.push-image {
+  width: 120px;
+  height: auto;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.push-image:hover {
+  transform: scale(1.1);
+}
+
+.reward-text {
+  color: #00ffd5;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  color: #ffffff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #ff4c4c;
+}
+
+/* Animation */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+
+/* Bot Wrapper Styling */
+#bot-wrapper {
+  position: fixed;
+  bottom: 20px;
+  top: 420px;
+  right: 0px;
+  z-index: 999;
+  text-align: center;
+}
+
+/* Countdown Bubble */
+#countdown {
+  position: absolute;
+  top: 40px;
+  right: -1px;
+  background: linear-gradient(135deg, #ff4e50, #f9d423);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(255, 78, 80, 0.4);
+  animation: pulseGlow 2s infinite;
+  z-index: 100;
+}
+
+/* Bot Icon Styling */
+#bot-icon {
+  width: 75px;
+  height: 75px;
+  cursor: pointer;
+  border-radius: 50%;
+  
+  padding: 5px;
+  
+  animation: wave 2.5s infinite;
+  transition: transform 0.3s ease;
+}
+
+#bot-icon:hover {
+  transform: scale(1.08);
+}
+
+/* Waving Animation */
+@keyframes wave {
+  0% { transform: rotate(0deg); }
+  15% { transform: rotate(15deg); }
+  30% { transform: rotate(-10deg); }
+  45% { transform: rotate(15deg); }
+  60% { transform: rotate(-8deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Optional glowing pulse on countdown */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 78, 80, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(255, 78, 80, 0.7); }
+}
+
   </style>
 </head>
 <body>
@@ -942,6 +1092,7 @@ box-shadow: 0 0 10px #00ffcc;
 <!-- VestBit Notification -->
 <div id="vestbit-notification-container" class="vestbit-notification hidden">
   <div class="notification-box">
+      
     <button class="close-bt" onclick="hideNotification()"></button>
     <h2><span id="userFullName">User</span>, congratulations to win! VestBit Coin</h2>
     <img id="selectedBonusIcon" src="con.png" alt="Selected Bonus">
@@ -973,6 +1124,28 @@ box-shadow: 0 0 10px #00ffcc;
     <p id="adText">Text Here</p>
     <button class="cta" id="adButton">Click & Earn Over $5</button>
   </div>
+  
+
+
+<!-- Push Notification Container -->
+<div id="push-container" style="display: none;">
+  <div class="push-inner">
+    <span class="close-btn" onclick="closePush()">✖</span>
+    <h2>Earn VestBit Instantly</h2>
+    <p>Click the button below to claim your reward</p>
+    
+    <div class="push-content" onclick="claimVestBit()">
+      <img src="bo.png" alt="Claim VestBit" class="push-image" />
+      <p class="reward-text">+0.00532 VestBit</p>
+    </div>
+  </div>
+</div>
+<!-- Bot Icon with Countdown -->
+<div id="bot-wrapper">
+  <div id="countdown">2:00</div>
+  <img id="bot-icon" src="bot2.png" alt="Bot waving" onclick="openChat()" />
+</div>
+
 
     <!-- Footer -->
     <footer>
@@ -1217,6 +1390,8 @@ const clearExpiredPackage = async (uid, fullName, deposit, depositTime, dailyPro
   showNotification(fullName, "Your package has expired", "end.png", deposit, () => {});
 };
 
+
+
 const showClearMineButton = (uid, dailyProfit, depositTime, lastClaimTime) => {
   const now = Date.now();
 
@@ -1226,7 +1401,7 @@ const showClearMineButton = (uid, dailyProfit, depositTime, lastClaimTime) => {
   const canClaim = !lastClaimTime || now >= (lastClaimTime + 24 * 60 * 60 * 1000);
 
   if (!canClaim) return;
-
+  
   
   const existingBtn = document.querySelector('.mine-button');
   if (existingBtn) existingBtn.remove();
@@ -1237,27 +1412,33 @@ const showClearMineButton = (uid, dailyProfit, depositTime, lastClaimTime) => {
   btn.className = 'mine-button fixed top-5 left-5 p-2 bg-yellow-400 text-black rounded-lg shadow-md z-50';
 
   btn.onclick = async () => {
-    try {
-      const res = await fetch("https://vestinoo-project.vercel.app/api/dailymine", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": "@haruna66"
-        },
-        body: JSON.stringify({ uid, dailyProfit })
-      });
+  btn.disabled = true;
+  btn.textContent = "⏳ Processing...";
 
-      if (!res.ok) throw new Error("Mining failed");
+  try {
+    const res = await fetch("https://vestinoo-project.vercel.app/api/dailymine", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "@haruna66"
+      },
+      body: JSON.stringify({ uid, dailyProfit })
+    });
 
-      btn.remove(); // cire button bayan an danna
-    } catch (error) {
-      console.error("Mining Error:", error);
-      
-    }
-  };
+    if (!res.ok) throw new Error("Mining failed");
+
+    btn.remove(); // Cire button bayan an danna
+  } catch (error) {
+    console.error("Mining Error:", error);
+    btn.disabled = false;
+    btn.textContent = `💰Get Your Daily Mine: $${dailyProfit.toFixed(2)}✔️`;
+  }
+};
+
 
   document.body.appendChild(btn);
 };
+
 
 
 
@@ -1459,6 +1640,8 @@ window.onload = () => {
   }
 };
 
+
+
 // Global user info
 let currentUserUID = null;
 let currentUserEmail = null;
@@ -1470,7 +1653,8 @@ onAuthStateChanged(auth, (user) => {
   
   if (user) {
     currentUserUID = user.uid;
-    currentUserEmail = user.email;
+    currentUserEmail = user.email;    
+    window.uid = user.uid;
 
     const userRef = ref(db, `users/${currentUserUID}`);
     onValue(userRef, (snapshot) => {
@@ -1478,8 +1662,7 @@ onAuthStateChanged(auth, (user) => {
 
       if (userData) {
         currentUserFullName = userData.fullName;
-
-        // 🛠️ Inject uid into userData to ensure it's always available
+       
         const completeUserData = {
           ...userData,
           uid: currentUserUID
@@ -1501,6 +1684,94 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-</script>      
+</script>    
+
+  <script>
+let uid = window.uid || "test-user-id"; // Replace with actual uid or define globally
+let countdownElement = document.getElementById('countdown');
+let pushContainer = document.getElementById('push-container');
+let botIcon = document.getElementById('bot-icon');
+
+let timerDuration = 2 * 60; // in seconds
+let schedule = [2 * 60, 5 * 60, 60 * 60]; // seconds
+let scheduleIndex = 0;
+let currentTimer;
+let isPushVisible = false;
+
+function startCountdown(duration) {
+  let timeLeft = duration;
+  countdownElement.innerText = formatTime(timeLeft);
+  clearInterval(currentTimer);
+  currentTimer = setInterval(() => {
+    timeLeft--;
+    if (timeLeft <= 0) {
+      clearInterval(currentTimer);
+      showPush();
+    } else {
+      countdownElement.innerText = formatTime(timeLeft);
+    }
+  }, 1000);
+}
+
+function formatTime(seconds) {
+  let m = Math.floor(seconds / 60);
+  let s = seconds % 60;
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+function showPush() {
+  if (pushContainer) pushContainer.style.display = 'block';
+  botIcon.style.border = '2px solid green'; // glowing or highlighted
+  isPushVisible = true;
+}
+
+function closePush() {
+  if (pushContainer) pushContainer.style.display = 'none';
+  botIcon.style.border = 'none';
+  isPushVisible = false;
+  nextPush();
+}
+
+function nextPush() {
+  scheduleIndex++;
+  if (scheduleIndex >= schedule.length) scheduleIndex = schedule.length - 1;
+  startCountdown(schedule[scheduleIndex]);
+}
+
+function claimVestBit() {
+  if (!uid) {
+    alert("User ID (uid) is missing!");
+    return;
+  }
+
+  window.open('https://www.profitableratecpm.com/nzy4m24sy?key=e5d19a4a6676f3c578d9f3f1da848b21', '_blank');
+
+  fetch("https://bonus-gamma.vercel.app/api/admine", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": "@haruna66"
+    },
+    body: JSON.stringify({ uid: uid, vestBit: 0.00532 })
+  })
+  .then(response => {
+    if (!response.ok) throw new Error('Network error');
+    closePush();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
+
+function openChat() {
+  window.location.href = 'learn.html';
+}
+
+// Fara lokacin farko
+window.addEventListener('load', () => {
+  startCountdown(schedule[scheduleIndex]);
+});
+</script>
+
 </body>
 </html>
