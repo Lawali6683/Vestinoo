@@ -12,9 +12,6 @@
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
 
- 
-
-
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
 
@@ -873,7 +870,7 @@ box-shadow: 0 0 10px #00ffcc;
   border-radius: 20px;
   padding: 8px 4px;
   box-shadow: 0 0 25px rgba(0, 255, 213, 0.3);
-  max-width: 420px;
+  width: 300px;
   text-align: center;
   position: relative;
   backdrop-filter: blur(10px);
@@ -901,7 +898,7 @@ box-shadow: 0 0 10px #00ffcc;
 }
 
 .push-image {
-  width: 120px;
+  width: 220px;
   height: auto;
   margin-bottom: 10px;
   transition: transform 0.3s ease;
@@ -1567,8 +1564,16 @@ const processNotificationQueue = (queue, uid) => {
   };
 };
 
-let lastSelectedTime = localStorage.getItem('lastSelectedTime') || null;
-let timer;
+
+
+
+let currentUserUID = null;
+let currentUserEmail = null;
+let currentUserFullName = null;
+
+
+let vestbitLastSelectedTime = localStorage.getItem('vestbitLastSelectedTime') || null;
+let vestbitTimer;
 
 const sendVestBitBonus = async (email, bonusAmountValue) => {
   await fetch("https://bonus-gamma.vercel.app/api/vestBit", {
@@ -1576,42 +1581,40 @@ const sendVestBitBonus = async (email, bonusAmountValue) => {
     headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
     body: JSON.stringify({ email, bonusAmount: bonusAmountValue })
   });
-  hideNotification9();
+  hideNotificationVestbit();
 };
 
-const hideNotification9 = () => {
+const hideNotificationVestbit = () => {
   vestbitNotification.classList.add('hidden');
 };
 
-// Main Click Logic
 document.addEventListener('DOMContentLoaded', () => {
   bonusIcons.forEach(icon => {
     icon.onclick = () => {
       if (!currentUserEmail || !currentUserFullName) return;
 
       const randomBonus = getRandomBonus();
-      userFullName.textContent = `${currentUserFullName}`;  // Display full name
+      userFullName.textContent = `${currentUserFullName}`;
       selectedBonusIcon.src = icon.src;
       bonusAmount.textContent = `VestBit ${randomBonus.toFixed(5)}`;
       vestbitNotification.classList.remove('hidden');
       bonusSection.classList.add('hidden');
       countdownContainer.classList.remove('hidden');
-      lastSelectedTime = Date.now();
-      localStorage.setItem('lastSelectedTime', lastSelectedTime);
+      vestbitLastSelectedTime = Date.now();
+      localStorage.setItem('vestbitLastSelectedTime', vestbitLastSelectedTime);
       clearBonusBtn.onclick = () => sendVestBitBonus(currentUserEmail, randomBonus);
-      startCountdown();
+      startVestbitCountdown();
     };
   });
 });
 
-// Timer
-function startCountdown() {
-  clearInterval(timer);
-  timer = setInterval(() => {
-    const diff = (Date.now() - lastSelectedTime) / 1000;
-    const remaining = 60 * 60 - diff; // 1 hour
+function startVestbitCountdown() {
+  clearInterval(vestbitTimer);
+  vestbitTimer = setInterval(() => {
+    const diff = (Date.now() - vestbitLastSelectedTime) / 1000;
+    const remaining = 60 * 60 - diff;
     if (remaining <= 0) {
-      clearInterval(timer);
+      clearInterval(vestbitTimer);
       countdownContainer.classList.add('hidden');
       bonusSection.classList.remove('hidden');
     } else {
@@ -1623,97 +1626,51 @@ function startCountdown() {
   }, 1000);
 }
 
-// Load Countdown on Refresh
-window.onload = () => {
-  if (lastSelectedTime) {
-    const diff = (Date.now() - lastSelectedTime) / 1000;
-    if (diff >= 60 * 60) { // 1 hour
+window.addEventListener('load', () => {
+  if (vestbitLastSelectedTime) {
+    const diff = (Date.now() - vestbitLastSelectedTime) / 1000;
+    if (diff >= 60 * 60) {
       bonusSection.classList.remove('hidden');
       countdownContainer.classList.add('hidden');
     } else {
       bonusSection.classList.add('hidden');
       countdownContainer.classList.remove('hidden');
-      startCountdown();
+      startVestbitCountdown();
     }
   } else {
     bonusSection.classList.remove('hidden');
   }
-};
-
-
-
-// Global user info
-let currentUserUID = null;
-let currentUserEmail = null;
-let currentUserFullName = null;
-
-// Auth listener
-onAuthStateChanged(auth, (user) => {
-  showLoadingScreen();
-  
-  if (user) {
-    currentUserUID = user.uid;
-    currentUserEmail = user.email;    
-    window.uid = user.uid;
-
-    const userRef = ref(db, `users/${currentUserUID}`);
-    onValue(userRef, (snapshot) => {
-      const userData = snapshot.val();
-
-      if (userData) {
-        currentUserFullName = userData.fullName;
-       
-        const completeUserData = {
-          ...userData,
-          uid: currentUserUID
-        };
-
-        updateUI(completeUserData);
-      } else {
-        console.warn("⚠️ User data not found in database.");
-      }
-
-      hideLoadingScreen();
-    }, (error) => {
-      console.error("❌ Error fetching user data:", error);
-      hideLoadingScreen();
-    });
-  } else {
-    console.warn("⚠️ User not authenticated.");
-    hideLoadingScreen();
-  }
 });
 
-</script>    
+// === PUSH COUNTDOWN LOGIC (code na farko) ===
 
-  <script>
-let uid = window.uid || "test-user-id"; // Replace with actual uid or define globally
-let countdownElement = document.getElementById('countdown');
+let pushCountdownElement = document.getElementById('countdown');
 let pushContainer = document.getElementById('push-container');
 let botIcon = document.getElementById('bot-icon');
 
-let timerDuration = 2 * 60; // in seconds
-let schedule = [2 * 60, 5 * 60, 60 * 60]; // seconds
-let scheduleIndex = 0;
-let currentTimer;
+let pushTimerDuration = 1 * 60;
+let pushSchedule = [1 * 60, 3 * 60, 60 * 60];
+let pushScheduleIndex = 0;
+let pushCurrentTimer;
 let isPushVisible = false;
+let uid = null;
 
-function startCountdown(duration) {
+function startPushCountdown(duration) {
   let timeLeft = duration;
-  countdownElement.innerText = formatTime(timeLeft);
-  clearInterval(currentTimer);
-  currentTimer = setInterval(() => {
+  pushCountdownElement.innerText = pushFormatTime(timeLeft);
+  clearInterval(pushCurrentTimer);
+  pushCurrentTimer = setInterval(() => {
     timeLeft--;
     if (timeLeft <= 0) {
-      clearInterval(currentTimer);
+      clearInterval(pushCurrentTimer);
       showPush();
     } else {
-      countdownElement.innerText = formatTime(timeLeft);
+      pushCountdownElement.innerText = pushFormatTime(timeLeft);
     }
   }, 1000);
 }
 
-function formatTime(seconds) {
+function pushFormatTime(seconds) {
   let m = Math.floor(seconds / 60);
   let s = seconds % 60;
   return `${m}:${s < 10 ? '0' : ''}${s}`;
@@ -1721,7 +1678,7 @@ function formatTime(seconds) {
 
 function showPush() {
   if (pushContainer) pushContainer.style.display = 'block';
-  botIcon.style.border = '2px solid green'; // glowing or highlighted
+  botIcon.style.border = '2px solid green';
   isPushVisible = true;
 }
 
@@ -1733,9 +1690,9 @@ function closePush() {
 }
 
 function nextPush() {
-  scheduleIndex++;
-  if (scheduleIndex >= schedule.length) scheduleIndex = schedule.length - 1;
-  startCountdown(schedule[scheduleIndex]);
+  pushScheduleIndex++;
+  if (pushScheduleIndex >= pushSchedule.length) pushScheduleIndex = pushSchedule.length - 1;
+  startPushCountdown(pushSchedule[pushScheduleIndex]);
 }
 
 function claimVestBit() {
@@ -1767,9 +1724,47 @@ function openChat() {
   window.location.href = 'learn.html';
 }
 
-// Fara lokacin farko
+// === FIREBASE AUTH LISTENER ===
+
+onAuthStateChanged(auth, (user) => {
+  showLoadingScreen();
+
+  if (user) {
+    currentUserUID = user.uid;
+    currentUserEmail = user.email;
+    uid = user.uid;
+    window.uid = user.uid;
+
+    const userRef = ref(db, `users/${currentUserUID}`);
+    onValue(userRef, (snapshot) => {
+      const userData = snapshot.val();
+
+      if (userData) {
+        currentUserFullName = userData.fullName;
+
+        const completeUserData = {
+          ...userData,
+          uid: currentUserUID
+        };
+
+        updateUI(completeUserData);
+      } else {
+        console.warn("⚠️ User data not found in database.");
+      }
+
+      hideLoadingScreen();
+    }, (error) => {
+      console.error("❌ Error fetching user data:", error);
+      hideLoadingScreen();
+    });
+  } else {
+    console.warn("⚠️ User not authenticated.");
+    hideLoadingScreen();
+  }
+});
+
 window.addEventListener('load', () => {
-  startCountdown(schedule[scheduleIndex]);
+  startPushCountdown(pushSchedule[pushScheduleIndex]);
 });
 </script>
 
