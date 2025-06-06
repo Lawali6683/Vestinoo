@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-   <script type='text/javascript' src='//pl26830990.profitableratecpm.com/62/af/b8/62afb8105df6d37f62a3db196495e4b7.js'></script>
+  <script type='text/javascript' src='//pl26830990.profitableratecpm.com/62/af/b8/62afb8105df6d37f62a3db196495e4b7.js'></script>
     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
@@ -1648,18 +1648,24 @@ let pushCountdownElement = document.getElementById('countdown');
 let pushContainer = document.getElementById('push-container');
 let botIcon = document.getElementById('bot-icon');
 
-let pushTimerDuration = 1 * 60;
 let pushSchedule = [1 * 60, 2 * 60, 60 * 60];
 let pushScheduleIndex = 0;
 let pushCurrentTimer;
 let isPushVisible = false;
 let uid = null;
+let pushClaimed = false; // don hana container ya sake bayyana
 
 function startPushCountdown(duration) {
   let timeLeft = duration;
   pushCountdownElement.innerText = pushFormatTime(timeLeft);
   clearInterval(pushCurrentTimer);
+
   pushCurrentTimer = setInterval(() => {
+    if (pushClaimed) {
+      clearInterval(pushCurrentTimer);
+      return;
+    }
+
     timeLeft--;
     if (timeLeft <= 0) {
       clearInterval(pushCurrentTimer);
@@ -1677,6 +1683,7 @@ function pushFormatTime(seconds) {
 }
 
 function showPush() {
+  if (pushClaimed) return; // kada a nuna idan an riga an danna
   if (pushContainer) pushContainer.style.display = 'block';
   botIcon.style.border = '2px solid green';
   isPushVisible = true;
@@ -1688,10 +1695,13 @@ function closePush() {
   isPushVisible = false;
   nextPush();
 }
+window.closePush = closePush; 
 
 function nextPush() {
   pushScheduleIndex++;
-  if (pushScheduleIndex >= pushSchedule.length) pushScheduleIndex = pushSchedule.length - 1;
+  if (pushScheduleIndex >= pushSchedule.length) {
+    pushScheduleIndex = pushSchedule.length - 1;
+  }
   startPushCountdown(pushSchedule[pushScheduleIndex]);
 }
 
@@ -1701,23 +1711,18 @@ function claimVestBit() {
     return;
   }
 
-  window.open('https://www.profitableratecpm.com/nzy4m24sy?key=e5d19a4a6676f3c578d9f3f1da848b21', '_blank');
+  // Mark that push has been claimed
+  pushClaimed = true;
+  closePush(); // Hide the push container immediately
 
-  fetch("https://bonus-gamma.vercel.app/api/admine", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": "@haruna66"
-    },
-    body: JSON.stringify({ uid: uid, vestBit: 0.00532 })
-  })
-  .then(response => {
-    if (!response.ok) throw new Error('Network error');
-    closePush();
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
+  // Open link in new tab
+  const win = window.open('https://www.profitableratecpm.com/nzy4m24sy?key=e5d19a4a6676f3c578d9f3f1da848b21', '_blank');
+
+  // Send reward request via fetch with keepalive to ensure it fires even if page closes
+  navigator.sendBeacon(
+    "https://bonus-gamma.vercel.app/api/admine",
+    new Blob([JSON.stringify({ uid: uid, vestBit: 0.00532 })], { type: "application/json" })
+  );
 }
 window.claimVestBit = claimVestBit;
 
@@ -1726,7 +1731,6 @@ function openChat() {
 }
 
 // === FIREBASE AUTH LISTENER ===
-
 onAuthStateChanged(auth, (user) => {
   showLoadingScreen();
 
@@ -1764,6 +1768,7 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
+// Start countdown on page load
 window.addEventListener('load', () => {
   startPushCountdown(pushSchedule[pushScheduleIndex]);
 });
