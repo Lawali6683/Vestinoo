@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vestinoo Withdrawal</title>
+    
     <script type='text/javascript' src='//pl26830990.profitableratecpm.com/62/af/b8/62afb8105df6d37f62a3db196495e4b7.js'></script>
-
     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
@@ -481,8 +481,16 @@ box-shadow: 0 0 10px #00ffcc;
 
     <script type="module">
   import { app } from './firebase.js';
-  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signInWithEmailAndPassword
+  } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+  import {
+    getDatabase,
+    ref,
+    get
+  } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
   const auth = getAuth(app);
   const db = getDatabase(app);
@@ -494,28 +502,38 @@ box-shadow: 0 0 10px #00ffcc;
   const fullNameElem = document.getElementById("fullName");
   const toastElem = document.getElementById("toast");
 
-  onAuthStateChanged(auth, (user) => {
+  // Show loading by default
+  loadingScreen.style.display = "flex";
+  mainContent.classList.add("hidden");
+
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
-      const userRef = ref(db, `users/${user.uid}`);
-      get(userRef).then((snapshot) => {
+      try {
+        const userRef = ref(db, `users/${user.uid}`);
+        const snapshot = await get(userRef);
         const data = snapshot.val();
+
         if (data) {
           userBalanceElem.textContent = data.userBalance.toFixed(2);
           fullNameElem.textContent = data.fullName;
         }
-      });
 
-      setTimeout(() => {
+        // Done loading
         loadingScreen.style.display = "none";
         mainContent.classList.remove("hidden");
-      }, 3000);
+      } catch (error) {
+        showToast("❌ Error loading user data.");
+        console.error(error);
+      }
+    } else {
+      window.location.href = "/login.html";
     }
   });
 
   document.getElementById("withdrawalForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    loadingScreen.style.display = "flex"; // Show loading
+    loadingScreen.style.display = "flex";
 
     const amount = parseFloat(document.getElementById("amount").value);
     const walletAddress = document.getElementById("walletAddress").value.trim();
@@ -530,43 +548,35 @@ box-shadow: 0 0 10px #00ffcc;
     }
 
     try {
+      // Re-authenticate user with password
+      await signInWithEmailAndPassword(auth, user.email, password);
+
       const userRef = ref(db, `users/${user.uid}`);
       const snapshot = await get(userRef);
       const data = snapshot.val();
 
       if (!coin) {
         showToast("❌Error: Please select a coin.");
-        loadingScreen.style.display = "none";
         return;
       }
 
       if (amount < 1.25) {
         showToast("❌Error: Minimum withdrawal is $1.25");
-        loadingScreen.style.display = "none";
         return;
       }
 
       if (amount > 50) {
         showToast("❌Error: Maximum daily withdrawal is $50");
-        loadingScreen.style.display = "none";
         return;
       }
 
       if (data.userBalance < amount) {
         showToast("❌Error: Insufficient balance");
-        loadingScreen.style.display = "none";
         return;
       }
 
       if (data.pendingWithdrawals) {
         showToast("❌Error: You have a pending withdrawal");
-        loadingScreen.style.display = "none";
-        return;
-      }
-
-      if (password !== data.password) {
-        showToast("❌Error: Incorrect password");
-        loadingScreen.style.display = "none";
         return;
       }
 
@@ -592,29 +602,33 @@ box-shadow: 0 0 10px #00ffcc;
 
       if (response.ok) {
         showToast("✔️Successfully: Your withdrawal has been processed. Please wait for 24 hours.");
-        document.getElementById("withdrawalForm").reset(); // Clear form
+        document.getElementById("withdrawalForm").reset();
       } else {
         showToast("❌Error: Failed to process your withdrawal.");
       }
     } catch (error) {
-      showToast("❌Error: An unexpected error occurred.");
+      if (error.code === "auth/wrong-password") {
+        showToast("❌Error: Incorrect password");
+      } else {
+        showToast("❌Error: An unexpected error occurred.");
+        console.error(error);
+      }
     } finally {
-      loadingScreen.style.display = "none"; // Always hide loading
+      loadingScreen.style.display = "none";
     }
   });
-  
+
   function showToast(message) {
-  toastElem.textContent = message;
-  toastElem.classList.remove("hidden");
-  toastElem.classList.add("show");
+    toastElem.textContent = message;
+    toastElem.classList.remove("hidden");
+    toastElem.classList.add("show");
 
-  setTimeout(() => {
-    toastElem.classList.remove("show");
-    toastElem.classList.add("hidden");
-  }, 3000);
-}
-
-  
+    setTimeout(() => {
+      toastElem.classList.remove("show");
+      toastElem.classList.add("hidden");
+    }, 3000);
+  }
 </script>
+
 </body>
 </html>
