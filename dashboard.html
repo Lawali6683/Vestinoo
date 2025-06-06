@@ -12,6 +12,7 @@
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
 
+
   <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
 
@@ -1715,15 +1716,27 @@ function claimVestBit() {
   pushClaimed = true;
   closePush(); // Hide the push container immediately
 
-  // Open link in new tab
-  const win = window.open('https://www.profitableratecpm.com/nzy4m24sy?key=e5d19a4a6676f3c578d9f3f1da848b21', '_blank');
+  // Open link in new tab (ads)
+  window.open('https://www.profitableratecpm.com/nzy4m24sy?key=e5d19a4a6676f3c578d9f3f1da848b21', '_blank');
 
-  // Send reward request via fetch with keepalive to ensure it fires even if page closes
-  navigator.sendBeacon(
-    "https://bonus-gamma.vercel.app/api/admine",
-    new Blob([JSON.stringify({ uid: uid, vestBit: 0.00532 })], { type: "application/json" })
-  );
+  // Send reward request using fetch instead of sendBeacon (because of headers)
+  fetch("https://bonus-gamma.vercel.app/api/admine", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": "@haruna66"
+    },
+    body: JSON.stringify({ uid: uid })
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log("✅ Reward response:", data);
+    })
+    .catch(error => {
+      console.error("❌ Error sending reward request:", error);
+    });
 }
+
 window.claimVestBit = claimVestBit;
 
 function openChat() {
