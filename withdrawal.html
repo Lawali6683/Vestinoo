@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vestinoo Withdrawal</title>
-    
-     
-<script type='text/javascript' src='//pl26830990.profitableratecpm.com/62/af/b8/62afb8105df6d37f62a3db196495e4b7.js'></script>
-
+    <script type='text/javascript' src='//pl26830990.profitableratecpm.com/62/af/b8/62afb8105df6d37f62a3db196495e4b7.js'></script>
     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
 
     <style>
         body {
@@ -689,7 +687,10 @@ button[type="submit"]:active {
 </script>
 
     <script type="module">
-  import { app } from './firebase.js';
+// withdrawal-fixed.js
+// Gyaran matsalolin auto-tab, push-container da password logic don withdrawal
+
+import { app } from './firebase.js';
 import {
   getAuth,
   onAuthStateChanged
@@ -700,9 +701,7 @@ import {
   get
 } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
-const auth = getAuth(app);
-const db = getDatabase(app);
-
+// DOM elements
 const loadingScreen = document.getElementById("loadingScreen");
 const mainContent = document.getElementById("main-content");
 const userBalanceElem = document.getElementById("userBalance");
@@ -712,13 +711,10 @@ const pushContainer = document.getElementById("push-container");
 const passwordEntryArea = document.getElementById("password-entry-area");
 
 let userData = null;
-let withdrawalPassword = null; // actual password string
+let withdrawalPassword = null;
 let withdrawalPasswordCreated = false;
-let withdrawalPasswordTemp = null; // Used for entry/validation
 
-loadingScreen.style.display = "flex";
-mainContent.classList.add("hidden");
-
+// Toast helper
 function showToast(message) {
   toastElem.textContent = message;
   toastElem.classList.remove("hidden");
@@ -729,7 +725,7 @@ function showToast(message) {
   }, 3000);
 }
 
-// Helper: Generate 6 digit input row
+// Helper: Generate 6 digit input row for password
 function createPasswordRow(idPrefix) {
   let row = document.createElement("div");
   row.className = "push-row";
@@ -768,21 +764,21 @@ function resetPasswordInputs(idPrefix) {
   if (first) first.focus();
 }
 
-// Helper: Move focus on input
+// Helper: Move focus on input (auto-tab)
 function setupAutoTab(idPrefix) {
   for (let i = 0; i < 6; i++) {
     let input = document.getElementById(`${idPrefix}${i}`);
     input.addEventListener("input", (e) => {
       let val = e.target.value;
       if (/^[0-9]$/.test(val)) {
-        if (i < 5) document.getElementById(`${idPrefix}${i+1}`).focus();
+        if (i < 5) document.getElementById(`${idPrefix}${i + 1}`).focus();
       } else {
         input.value = ""; // Only allow 0-9
       }
     });
     input.addEventListener("keydown", e => {
       if (e.key === "Backspace" && !input.value && i > 0) {
-        document.getElementById(`${idPrefix}${i-1}`).focus();
+        document.getElementById(`${idPrefix}${i - 1}`).focus();
       }
     });
   }
@@ -797,6 +793,8 @@ function showPushModal(innerHtml) {
   if (closeBtn) {
     closeBtn.onclick = () => {
       pushContainer.style.display = "none";
+      // Idan an rufe modal, sai a sake duba password entry area
+      if (withdrawalPasswordCreated) renderPasswordEntry();
     };
   }
 }
@@ -851,7 +849,7 @@ function showCreatePasswordModal() {
         pushContainer.style.display = "none";
         withdrawalPasswordCreated = true;
         withdrawalPassword = password;
-        renderPasswordEntry(); // Show password entry for withdrawal
+        renderPasswordEntry();
       } else {
         showToast("❌Error: Failed to create password.");
       }
@@ -862,7 +860,7 @@ function showCreatePasswordModal() {
   };
 }
 
-// Show password entry for withdrawal
+// Show password entry for withdrawal (always show after password is created)
 function renderPasswordEntry() {
   if (!withdrawalPasswordCreated) {
     passwordEntryArea.innerHTML = "";
@@ -884,7 +882,54 @@ function renderPasswordEntry() {
   document.getElementById("ent_0").focus();
 }
 
-// Load user info and password state
+// ============= AUTO-TAB FOR THE MAIN FORM PASSWORD (pw-box) =============
+function setupFormPasswordAutoTab() {
+  const pwInputs = [];
+  for (let i = 0; i < 6; i++) {
+    const input = document.getElementById(`withdrawal-password-${i}`);
+    pwInputs.push(input);
+    input.addEventListener("input", (e) => {
+      if (/^[0-9]$/.test(input.value)) {
+        if (i < 5) pwInputs[i + 1].focus();
+      } else {
+        input.value = "";
+      }
+    });
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Backspace" && !input.value && i > 0) {
+        pwInputs[i - 1].focus();
+      }
+    });
+  }
+}
+setupFormPasswordAutoTab();
+
+// Get value from main form's 6 input boxes
+function getFormWithdrawalPassword() {
+  let value = "";
+  for (let i = 0; i < 6; i++) {
+    let input = document.getElementById(`withdrawal-password-${i}`);
+    if (!input || !/^[0-9]$/.test(input.value)) return null;
+    value += input.value;
+  }
+  return value;
+}
+// Reset form's 6 input boxes
+function resetFormWithdrawalPassword() {
+  for (let i = 0; i < 6; i++) {
+    let input = document.getElementById(`withdrawal-password-${i}`);
+    if (input) input.value = "";
+  }
+  document.getElementById("withdrawal-password-0").focus();
+}
+
+// ============= USER DATA AND PASSWORD STATE LOADING =============
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+loadingScreen.style.display = "flex";
+mainContent?.classList.add("hidden");
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     try {
@@ -899,6 +944,7 @@ onAuthStateChanged(auth, async (user) => {
         fullNameElem.textContent = data.fullName || "";
         withdrawalPassword = data.withdrawalPassword || null;
         withdrawalPasswordCreated = !!data.withdrawalPassword;
+        // Idan withdrawalPassword ba a yi ba, show modal dole!
         if (!withdrawalPasswordCreated) {
           showCreatePasswordModal();
           passwordEntryArea.innerHTML = "";
@@ -918,49 +964,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-
-
-
-
-// Auto-move logic for password boxes
-const pwInputs = Array.from({ length: 6 }, (_, i) =>
-  document.getElementById(`withdrawal-password-${i}`)
-);
-pwInputs.forEach((input, i) => {
-  input.addEventListener("input", (e) => {
-    if (/^[0-9]$/.test(input.value)) {
-      if (i < 5) pwInputs[i + 1].focus();
-    } else {
-      input.value = ""; // Only allow single 0-9
-    }
-  });
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Backspace" && !input.value && i > 0) {
-      pwInputs[i - 1].focus();
-    }
-  });
-});
-
-// Collect value from 6-box password
-function getWithdrawalPassword() {
-  let value = "";
-  for (let i = 0; i < 6; i++) {
-    let v = pwInputs[i].value;
-    if (!/^[0-9]$/.test(v)) return null;
-    value += v;
-  }
-  return value;
-}
-
-// Reset 6-box password
-function resetWithdrawalPassword() {
-  pwInputs.forEach((input) => (input.value = ""));
-  pwInputs[0].focus();
-}
-
-
-
-// Withdrawal submit logic
+// ============= WITHDRAWAL SUBMIT LOGIC =============
 document.getElementById("withdrawalForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   loadingScreen.style.display = "flex";
@@ -968,16 +972,16 @@ document.getElementById("withdrawalForm").addEventListener("submit", async (e) =
   const amount = parseFloat(document.getElementById("amount").value);
   const walletAddress = document.getElementById("walletAddress").value.trim();
   const coin = document.getElementById("coinSelect").value;
-  const user = auth.currentUser;
 
-  // Withdrawal password input
-  let password = null;
+  // Withdrawal password input (from form, not modal)
+  let password = getFormWithdrawalPassword();
   if (!withdrawalPasswordCreated) {
     showToast("❌Error: Please create your withdrawal password first.");
     loadingScreen.style.display = "none";
+    // Show modal if missing!
+    showCreatePasswordModal();
     return;
   }
-  password = getPassword("ent_");
   if (!password) {
     showToast("❌Error: Please enter your 6-digit password.");
     loadingScreen.style.display = "none";
@@ -1014,7 +1018,7 @@ document.getElementById("withdrawalForm").addEventListener("submit", async (e) =
   // Password validation
   if (password !== withdrawalPassword) {
     showToast("❌Error: Incorrect withdrawal password");
-    resetPasswordInputs("ent_");
+    resetFormWithdrawalPassword();
     loadingScreen.style.display = "none";
     return;
   }
@@ -1032,7 +1036,7 @@ document.getElementById("withdrawalForm").addEventListener("submit", async (e) =
         "x-api-key": "@haruna66"
       },
       body: JSON.stringify({
-        email: user.email,
+        email: userData.email,
         amount: finalAmount.toFixed(2),
         walletAddress,
         coin,
@@ -1044,7 +1048,7 @@ document.getElementById("withdrawalForm").addEventListener("submit", async (e) =
     if (response.ok) {
       showToast("✔️Successfully: Your withdrawal has been processed. Please wait for 24 hours.");
       document.getElementById("withdrawalForm").reset();
-      resetPasswordInputs("ent_");
+      resetFormWithdrawalPassword();
     } else {
       showToast("❌Error: Failed to process your withdrawal.");
     }
@@ -1064,6 +1068,5 @@ pushContainer.addEventListener('click', function(e){
   }
 });
 </script>
-
 </body>
 </html>
