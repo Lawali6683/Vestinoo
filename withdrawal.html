@@ -11,7 +11,6 @@
 
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
 
-
     <style>
         body {
             margin: 0;
@@ -553,19 +552,20 @@ button[type="submit"]:active {
   position: fixed;
   bottom: 30px;
   left: 50%;
+  top: 200px;
   transform: translateX(-50%);
   background: #222e;
   color: #fff;
-  padding: 15px 22px;
+  padding: 1px 2px;
   border-radius: 7px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-  font-size: 16px;
+  font-size: 20px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.28s;
-  z-index: 999;
+  transition: opacity 1.28s;
+  z-index: 9999;
 }
-.toast.show { opacity: 1; pointer-events: auto; }
+.toast.show { opacity: 3; pointer-events: auto; }
 .hidden { display: none; }
   </style>
     
@@ -661,6 +661,7 @@ button[type="submit"]:active {
         <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]*" class="pw-box" id="withdrawal-password-4" autocomplete="off" required>
         <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]*" class="pw-box" id="withdrawal-password-5" autocomplete="off" required>
       </div>
+      <a href="chan.html">Missing password</a>
     </div>
 
     <button type="submit">Submit</button>
@@ -955,7 +956,7 @@ onAuthStateChanged(auth, async (user) => {
       loadingScreen.style.display = "none";
       mainContent.classList.remove("hidden");
     } catch (error) {
-      showToast("❌ Error loading user data.");
+     
       loadingScreen.style.display = "none";
       console.error(error);
     }
@@ -1009,7 +1010,7 @@ document.getElementById("withdrawalForm").addEventListener("submit", async (e) =
     loadingScreen.style.display = "none";
     return;
   }
-  if (userData.pendingWithdrawals) {
+  if (userData.approvedWithdrawals) {
     showToast("❌Error: You have a pending withdrawal");
     loadingScreen.style.display = "none";
     return;
@@ -1017,7 +1018,7 @@ document.getElementById("withdrawalForm").addEventListener("submit", async (e) =
 
   // Password validation
   if (password !== withdrawalPassword) {
-    showToast("❌Error: Incorrect withdrawal password");
+    showToast("❌Error: This password is not correct ");
     resetFormWithdrawalPassword();
     loadingScreen.style.display = "none";
     return;
