@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pending Withdrawals</title>
-    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
-<script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
-<script type="text/javascript">
-    aclib.runInterstitial({
-        zoneId: '9974150',
-    });
-</script>
+    <title>Pending Withdrawals - Vestinoo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    
+  <script type='text/javascript' src='//pl26830990.profitableratecpm.com/62/af/b8/62afb8105df6d37f62a3db196495e4b7.js'></script>
+    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
-<script src="https://ligheechoagool.com/88/tag.min.js" data-zone="145615" async data-cfasync="false"></script>
+<script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
+
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
+
     <style>
         body {
             margin: 0;
@@ -25,125 +24,179 @@
             background-size: cover;
             color: #ffffff;
         }
-
-        .container {
-            max-width: 300px;
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            border: 2px solid #00ffcc;
-            box-shadow: 0 0 10px #00ffcc;
+        /* Loading Screen */
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
         }
 
-        .withdrawal-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 10px 0;
+        .loading-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(0, 255, 180, 0.05);
+            padding: 15px;
+            box-shadow: 0 0 25px rgba(0, 255, 180, 0.3);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .loading-logo img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+        }
+
+        .spinner {
+            margin: 20px auto 0;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 255, 180, 0.2);
+            border-top: 4px solid #00ffb4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #00ffb4;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 180, 0.5); }
+            100% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
+        }
+        
+        .hidden { display: none; }
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            margin-top: 40px;
+        }
+        h2 {
+            color: #00ffe1;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+        }
+        .message {
+            background: #ffffff11;
+            border-left: 5px solid #00ffe1;
             padding: 15px;
             border-radius: 8px;
-            background: #1e3a3a;
-            color: #ffffff;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-            border: 2px solid #00ffcc;
-            box-shadow: 0 0 10px #00ffcc;
+            font-size: 1.1em;
+            margin-bottom: 20px;
         }
-
-        .withdrawal-item:nth-child(odd) {
-            background: #153838;
+        .withdrawal {
+            background: #ffffff0d;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #00ffe11a;
+            transition: 0.3s ease;
         }
-
-        .withdrawal-number {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #ffcc00;
+        .withdrawal:hover {
+            background: #ffffff18;
         }
-
-        .withdrawal-details {
-            flex: 1;
-            margin-left: 15px;
+        .withdrawal strong {
+            color: #00ffe1;
         }
-
-        .withdrawal-details span {
-            display: block;
-            margin: 5px 0;
-        }
-
-        .withdrawal-details .amount {
-            color: #ff0000;
-            font-weight: bold;
-        }
-
-        .message {
+        .no-data {
             text-align: center;
-            margin: 20px 0;
             font-size: 1.2em;
-            font-weight: bold;
-            color: #ffcc00;
+            color: #ff7676;
         }
     </style>
 </head>
 <body>
-    <div class="container" id="withdrawalsContainer">
-        <h1>Pending Withdrawals</h1>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-logo">
+            <img src="logo.png" alt="Vestinoo Logo">
+        </div>
+        <div class="spinner"></div>
+        <div class="loading-text">Loading Vestinoo...</div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="hidden">
+        <div class="container">
+            <h2 id="welcomeMessage">Welcome to Vestinoo Pending Payment Page</h2>
+            <div id="withdrawalList"></div>
+        </div>
     </div>
 
     <script type="module">
-        import { app, analytics, firebaseConfig } from './firebase.js';
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { app } from './firebase.js';
+        import {
+            getAuth,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import {
+            getDatabase,
+            ref,
+            get
+        } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
-        const auth = getAuth(app);
         const db = getDatabase(app);
+        const auth = getAuth(app);
 
-        const withdrawalsContainer = document.getElementById('withdrawalsContainer');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainContent = document.getElementById('main-content');
+        const withdrawalList = document.getElementById('withdrawalList');
+        const welcomeMessage = document.getElementById('welcomeMessage');
 
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const userId = user.uid;
-                const fullNameRef = ref(db, `users/${userId}/fullName`);
-                const withdrawalsRef = ref(db, `approvedWithdrawals/${userId}`);
+                const userRef = ref(db, `users/${userId}`);
+                const snapshot = await get(userRef);
+                const userData = snapshot.val();
+                if (userData && userData.fullName) {
+                    welcomeMessage.innerHTML = `<i class='fas fa-user-circle'></i> ${userData.fullName}, welcome to your Vestinoo pending payment page.`;
+                }
 
-                // Get user full name
-                let fullName = '';
-                onValue(fullNameRef, (snapshot) => {
-                    fullName = snapshot.val() || 'User';
-                });
+                const withdrawalRef = ref(db, `users/${userId}/approvedWithdrawals`);
+                const withdrawalSnap = await get(withdrawalRef);
 
-                // Get pending withdrawals
-                onValue(withdrawalsRef, (snapshot) => {
-                    const withdrawals = snapshot.val();
-                    withdrawalsContainer.innerHTML = '<h1>Pending Withdrawals</h1>';
+                loadingScreen.classList.add('hidden');
+                mainContent.classList.remove('hidden');
 
-                    if (withdrawals) {
-                        let count = 1;
-                        for (const key in withdrawals) {
-                            const withdrawal = withdrawals[key];
-                            const withdrawalHTML = `
-                                <div class="withdrawal-item">
-                                    <div class="withdrawal-number">#${count}</div>
-                                    <div class="withdrawal-details">
-                                        <span>Amount: <span class="amount">$${parseFloat(withdrawal.amount).toFixed(2)}</span></span>
-                                        <span>Wallet Address: ${withdrawal.welletAddress}</span>
-                                        <span>Withdrawal Time: ${new Date(withdrawal.withdrawalTime).toLocaleString()}</span>
-                                    </div>
-                                </div>
-                            `;
-                            withdrawalsContainer.innerHTML += withdrawalHTML;
-                            count++;
-                        }
-                    } else {
-                        withdrawalsContainer.innerHTML += `
-                            <div class="message">
-                                ${fullName}, you are not pending payment in Vestinoo.
-                            </div>
-                        `;
-                    }
-                });
+                if (withdrawalSnap.exists()) {
+                    const data = withdrawalSnap.val();
+                    const keys = Object.keys(data).reverse();
+                    keys.forEach((key, index) => {
+                        const w = data[key];
+                        const html = `
+                            <div class="withdrawal">
+                                <p><strong>Pending Payment #${index + 1}</strong></p>
+                                <p>Amount: <strong>$${w.amount}</strong></p>
+                                <p>Coin: <strong>${w.coin}</strong></p>
+                                <p>Wallet: <strong>${w.walletAddress}</strong></p>
+                                <p>Date: <strong>${new Date(w.withdrawalTime).toLocaleString()}</strong></p>
+                            </div>`;
+                        withdrawalList.innerHTML += html;
+                    });
+                } else {
+                    withdrawalList.innerHTML = `<div class='no-data'><i class='fas fa-hourglass-half'></i> You don't have any pending withdrawals</div>`;
+                }
             } else {
-                withdrawalsContainer.innerHTML = '<p>Please log in to see your pending withdrawals.</p>';
+                window.location.href = '/login.html';
             }
         });
     </script>
