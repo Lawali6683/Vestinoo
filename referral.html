@@ -4,16 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vestinoo Referral</title>
-    
     <script type='text/javascript' src='//pl26830990.profitableratecpm.com/62/af/b8/62afb8105df6d37f62a3db196495e4b7.js'></script>
-
     <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('gizokraijaw.net',9313786,document.createElement('script'))</script>
 
 <script src="https://eechicha.com/act/files/tag.min.js?z=9313758" data-cfasync="false" async></script>
 
-<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script>
-
-
+<script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9289544,document.createElement('script'))</script> 
+  
     <style>
         body {
             margin: 0;
@@ -330,7 +327,7 @@ box-shadow: 0 0 10px #00ffcc;
 <div class="referral-container">
   <h3>Your Referral Link</h3>
   <div class="referral-box">
-    <input type="text" id="referralLink" value="https://vestinoo.com/referral" readonly>
+    <input type="text" id="referralLink" value="https://vestinoo.pages.dev" readonly>
     <button id="copyReferral">Copy</button>
   </div>
 </div>
@@ -387,8 +384,8 @@ box-shadow: 0 0 10px #00ffcc;
                     if (data) {
                         userBalanceElem.textContent = data.userBalance?.toFixed(2) || "0.00";
                         depositElem.textContent = data.deposit?.toFixed(2) || "0.00";
-                        level1Elem.textContent = data.level1 || 0;
-                        level2Elem.textContent = data.level2 || 0;
+                        level1Elem.textContent = data.referralRegisterLevel1 || 0;
+                        level2Elem.textContent = data.referralRegisterLevel2 || 0;
                         referralLinkElem.value = data.referralLink || "https://vestinoo.pages.dev/";
                     }
                 });
@@ -410,7 +407,7 @@ box-shadow: 0 0 10px #00ffcc;
         function showToast(message) {
             toastElem.textContent = message;
             toastElem.classList.add("show");
-            setTimeout(() => toastElem.classList.remove("show"), 3000);
+            setTimeout(() => toastElem.classList.remove("show"), 4000);
         }
     </script>
 </body>
