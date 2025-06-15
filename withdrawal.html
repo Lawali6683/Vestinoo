@@ -630,9 +630,10 @@ button[type="submit"]:active {
   <h3>Withdrawal</h3>
   <form id="withdrawalForm" autocomplete="off">
     <div class="form-group">
-      <label for="amount">Amount</label>
-      <input type="number" id="amount" placeholder="Enter amount to withdraw" required>
-    </div>
+  <label for="amount">Amount</label>
+  <input type="number" id="amount" placeholder="Enter amount to withdraw" step="0.01" required>
+</div>
+    
 
     <div class="form-group">
       <label for="coinSelect">Select Coin</label>
