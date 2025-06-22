@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vestinoo Registration</title>
    <meta property="og:title" content="Vestinoo Mine - Free Crypto Mining" />
+   <meta name="google-site-verification" content="1ljLiqNsBHOXs4PU2B31irmlChxsUrkVba-gEOA6lO8" />
+   
 <meta property="og:description" content=" free with VestBit Mine & Tasks earn up $50! Get $0.50 bonus, earn daily profits, upgrade with deposit plans. Minimum withdrawal: $1.25. 2-level referrals up to 18%." />
 <meta property="og:image" content="https://vestinoo.pages.dev/media.png_new.jpg" />
 <meta property="og:image:secure_url" content="https://vestinoo.pages.dev/media.png_new.jpg" />
@@ -575,8 +577,17 @@ document.getElementById('registration-form').addEventListener('submit', async (e
     }
 
     // Create Firebase user
-    userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    await sendEmailVerification(userCredential.user);
+userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+// Send verification email and confirm it was sent
+try {
+  await sendEmailVerification(userCredential.user);
+  console.log("Verification email sent successfully to:", email);
+} catch (verificationError) {
+  console.error("Email verification failed:", verificationError.message);
+  throw new Error("Unable to send verification email.");
+}
+
 
     // Send data to backend server
     const response = await fetch("https://vestinoo-project.vercel.app/api/userData", {
