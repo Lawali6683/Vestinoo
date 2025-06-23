@@ -527,7 +527,7 @@ function togglePassword(fieldId) {
 }
 </script>
 <script type="module">
-    import { app } from './firebase.js';
+import { app } from './firebase.js';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -537,14 +537,17 @@ import {
 
 const auth = getAuth(app);
 
+// Hide loading screen initially
 document.getElementById('loading-screen').style.display = 'none';
 
 document.getElementById('registration-form').addEventListener('submit', async (e) => {
   e.preventDefault();
+
+  // Show loading screen
   document.getElementById('loading-screen').style.display = 'flex';
 
   const fullName = document.getElementById('fullName').value.trim();
-  const email = document.getElementById('email').value.trim();
+  const email = document.getElementById('email').value.trim().toLowerCase();
   const username = document.getElementById('username').value.trim();
   const country = document.getElementById('country').value.trim();
   const password = document.getElementById('password').value;
@@ -552,6 +555,7 @@ document.getElementById('registration-form').addEventListener('submit', async (e
   const errorMessage = document.getElementById('error-message');
   const emailError = document.getElementById('email-error');
 
+  // Clear previous errors
   errorMessage.style.display = 'none';
   emailError.style.display = 'none';
 
@@ -565,16 +569,13 @@ document.getElementById('registration-form').addEventListener('submit', async (e
   let userCredential = null;
 
   try {
-    // Check if email is already registered in Firebase Auth
+    // Step 1: Check if email already exists in Firebase Auth
     const signInMethods = await fetchSignInMethodsForEmail(auth, email);
     if (signInMethods.length > 0) {
-      throw new Error("This email is already in use.");
+      throw new Error("email-already-exists");
     }
 
-    // Create Firebase user
-    userCredential = await createUserWithEmailAndPassword(auth, email, password);
-
-    // Send data to backend server
+    // Step 2: Send data to backend first
     const response = await fetch("https://vestinoo-project.vercel.app/api/userData", {
       method: "POST",
       headers: {
@@ -591,49 +592,47 @@ document.getElementById('registration-form').addEventListener('submit', async (e
       })
     });
 
-    // Handle server responses
-    if (response.status === 409) {
-      // Email already exists in backend
-      await deleteUser(userCredential.user);
-      emailError.textContent = "This email is already in use.";
-      emailError.style.display = 'block';
-      document.getElementById('loading-screen').style.display = 'none';
-      return;
-    }
+    // Step 3: If backend rejects, do not create user
     if (!response.ok) {
-      // Delete Firebase user if server registration fails
-      await deleteUser(userCredential.user);
-      throw new Error('Failed to save user data to server.');
+      if (response.status === 409) {
+        throw new Error("email-already-exists");
+      } else {
+        throw new Error("server-error");
+      }
     }
 
-    // Success - show modal then redirect
+    // Step 4: Create user in Firebase Auth only after server accepts
+    userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+    // Success
     document.getElementById('success-modal').style.display = 'flex';
     setTimeout(() => {
       window.location.href = "login.html";
     }, 2000);
 
   } catch (error) {
-    let message = "An error occurred, please try again.";
+    console.error(error.message);
 
-    if (error.message.includes("email is already in use")) {
+    let message = "An error occurred, please try again.";
+    if (error.message === "email-already-exists") {
       message = "This email is already in use.";
     } else if (error.code === "auth/invalid-email") {
       message = "Invalid email format.";
     } else if (error.code === "auth/weak-password") {
       message = "Password should be at least 6 characters.";
-    } else if (error.message.includes("Failed to save user data")) {
+    } else if (error.message === "server-error") {
       message = "Server error occurred. Please try again.";
     }
 
     emailError.textContent = message;
     emailError.style.display = 'block';
 
-    // Clean up user if partially registered
+    // Clean up Firebase user if created
     if (userCredential && userCredential.user) {
       try {
         await deleteUser(userCredential.user);
       } catch (deleteError) {
-        // silent
+        console.warn("Failed to delete user after error:", deleteError.message);
       }
     }
   } finally {
@@ -641,10 +640,12 @@ document.getElementById('registration-form').addEventListener('submit', async (e
   }
 });
 
+// Function to close the modal 
 window.closeModal = function () {
   document.getElementById('success-modal').style.display = 'none';
 }
 </script>
+
 
 <script>
     const CACHE_NAME = 'vestinoo-cache-v1';
