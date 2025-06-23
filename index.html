@@ -439,7 +439,7 @@ background-position: center;
    
     <img src="end.png" alt="Success" style="max-width: 100px; margin-bottom: 10px;">
     <h2>Congratulations!</h2>
-    <h2>Registration Successful. Redirecting to your dashboard...</h2>
+    <h2>Registration Successful. Redirecting to login...</h2>
   </div>
 </div>
 
@@ -606,7 +606,7 @@ document.getElementById('registration-form').addEventListener('submit', async (e
 
     // After 2 seconds, redirect to dashboard
     setTimeout(() => {
-      window.location.href = "dashboard.html";
+      window.location.href = "login.html";
     }, 2000);
 
   } catch (error) {
