@@ -526,8 +526,11 @@ function togglePassword(fieldId) {
     }
 }
 </script>
-<script>
-   
+<script type="module">
+import { app } from './firebase.js';
+
+document.getElementById('loading-screen').style.display = 'none';
+
 document.getElementById('registration-form').addEventListener('submit', async e => {
   e.preventDefault();
   document.getElementById('loading-screen').style.display = 'flex';
@@ -548,33 +551,39 @@ document.getElementById('registration-form').addEventListener('submit', async e 
   try {
     const resp = await fetch("https://vestinoo-project.vercel.app/api/userData", {
       method: "POST",
-      headers: {"Content-Type":"application/json","x-api-key":"@haruna66"},
-      body: JSON.stringify({ fullName, email, username, country, password, referralBy: new URLSearchParams(window.location.search).get("ref") })
+      headers: {
+        "Content-Type":"application/json",
+        "x-api-key":"@haruna66"
+      },
+      body: JSON.stringify({
+        fullName, email, username, country, password,
+        referralBy: new URLSearchParams(window.location.search).get("ref")
+      })
     });
 
-    const result = await resp.json();
-    console.log("Backend response:", result);
-
+    const data = await resp.json();
     if (!resp.ok) {
-      throw new Error(resp.status === 409 ? "email-exists" : "server-error");
+      console.error("Backend error:", data);
+      if (resp.status === 409) throw new Error("email-exists");
+      else throw new Error("server-error");
     }
 
-    // ✅ Success
+    // ✅ SUCCESS — Backend ya yi register + authentication
     document.getElementById('success-modal').style.display = 'flex';
     setTimeout(() => window.location.href = "login.html", 2000);
 
   } catch (err) {
     console.error("Registration error:", err);
     let msg = "An error occurred, please try again.";
-    if (err.message.includes("email-exists")) msg = "This email is already in use.";
+    if (err.message === "email-exists") msg = "This email is already in use.";
     document.getElementById('email-error').textContent = msg;
     document.getElementById('email-error').style.display = 'block';
   } finally {
     document.getElementById('loading-screen').style.display = 'none';
   }
 });
-
 </script>
+
 
 <script>
     const CACHE_NAME = 'vestinoo-cache-v1';
