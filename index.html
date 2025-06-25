@@ -435,19 +435,19 @@ background-position: center;
 
 <!-- Modal Success Message -->
 <div id="success-modal" class="modal">
-  <div class="modal-content" style="text-align:center;padding:32px 24px 24px 24px;">
-    <img src="end.png" alt="Vestinoo" style="max-width: 80px; margin-bottom: 18px;">
-    <h2 style="color:#143772;font-weight:bold;margin-bottom:8px;">Congratulations!</h2>
-    <h3 style="color:#222;font-weight:normal;margin-bottom:16px;">Your registration was successful.</h3>
-    <p style="color:#333;font-size:17px;margin-bottom:12px;">
-      Please check your email inbox (<b>and spam folder</b>) to verify your account.<br>
-      Just click the <b>"Verify Email"</b> button in our email to activate your Vestinoo account.
+  <div class="modal-content" style="text-align: center;">
+    <img src="end.png" alt="Success" style="max-width: 100px; margin-bottom: 10px;">
+    <h2 style="color: #2a8ae2;">Congratulations, Registration Successful!</h2>
+    <p style="font-size: 16px; margin-top: 10px;">
+      Please check your email inbox now to verify your email address.<br>
+      Your account will not be active until email verification is complete.
     </p>
-    <p style="font-size:14px;color:#888;margin-top:20px;">
-      Didn’t get the email? Wait a few minutes or <b>contact support</b> if you need help.
+    <p style="font-size: 14px; color: gray; margin-top: 10px;">
+      Didn't get the email? Check your spam or promotions folder.
     </p>
   </div>
 </div>
+
 
         <form id="registration-form">
             <label for="fullName">Full Name</label>
@@ -536,142 +536,57 @@ function togglePassword(fieldId) {
 <script type="module">
 import { app } from './firebase.js';
 
-// Make sure the DOM is fully loaded before running code
-window.addEventListener('DOMContentLoaded', () => {
-  // Hide loading screen on load
-  const loadingScreen = document.getElementById('loading-screen');
-  if (loadingScreen) loadingScreen.style.display = 'none';
+document.getElementById('loading-screen').style.display = 'none';
 
-  const registrationForm = document.getElementById('registration-form');
+document.getElementById('registration-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  document.getElementById('loading-screen').style.display = 'flex';
+
+  const f = id => document.getElementById(id).value.trim(), fullName = f('fullName');
+  const email = f('email').toLowerCase(), username = f('username'), country = f('country');
+  const password = document.getElementById('password').value, confirm = document.getElementById('confirmPassword').value;
   const emailError = document.getElementById('email-error');
-  const errorMessage = document.getElementById('error-message');
-  const successModal = document.getElementById('success-modal');
-  const successMessageDiv = document.getElementById('success-message');
+  emailError.style.display = 'none';
 
-  // Prevent code from running if the form is not present
-  if (!registrationForm) return;
+  if (password !== confirm) {
+    document.getElementById('error-message').textContent = 'Passwords do not match!';
+    document.getElementById('error-message').style.display = 'block';
+    document.getElementById('loading-screen').style.display = 'none';
+    return;
+  }
 
-  registrationForm.addEventListener('submit', async e => {
-    e.preventDefault();
-    if (loadingScreen) loadingScreen.style.display = 'flex';
+  try {
+    const resp = await fetch("https://vestinoo-project.vercel.app/api/userData", {
+      method: "POST",
+      headers: {
+        "Content-Type":"application/json",
+        "x-api-key":"@haruna66"
+      },
+      body: JSON.stringify({
+        fullName, email, username, country, password,
+        referralBy: new URLSearchParams(window.location.search).get("ref")
+      })
+    });
 
-    const f = id => document.getElementById(id)?.value.trim() ?? '';
-    const fullName = f('fullName');
-    const email = f('email').toLowerCase();
-    const username = f('username');
-    const country = f('country');
-    const password = document.getElementById('password')?.value ?? '';
-    const confirm = document.getElementById('confirmPassword')?.value ?? '';
-
-    if (emailError) emailError.style.display = 'none';
-    if (errorMessage) errorMessage.style.display = 'none';
-
-    if (password !== confirm) {
-      if (errorMessage) {
-        errorMessage.textContent = 'Passwords do not match!';
-        errorMessage.style.display = 'block';
-      }
-      if (loadingScreen) loadingScreen.style.display = 'none';
-      return;
+    const data = await resp.json();
+    if (!resp.ok) {
+      console.error("Backend error:", data);
+      if (resp.status === 409) throw new Error("email-exists");
+      else throw new Error("server-error");
     }
 
-    try {
-      const resp = await fetch("https://vestinoo-project.vercel.app/api/userData", {
-        method: "POST",
-        headers: {
-          "Content-Type":"application/json",
-          "x-api-key":"@haruna66"
-        },
-        body: JSON.stringify({
-          fullName, email, username, country, password,
-          referralBy: new URLSearchParams(window.location.search).get("ref")
-        })
-      });
+    // ✅ SUCCESS — show modal only
+    document.getElementById('success-modal').style.display = 'flex';
 
-      const data = await resp.json();
-
-      if (!resp.ok) {
-        console.error("Backend error:", data);
-        if (resp.status === 409) throw new Error("email-exists");
-        else if (data && data.error && data.error.includes("Failed to send verification")) throw new Error("email-send-fail");
-        else throw new Error("server-error");
-      }
-
-      // ✅ SUCCESS — Backend registered user, now check for verification link
-      if (!data.emailVerifyLink) {
-        throw new Error("email-send-fail");
-      }
-
-      // Send verification email with beautiful template
-      const sendEmailResp = await fetch("https://bonus-gamma.vercel.app/api/email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          to: email,
-          subject: "Verify your Vestinoo Account",
-          html: `
-            <div style="background:#f2f6ff;padding:32px 0;font-family:Arial,sans-serif;">
-              <div style="max-width:480px;margin:0 auto;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(44,62,80,.08);overflow:hidden;">
-                <div style="padding:32px 32px 24px 32px;text-align:center;">
-                  <img src="https://vestinoo.pages.dev/logo" alt="Vestinoo" style="width:80px;margin-bottom:16px"/>
-                  <h2 style="color:#143772;font-weight:bold;margin:0 0 16px 0;font-size: 2rem;">Welcome to Vestinoo!</h2>
-                  <p style="color:#222;font-size:16px;margin:0 0 16px 0;">
-                    Thank you for registering with <b>Vestinoo</b>, the world’s trusted investment and finance platform.<br>
-                    Please confirm your email address to start your journey with us.
-                  </p>
-                  <a href="${data.emailVerifyLink}" style="margin-top:24px;display:inline-block;padding:14px 32px;font-size:16px;color:#fff;background:#143772;border-radius:6px;text-decoration:none;font-weight:bold;box-shadow:0 2px 6px rgba(44,62,80,.06);transition:background .2s;">
-                    Verify Email
-                  </a>
-                  <p style="font-size:13px;color:#888;margin-top:32px;">
-                    Didn’t request this? Please ignore this email.<br>
-                    <span style="display:block;margin-top:8px;">Need help? <a href="mailto:support@vestinoo.com" style="color:#143772;text-decoration:underline;">Contact Support</a></span>
-                  </p>
-                </div>
-                <div style="background:#f2f6ff;text-align:center;padding:16px 0;font-size:13px;color:#888;">
-                  &copy; ${new Date().getFullYear()} Vestinoo. All Rights Reserved.
-                </div>
-              </div>
-            </div>
-          `
-        })
-      });
-
-      if (!sendEmailResp.ok) {
-        throw new Error("email-send-fail");
-      }
-
-      // Show success modal and persistent message
-      if (loadingScreen) loadingScreen.style.display = 'none';
-      if (successModal) successModal.style.display = 'flex';
-      if (successMessageDiv) {
-        successMessageDiv.innerHTML = `
-          <div style="text-align:center;">
-            <img src="https://vestinoo.pages.dev/logo" alt="Vestinoo" style="width:64px;margin-bottom:12px"/>
-            <h2 style="color:#143772;margin-bottom:10px;">Registration Successful!</h2>
-            <p style="color:#333;font-size:17px;">Please check your email inbox (<b>${email}</b>) and click the "Verify Email" button to activate your account.</p>
-            <p style="font-size:13px;color:#888;margin-top:18px;">If you don't see the email, check your spam/junk folder.</p>
-          </div>
-        `;
-      }
-      // Don't auto-redirect; let the user see the message
-
-    } catch (err) {
-      console.error("Registration error:", err);
-      let msg = "An error occurred, please try again.";
-      if (err.message === "email-exists") {
-        msg = "This email is already in use.";
-      } else if (err.message === "email-send-fail") {
-        msg = "We could not send the verification email. Please check your email address or try again later.";
-      }
-      if (emailError) {
-        emailError.textContent = msg;
-        emailError.style.display = 'block';
-      }
-      if (loadingScreen) loadingScreen.style.display = 'none';
-    }
-  });
+  } catch (err) {
+    console.error("Registration error:", err);
+    let msg = "An error occurred, please try again.";
+    if (err.message === "email-exists") msg = "This email is already in use.";
+    document.getElementById('email-error').textContent = msg;
+    document.getElementById('email-error').style.display = 'block';
+  } finally {
+    document.getElementById('loading-screen').style.display = 'none';
+  }
 });
 </script>
 
