@@ -432,21 +432,16 @@ background-position: center;
         
         <div id="error-message" style="color: red; display: none;">          </div>
              
-
 <!-- Modal Success Message -->
 <div id="success-modal" class="modal">
-  <div class="modal-content" style="text-align: center;">
+  <div class="modal-content">
+   
     <img src="end.png" alt="Success" style="max-width: 100px; margin-bottom: 10px;">
-    <h2 style="color: #2a8ae2;">Congratulations, Registration Successful!</h2>
-    <p style="font-size: 16px; margin-top: 10px;">
-      Please check your email inbox now to verify your email address.<br>
-      Your account will not be active until email verification is complete.
-    </p>
-    <p style="font-size: 14px; color: gray; margin-top: 10px;">
-      Didn't get the email? Check your spam or promotions folder.
-    </p>
+    <h2>Congratulations!</h2>
+    <h2>Registration Successfully Redirect to login..</h2>
   </div>
 </div>
+
 
 
         <form id="registration-form">
@@ -532,7 +527,6 @@ function togglePassword(fieldId) {
     }
 }
 </script>
-
 <script type="module">
 import { app } from './firebase.js';
 
@@ -575,8 +569,9 @@ document.getElementById('registration-form').addEventListener('submit', async e 
       else throw new Error("server-error");
     }
 
-    // ✅ SUCCESS — show modal only
+    // ✅ SUCCESS — Backend ya yi register + authentication
     document.getElementById('success-modal').style.display = 'flex';
+    setTimeout(() => window.location.href = "login.html", 2000);
 
   } catch (err) {
     console.error("Registration error:", err);
@@ -589,6 +584,7 @@ document.getElementById('registration-form').addEventListener('submit', async e 
   }
 });
 </script>
+
 
 <script>
     const CACHE_NAME = 'vestinoo-cache-v1';
