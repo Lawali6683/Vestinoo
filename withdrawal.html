@@ -757,7 +757,7 @@ button[type="submit"]:active {
     <li>Other networks will not receive funds.</li>
     <li>Any BNB (BEP20) USDT (BEP20) wallet can be used.</li>
     <li>Withdrawals arrive within <strong>24 hours</strong>.</li>
-    <li>Minimum: <strong>$1.25</strong> | Maximum daily: <strong>$50</strong></li>
+    <li>Minimum: <strong>$1.25</strong> | Maximum daily: <strong>$250</strong></li>
     <li><strong>6% gas fee</strong> will be deducted.</li>
     <li>Contact support if needed.</li>
   </ul>
@@ -1217,8 +1217,8 @@ document.getElementById("withdrawalForm").addEventListener("submit", async (e) =
     loadingScreen.style.display = "none";
     return;
   }
-  if (amount > 50) {
-    showToast("❌Error: Maximum daily withdrawal is $50");
+  if (amount > 350) {
+    showToast("❌Error: Maximum daily withdrawal is $250");
     loadingScreen.style.display = "none";
     return;
   }
