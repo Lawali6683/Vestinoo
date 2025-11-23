@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at 30% 30%, #0f2e2e, #051616);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            color: #ffffff;
+        }
+
+     
+
+  /* Loading Screen */
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 1.9);
+            z-index: 9999;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(0, 255, 180, 0.05);
+            padding: 15px;
+            box-shadow: 0 0 25px rgba(0, 255, 180, 0.3);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .logo img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+        }
+
+        .spinner {
+            margin: 20px auto 0;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 255, 180, 0.2);
+            border-top: 4px solid #00ffb4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .text {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #00ffb4;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 180, 0.5); }
+            100% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
+        }
+        
+      
+       /* Notification Styles */
+.notifications {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 20px;
+}
+
+.notification {
+    background: rgba(15, 46, 46, 0.9);
+    border: 2px solid #00ffcc;
+    border-radius: 10px;
+    padding: 15px;
+    color: #ffffff;
+    position: relative;
+    text-align: center;
+}
+
+.notification img {
+    width: 30px;
+    height: 30px;
+    margin: 10px 0;
+}
+
+.notification .amount {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.notification .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #00ffcc;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+        
+
+/* Footer */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.0);
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    border-top-left-radius: 50px;
+border-top-right-radius: 50px;
+border-top: 2px solid #00ffcc;
+box-shadow: 0 0 10px #00ffcc;
+  
+}
+
+.footer-menu {
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+}
+
+.footer-icon {
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.footer-icon:hover {
+    transform: scale(1.2);
+}  
+
+
+ /* Bonus Icons */
+.bonus-section {
+    padding: 56px;
+    text-align: center;
+}
+
+.bonus-icons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-content: center;
+}
+
+.bonus-icon {
+    width: 60px;
+    height: 60px;    
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.bonus-icon:hover {
+    transform: scale(1.1);
+}
+
+
+/* Countdown */
+#countdown-container {
+    margin-top: 200px;
+    text-align: center;
+    top: 50%;
+    lert: 50%;
+
+}
+
+#countdown-btn {
+    background-color: #00ffcc;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 10px;
+    cursor: not-allowed;
+    color: #003333;
+}
+
+/* Utility */
+.hidden {
+    display: none;
+}
+
+#mainContent {
+    display: block !important;
+}
+
+.banner {
+            position: relative;
+            text-align: center;
+        }
+
+        .banner img {
+            width: 100%;
+            height: auto;
+            
+            background-size: cover;
+    border-bottom: 2px solid #00ffcc; 
+    border-bottom-left-radius: 59px;    
+    border-bottom-right-radius: 59px;
+    
+box-shadow: 0 0 10px #00ffcc;
+        }
+
+
+.info-circle {
+  position: absolute;
+  top: 3px;
+  left: 245px;
+  width: 80px;
+  height: 70px;
+  border-radius: 50%;
+  font-family: 'Inter', sans-serif;
+    background: rgba(15, 23, 42, 0.8);
+    
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  text-align: center;
+  line-height: 1.2; 
+  transition: transform 0.3s ease;
+  border: 2px solid #00ffcc; 
+  box-shadow: 0 0 10px #00ffcc;
+}
+
+.info-circle:hover {
+  transform: scale(1.05);
+}
+
+.info-circle .days {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #f8fafc;
+  margin: 0;
+}
+
+.info-circle .found {
+  font-size: 10px;
+  font-weight: 500;
+  color: #f8fafc;
+  margin: 4px 0 0 0; 
+}
+
+.info-circle .id {
+  font-size: 10px;
+  color: #f8fafc;
+  margin: 2px 0 0 0;
+}
+
+
+
+
+.vestbit-info {
+    position: absolute;
+    top: 60px;
+    left: 50px;
+    z-index: 99;
+
+    color: #f8fafc;
+    padding: 0;            
+    border-radius: 0;        
+    border: none;           
+    backdrop-filter: none;   
+    box-shadow: none;        
+    background: transparent; 
+    font-family: 'Inter', sans-serif;
+    line-height: 0.0; 
+}
+
+.gima{
+    margin: 0.2rem 0;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.gima2 {
+    font-weight: 700;
+    color: #22d3ee;
+    font-size: 20px;
+}
+
+.mine-info {
+    position: absolute;
+    top: 0px;
+    right: 35%;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+
+
+  .menu-button {
+      position: absolute; 
+      top: 10px;
+      Left: 10px;
+      background: #4f46e5;
+      color: #fff;
+      font-size: 22px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 1000;
+      transition: background 0.3s ease;
+      border: 1px solid #00ffc8;
+      box-shadow: 0 0 10px #00ffcc;
+    }
+
+    .menu-button:hover {
+      background: #4338ca;
+    }
+
+
+.menu-container {
+  position: absolute;
+  top: -1000px; 
+  right: 20px;
+  width: 260px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  padding: 20px;
+  transition: top 0.4s ease, opacity 0.4s ease;
+  z-index: 999;
+  border: 2px solid #00ffc8;
+  box-shadow: 0 0 10px #00ffcc;
+  opacity: 0; 
+  pointer-events: none; 
+}
+
+.menu-container.active {
+  top: 70px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+  
+
+    /* Menu header */
+    .menu-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      color: #4f46e5;
+    }
+
+    .menu-header i {
+      cursor: pointer;
+      font-size: 22px;
+      color: #333;
+    }
+
+    /* Menu list */
+    .menu-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .menu-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      cursor: pointer;
+      font-size: 16px;
+      color: #333;
+      transition: background 0.3s;
+      border-bottom: 1px solid #eee;
+    }
+
+    .menu-list li:hover {
+      background: #f0f4ff;
+      border-radius: 8px;
+      padding-left: 8px;
+    }
+
+    .menu-list i {
+      font-size: 20px;
+      color: #4f46e5;
+    }
+
+    /* Styling for the close button */
+    #closeMenu {
+      font-size: 22px;
+      cursor: pointer;
+      color: #4f46e5;
+    }
+
+    .menu-list a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+      width: 100%;
+    }
+ 
+
+
+
+    .notification {
+  position: fixed;
+  top: 40px;
+  right: 10px;
+  background: #0f2e2e;
+  color: #ffffff;
+  border: 2px solid #00ffcc;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+  z-index: 9999;
+  width: 300px;
+  animation: slideIn 0.4s ease;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notification h2 {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.notification img {
+  width: 60%;
+  height: 60%;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+
+.notification .amount {
+  font-weight: bold;
+  color: #00ffcc;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.notification button {
+  background-color: #00ffcc;
+  color: #0f2e2e;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+  margin-right: 10px;
+}
+
+.notification button:hover {
+  background-color: #00e6b3;
+}
+
+.notification .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: transparent;
+  color: #ffffff;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.vestbit-heading {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.vestbit-notification {
+  position: fixed;
+  top: 40px;
+  right: 20px;
+  z-index: 9999;
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.notification-box {
+   position: fixed;
+  top: 20px;
+  right: 10px;
+  background: #0f2e2e;
+  color: #ffffff;
+  border: 2px solid #00ffcc;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+  z-index: 9999;
+  width: 300px;
+  animation: slideIn 0.4s ease;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+}
+
+.notification-box h2 {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.notification-box img {
+  width: 50%;
+  height: 50%;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+
+.notification-box .amount {
+  font-weight: bold;
+  color: #00ffcc;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.notification-box button {
+  background-color: #00ffcc;
+  color: #0f2e2e;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.notification-box button:hover {
+  background-color: #2600ff;
+}
+
+.close-btn {
+ position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #00ffcc;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.vestbit-heading {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.countdown {
+  margin-top: 20px;
+}
+
+#countdownBtn {
+  background: #0f2e2e;
+  color: #00ffcc;
+  border: 1px solid #00ffcc;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+
+
+.balance-image {
+    position: absolute;
+    top: 120px;         
+    left: 30%;
+    width: 3px;
+    height: 3px;
+                   z-index: 1;
+    border-radius: 100%;
+    border: 2px solid #00ffcc; 
+  box-shadow: 0 0 10px #00ffcc;
+}
+.balance-info {
+    position: absolute;
+    top: 170px;        
+    left: 38%;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #000;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.available-balance {
+    font-size: 23px;
+    font-weight: bold;
+    font-weight: 700;
+    margin: 0;
+}
+
+.balance-info p:nth-child(2) {
+    font-size: 13px;
+    font-weight: bold;
+    color: #555;
+    font-style: italic;
+    margin: 0;
+}
+
+.timer {
+    font-size: 20px;
+    Font-weight: bold;
+    color: #007bff;
+    font-weight: 500;
+    margin: 0;
+}
+
+    button:hover{
+        background-color: blue;
+    }
+    
+   .amount{
+       font-size: 20px;
+   }
+   
+.mine-button {
+  position: fixed;
+  top: 280px;
+  left: 20px;
+  z-index: 99;
+  background: linear-gradient(135deg, #FFD700, #FFB800);
+  color: #000;
+  font-weight: bold;
+  padding: 8px 16px;
+  border: 2px solid #00ffcc;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  animation: slideIn 0.5s ease forwards, pulse 2s infinite ease-in-out;
+  position: fixed;
+}
+
+/* Button hover */
+.mine-button:hover {
+  transform: scale(1.1);
+  box-shadow: 
+    0 0 10px #00ffcc, 
+    0 0 20px #00ffcc, 
+    0 0 30px #00ffcc, 
+    0 0 40px #00ffcc;
+  animation: pulseHover 1.5s infinite ease-in-out;
+  position: fixed;
+}
+
+
+
+/* Initial tooltip hidden */
+.mine-button::after {
+  opacity: 0;
+}
+
+/* Slide in animation for the button */
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Pulse animation (normal) */
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 255, 204, 1);
+  }
+}
+
+/* Stronger pulse on hover */
+@keyframes pulseHover {
+  0%, 100% {
+    box-shadow: 
+      0 0 10px #00ffcc, 
+      0 0 20px #00ffcc, 
+      0 0 30px #00ffcc, 
+      0 0 40px #00ffcc;
+  }
+  50% {
+    box-shadow: 
+      0 0 15px #00ffe0, 
+      0 0 25px #00ffe0, 
+      0 0 40px #00ffe0, 
+      0 0 50px #00ffe0;
+  }
+}
+
+@media (max-width: 600px) {
+  .mine-button {
+    left: 10px;
+    right: 10px;
+    width: calc(100% - 20px);
+    text-align: center;
+    font-size: 16px;
+  }
+}
+
+
+.tu {
+  position: absolute;
+    top: 24px;           
+     font-size: 11px;     
+  left: 35px;
+}
+
+.disabled-button {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.gima {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #ffffff;
+  gap: 3px; 
+}
+
+.vestbit-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+  .notification-box1 {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #0f2e2e;
+      color: #ffffff;
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+      z-index: 9999;
+      width: 300px;
+      display: none;
+      animation: slideIn 0.4s ease;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+    }
+
+    .notification-box1 h2 {
+      font-size: 19px;
+      margin: 10px 0;
+    }
+
+    .notification-box1 p {
+      font-size: 19px;
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+    .notification-box1 img {
+      width: 50%;
+      height: 50%;
+      border-radius: 6px;
+      margin: 10px 0;
+    }
+
+    .notification-box1 button.cta {
+      background-color: #00ffcc;
+      color: #0f2e2e;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+      margin-top: 8px;
+    }
+
+    .notification-box1 button.cta:hover {
+      background-color: #2600ff;
+      color: white;
+    }
+
+    .close-btn1 {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #00ffcc;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+
+
+/* Push Container Styling */
+#push-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  padding: 0;
+  margin: 0;
+}
+
+.push-inner {
+  background: rgba(20, 20, 30, 0.95);
+  border: 2px solid #00ffd5;
+  border-radius: 20px;
+  padding: 8px 4px;
+  box-shadow: 0 0 25px rgba(0, 255, 213, 0.3);
+  width: 300px;
+  text-align: center;
+  position: relative;
+  backdrop-filter: blur(10px);
+  animation: fadeInScale 0.4s ease;
+}
+
+.push-inner h2 {
+  color: #ffffff;
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.push-inner p {
+  color: #cccccc;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.push-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.push-image {
+  width: 220px;
+  height: auto;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.push-image:hover {
+  transform: scale(1.1);
+}
+
+.reward-text {
+  color: #00ffd5;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  color: #ffffff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #ff4c4c;
+}
+
+/* Animation */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+
+/* Bot Wrapper Styling */
+#bot-wrapper {
+  position: fixed;
+  bottom: 20px;
+  top: 420px;
+  right: 0px;
+  z-index: 999;
+  text-align: center;
+}
+
+/* Countdown Bubble */
+#countdown {
+  position: absolute;
+  top: 40px;
+  right: -1px;
+  background: linear-gradient(135deg, #ff4e50, #f9d423);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(255, 78, 80, 0.4);
+  animation: pulseGlow 2s infinite;
+  z-index: 100;
+}
+
+/* Bot Icon Styling */
+#bot-icon {
+  width: 75px;
+  height: 75px;
+  cursor: pointer;
+  border-radius: 50%;
+  
+  padding: 5px;
+  
+  animation: wave 2.5s infinite;
+  transition: transform 0.3s ease;
+}
+
+#bot-icon:hover {
+  transform: scale(1.08);
+}
+
+/* Waving Animation */
+@keyframes wave {
+  0% { transform: rotate(0deg); }
+  15% { transform: rotate(15deg); }
+  30% { transform: rotate(-10deg); }
+  45% { transform: rotate(15deg); }
+  60% { transform: rotate(-8deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Optional glowing pulse on countdown */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 78, 80, 0.4); }
+  50% { box-shadow: 0 0 20px rgba(255, 78, 80, 0.7); }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="logo"><img src="logo.png" alt="Vestinoo Logo" /></div>
+    <div class="spinner"></div>
+    <div class="text">Loading Vestinoo...</div>
+  </div>
+
+  <!-- Main Content -->
+  <div id="main-content" style="display: none;">
+    
+    <!-- Menu Button -->
+    <div class="menu-button" id="openMenu"><i class="fas fa-bars"></i></div>
+
+    <!-- Menu Container -->
+<div class="menu-container" id="menuContainer">
+  <div class="menu-header">
+    <span>Menu</span>
+    <i class="fas fa-times" id="closeMenu"></i>
+  </div>
+  <ul class="menu-list">
+    <li><a href="homepage.html"><i class="fas fa-home"></i> Home Page</a></li>
+    <li><a href="contact.html"><i class="fas fa-envelope"></i> Support</a></li>
+    <li><a href="referral.html"><i class="fas fa-user-friends"></i> Referrals</a></li>    
+    
+    <li><a href="deposit.html"><i class="fas fa-arrow-down"></i> Deposit Package</a></li>
+    <li><a href="task.html"><i class="fas fa-gift"></i> Earn Dollars Tasks</a></li>
+    <li><a href="learn.html"><i class="fas fa-book-open"></i> Learn How to Use This App</a></li>
+  </ul>
+</div>
+</div>
+
+    
+        <div class="banner">
+            <img src="banner3.png" alt="Banner" class="banner-image"></div>
+            
+            
+            <div class="info-circle">
+                <p class="days">0 Days</p>
+                <p class="found">Found: $0.00</p>
+                <p class="id">ID:</p>
+            </div>
+
+           
+<div class="vestbit-info">
+  <p class="gima">
+  <img class="vestbit-icon" src="con.png" alt="VestBit" />
+  VestBit:  <span class="gima2">0.00000</span>
+    <p class="tu">Value: $1.00 Mine free </p></p>
+</div>
+
+            
+            <div class="mine-info">
+                <p>Daily Mine: $0.00</p>
+            </div>
+
+        
+<div class="balance-containe">
+    <img src="balance.png" alt="Balance" class="balance-image" style="width: 150px; height: 150px; ">
+    <div class="balance-info">
+        <p class="available-balance">$0.00</p>
+        <p>Available Balance</p>
+        Time:<p class="timer">00:00</p>
+    </div>
+            </div>
+        </div>
+        
+      
+        
+
+<section id="bonus-section" class="bonus-section hidden">
+  <h2 class="vestbit-heading">Click Your Free VestBit Reward</h2>
+  <div class="bonus-icons">
+    <img src="vestBit1.png" alt="Bonus 1" class="bonus-icon" />
+    <img src="vestBit2.png" alt="Bonus 2" class="bonus-icon" />
+    <img src="vestBit3.png" alt="Bonus 3" class="bonus-icon" />
+    <img src="vestBit4.png" alt="Bonus 4" class="bonus-icon" />
+    <img src="vestBit5.png" alt="Bonus 5" class="bonus-icon" />
+    <img src="vestBit6.png" alt="Bonus 6" class="bonus-icon" />
+  </div>
+</section>
+
+
+<div id="vestbit-notification-container" class="vestbit-notification hidden">
+  <div class="notification-box">
+      
+    <button class="close-bt" onclick="hideNotification()"></button>
+    <h2><span id="userFullName">User</span>, congratulations to win! VestBit Coin</h2>
+    <img id="selectedBonusIcon" src="con.png" alt="Selected Bonus">
+    <div class="amount" id="bonusAmount">VestBit 0.00000</div>
+    <button id="clearBonusBtn">Clear bonus</button>
+  </div>
+</div>
+
+
+<section class="dop">
+<div id="countdown-container" class="countdown hidden">
+  <button id="countdownBtn">Wait...</button>
+</div>
+</section>
+
+   
+    
+    <div id="notifications">
+  <div id="welcome-notification" class="notification hidden"></div>
+  <div id="ref1-notification" class="notification hidden"></div>
+  <div id="ref2-notification" class="notification hidden"></div>
+  <div id="vestbit-notification" class="notification hidden"></div>
+</div>
+
+     <div id="adBox" class="notification-box1">
+    <button class="close-btn1" id="closeAd">&#10006;</button>
+    <h2 id="adTitle">Title Here</h2>
+    <img id="adImage" src="" alt="Ad Image" />
+    <p id="adText">Text Here</p>
+    <button class="cta" id="adButton">Click & Earn Over $5</button>
+  </div>
+  
+
+<div id="push-container" style="display: none;">
+  <div class="push-inner">
+    <span class="close-btn" onclick="closePush()">✖</span>
+    <h2>Earn VestBit Instantly</h2>
+    <p>Click the button below to claim your reward</p>
+    
+    <div class="push-content" onclick="claimVestBit()">
+      <img src="bo.png" alt="Claim VestBit" class="push-image" />
+      <p class="reward-text">+0.00532 VestBit</p>
+    </div>
+  </div>
+</div>
+
+<div id="bot-wrapper">
+  <div id="countdown">2:00</div>
+  <img id="bot-icon" src="bot2.png" alt="Bot waving" onclick="openChat()" />
+</div>
+
+
+    
+    <footer>
+      <div class="footer-menu">
+        <a href="withdrawal.html"><img src="withdrawal.png" alt="Withdraw" class="footer-icon"/></a>
+        <a href="deposit.html"><img src="deposit.png" alt="Deposit" class="footer-icon"/></a>
+        <a href="referral.html"><img src="referral.png" alt="Referrals" class="footer-icon"/></a>
+      </div>
+    </footer>
+
+  </div>
+
+
+<script>
+    const adBox = document.getElementById("adBox");
+    const closeBtn = document.getElementById("closeAd");
+    const adTitle = document.getElementById("adTitle");
+    const adText = document.getElementById("adText");
+    const adImage = document.getElementById("adImage");
+    const adButton = document.getElementById("adButton");
+
+   const ads = [
+  {
+    title: "Make Over $5 Daily — No Experience Needed!",
+    text: "Vestinoo lets you earn daily by watching videos, visiting websites, completing surveys, and testing simple apps. It’s real, easy, and works from your phone or laptop. Why not try it today?",
+    image: "/ad1.png",
+    link: "task.html"
+  },
+  {
+    title: "Yes, People Are Really Getting Paid!",
+    text: "Thousands of users are earning money daily on Vestinoo just by completing simple Surveys. Don’t take our word for it — test a few offers yourself and see real results in your wallet!",
+    image: "/ad2.png",
+    link: "task.html"
+  },
+  {
+    title: "Turn Your Free Time Into Real Cash!",
+    text: "Stop scrolling and start earning! Vestinoo turns your free minutes into dollars by letting you explore offers, test games, and watch short videos — all paying into your wallet directly.",
+    image: "/ad3.png",
+    link: "task.html"
+  }
+];
+
+
+    let currentAd = 0;
+    const adInterval = 60 * 1000;     
+    const adBoxDelay = () => {
+      const lastTime = parseInt(localStorage.getItem("lastAdDismissed") || "0");
+      return Date.now() - lastTime >= adInterval;
+    };
+
+    const showAd = () => {
+      const ad = ads[currentAd];
+      adTitle.textContent = ad.title;
+      adText.textContent = ad.text;
+      adImage.src = ad.image;
+      adButton.onclick = () => window.location.href = ad.link;
+      adBox.style.display = "block";
+    };
+
+    const hideAd = () => {
+      adBox.style.display = "none";
+      localStorage.setItem("lastAdDismissed", Date.now().toString());
+    };
+
+    closeBtn.addEventListener("click", () => {
+      hideAd();
+    });
+
+    setTimeout(() => {
+      if (document.hasFocus() && adBoxDelay()) {
+        showAd();
+      }
+
+      setInterval(() => {
+        if (document.hasFocus() && adBoxDelay()) {
+          currentAd = (currentAd + 1) % ads.length;
+          showAd();
+        }
+      }, adInterval);
+    }, adInterval);
+  </script>
+
+  <script>
+    document.getElementById('openMenu').onclick = () => {
+      document.getElementById('menuContainer').classList.add('active');
+    };
+    document.getElementById('closeMenu').onclick = () => {
+      document.getElementById('menuContainer').classList.remove('active');
+    };
+  </script>
+  
+<script type="module">
+import { app } from './firebase.js';
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+const db = getDatabase(app);
+const auth = getAuth(app);
+
+
+const loadingScreen = document.getElementById("loadingScreen");
+const mainContent = document.getElementById('main-content');
+const daysElement = document.querySelector('.info-circle .days');
+const foundElement = document.querySelector('.info-circle .found');
+const idElement = document.querySelector('.info-circle .id');
+const vestBitElement = document.querySelector('.vestbit-info span');
+const mineElement = document.querySelector('.mine-info p');
+const availableBalanceElement = document.querySelector('.balance-info .available-balance');
+const timerElement = document.querySelector('.balance-info .timer');
+const notificationsContainer = document.querySelector('.notifications');
+const bonusIcons = document.querySelectorAll('.bonus-icon');
+
+const notificationContainer = document.getElementById('notification-container');
+
+const selectedBonusIcon = document.getElementById('selectedBonusIcon');
+const bonusAmount = document.getElementById('bonusAmount');
+
+
+const vestbitNotification = document.getElementById('vestbit-notification-container');
+const bonusSection = document.getElementById('bonus-section');
+const countdownContainer = document.getElementById('countdown-container');
+const countdownBtn = document.getElementById('countdownBtn');
+const clearBonusBtn = document.getElementById('clearBonusBtn');
+const userFullName = document.getElementById('userFullName');
+
+const userFullNameDisplay = document.getElementById("fullName");
+
+  
+  if (userFullNameDisplay) userFullNameDisplay.textContent = currentUserFullName;
+
+
+const bonuses = [0.00112, 0.00129, 0.00132, 0.00132, 0.00147, 0.0014, 0.0012];
+const getRandomBonus = () => bonuses[Math.floor(Math.random() * bonuses.length)];
+
+
+const plans = [
+  { amount: 800, dailyProfit: 30.8, days: 49 },
+  { amount: 400, dailyProfit: 16.8, days: 45 },
+  { amount: 200, dailyProfit: 8.9, days: 43 },
+  { amount: 100, dailyProfit: 4.8, days: 40 },
+  { amount: 50, dailyProfit: 2.64, days: 35 },
+  { amount: 30, dailyProfit: 1.62, days: 34 },
+  { amount: 15, dailyProfit: 0.87, days: 33 },
+  { amount: 8, dailyProfit: 0.46, days: 32 },
+  { amount: 4, dailyProfit: 0.25, days: 31 },
+  { amount: 2, dailyProfit: 0.16, days: 22 }
+];
+
+const findPlan = (amount) => {  
+  for (let i = 0; i < plans.length; i++) {
+    if (amount >= plans[i].amount) {
+      return plans[i];
+    }
+  }
+  return null;
+};
+
+const showLoadingScreen = () => {
+  loadingScreen.style.display = 'flex';
+  mainContent.style.display = 'none';
+};
+
+const hideLoadingScreen = () => {
+  setTimeout(() => {
+    loadingScreen.style.display = 'none';
+    mainContent.style.display = 'block';
+  }, 1500);
+};
+
+const updateUI = (userData) => {
+  const {
+    deposit, depositTime, dailyProfit: originalDailyProfit, vestBit,
+    userBalance, email, referralBonusLeve1, referralBonussLeve2,
+    wellecomeBonus, vestinooID, fullName, uid, lastClaimTime, createdAt
+  } = userData;
+
+  const now = Date.now();
+  const plan = findPlan(deposit);
+  let dailyProfit = originalDailyProfit || 0;
+  let baseTime = depositTime || createdAt || null;
+  let remainingDays = 0;
+
+  if (plan && baseTime) {
+    const daysPassed = (now - baseTime) / (1000 * 60 * 60 * 24);
+    remainingDays = Math.max(plan.days - daysPassed, 0);
+    if (remainingDays > 0 && dailyProfit === 0) {
+      dailyProfit = plan.dailyProfit;
+    }
+  }
+
+  // Filler UI
+  daysElement.textContent = `${remainingDays.toFixed(0)} Days`;
+  foundElement.textContent = `Found: $${deposit.toFixed(2)}`;
+  idElement.textContent = `ID: ${vestinooID}`;
+  vestBitElement.textContent = vestBit.toFixed(5);
+  mineElement.textContent = `Daily Mine: $${dailyProfit.toFixed(2)}`;
+  availableBalanceElement.textContent = `$${userBalance.toFixed(2)}`;
+  
+  
+  
+  
+if (plan && lastClaimTime) {
+  const nextMineTime = lastClaimTime + 24 * 60 * 60 * 1000;
+  const timeDiff = nextMineTime - now;
+
+  if (timeDiff > 0) {
+    const timerDate = new Date(timeDiff);
+    const hours = timerDate.getUTCHours().toString().padStart(2, '0');
+    const minutes = timerDate.getUTCMinutes().toString().padStart(2, '0');
+    timerElement.textContent = `${hours}:${minutes}`;
+    timerElement.style.display = 'inline-block';
+  } else {    
+    timerElement.style.display = 'none';
+  }
+} else {  
+  timerElement.style.display = 'none';
+}
+
+  
+
+  
+  showClearMineButton(uid, dailyProfit, baseTime, lastClaimTime);
+
+  
+  if (plan && baseTime && remainingDays <= 0) {
+    clearExpiredPackage(uid, fullName, deposit, baseTime, plan.dailyProfit);
+  }
+
+  handleNotifications({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, uid });
+};
+
+const clearExpiredPackage = async (uid, fullName, deposit, depositTime, dailyProfit) => {
+  await fetch("https://vestinoo-project.vercel.app/api/enddays", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": "@haruna66"
+    },
+    body: JSON.stringify({ uid, deposit, depositTime, dailyProfit })
+  });
+
+  showNotification(fullName, "Your package has expired", "end.png", deposit, () => {});
+};
+
+
+
+const showClearMineButton = (uid, dailyProfit, depositTime, lastClaimTime) => {
+  const now = Date.now();
+
+  if (!depositTime || dailyProfit <= 0) return;
+
+  const canClaim = !lastClaimTime || now >= (lastClaimTime + 24 * 60 * 60 * 1000);
+
+  if (!canClaim) return;
+  
+  
+  const existingBtn = document.querySelector('.mine-button');
+  if (existingBtn) existingBtn.remove();
+  
+  const btn = document.createElement('button');
+ btn.textContent = `💰Get Your Daily Mine: $${dailyProfit.toFixed(2)}✔️`;
+  btn.className = 'mine-button fixed top-5 left-5 p-2 bg-yellow-400 text-black rounded-lg shadow-md z-50';
+
+  btn.onclick = async () => {
+  btn.disabled = true;
+  btn.textContent = "⏳ Processing...";
+
+  try {
+    const res = await fetch("https://vestinoo-project.vercel.app/api/dailymine", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "@haruna66"
+      },
+      body: JSON.stringify({ uid, dailyProfit })
+    });
+
+    if (!res.ok) throw new Error("Mining failed");
+
+    btn.remove(); 
+  } catch (error) {
+    console.error("Mining Error:", error);
+    btn.disabled = false;
+    btn.textContent = `💰Get Your Daily Mine: $${dailyProfit.toFixed(2)}✔️`;
+  }
+};
+
+
+  document.body.appendChild(btn);
+};
+
+
+const handleNotifications = ({ wellecomeBonus, referralBonusLeve1, referralBonussLeve2, vestBit, fullName, uid }) => {
+  const queue = [];
+
+  if (wellecomeBonus > 0) {
+    queue.push({
+      id: "welcome-notification",
+      name: fullName,
+      message: "Clear your Welcome Bonus",
+      img: "bonus.png",
+      amount: wellecomeBonus,
+      field: "wellecomeBonus"
+    });
+  }
+
+  if (referralBonusLeve1 > 0) {
+    queue.push({
+      id: "ref1-notification",
+      name: fullName,
+      message: "Clear your Level 1 Referral Bonus",
+      img: "level1.png",
+      amount: referralBonusLeve1,
+      field: "referralBonusLeve1"
+    });
+  }
+
+  if (referralBonussLeve2 > 0) {
+    queue.push({
+      id: "ref2-notification",
+      name: fullName,
+      message: "Clear Your Level 2 Referral Bonus",
+      img: "level2.png",
+      amount: referralBonussLeve2,
+      field: "referralBonussLeve2"
+    });
+  }
+
+  if (vestBit >= 1) {
+    queue.push({
+      id: "vestbit-notification",
+      name: fullName,
+      message: "You can sell your vestBit coin now",
+      img: "con.png",
+      amount: vestBit,
+      field: "vestBit"
+    });
+  }
+
+  processNotificationQueue(queue, uid);
+};
+
+const processNotificationQueue = (queue, uid) => {
+  if (queue.length === 0) return;
+
+  const current = queue.shift();
+  const container = document.getElementById(current.id);
+  if (!container) return;
+
+  container.innerHTML = `
+    <button class="close-btn">✖️</button>
+    <h2>${current.name}, ${current.message}</h2>
+    <img src="${current.img}" alt="${current.message}">
+    <div class="amount">$${current.amount.toFixed(2)}</div>
+    <button>Clear Bonus</button>
+  `;
+  container.classList.remove('hidden');
+
+  container.querySelector('.close-btn').onclick = () => {
+    container.classList.add('hidden');
+    processNotificationQueue(queue, uid);
+  };
+
+    container.querySelector('button:last-child').onclick = async (e) => {
+    const clearBtn = e.target;
+    clearBtn.disabled = true;
+    clearBtn.textContent = "Processing...";
+    clearBtn.classList.add("disabled-button"); 
+
+    let endpoint = "";
+    let body = {};
+
+    switch (current.field) {
+      case "wellecomeBonus":
+        endpoint = "/api/welcome";
+        body = { uid, wellecomeBonus: current.amount };
+        break;
+      case "referralBonusLeve1":
+        endpoint = "/api/level1";
+        body = { uid, referralBonusLeve1: current.amount };
+        break;
+      case "referralBonussLeve2":
+        endpoint = "/api/level1";
+        body = { uid, referralBonussLeve2: current.amount };
+        break;
+      case "vestBit":
+        endpoint = "/api/chengevestbit";
+        body = { uid, vestBit: current.amount };
+        break;
+      default:
+        console.warn("Unknown bonus type");
+        return;
+    }
+
+    try {
+      const res = await fetch(`https://vestinoo-project.vercel.app${endpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "@haruna66"
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Request failed:", res.status, errorText);
+      }
+    } catch (err) {
+      console.error("Fetch error:", err);
+    }
+
+    container.classList.add('hidden');
+    processNotificationQueue(queue, uid);
+  };
+};
+
+
+let currentUserUID = null;
+let currentUserEmail = null;
+let currentUserFullName = null;
+
+
+let vestbitLastSelectedTime = localStorage.getItem('vestbitLastSelectedTime') || null;
+let vestbitTimer;
+
+const sendVestBitBonus = async (email, bonusAmountValue) => {
+  await fetch("https://bonus-gamma.vercel.app/api/vestBit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": "@haruna66" },
+    body: JSON.stringify({ email, bonusAmount: bonusAmountValue })
+  });
+  hideNotificationVestbit();
+};
+
+const hideNotificationVestbit = () => {
+  vestbitNotification.classList.add('hidden');
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  bonusIcons.forEach(icon => {
+    icon.onclick = () => {
+      if (!currentUserEmail || !currentUserFullName) return;
+
+      const randomBonus = getRandomBonus();
+      userFullName.textContent = `${currentUserFullName}`;
+      selectedBonusIcon.src = icon.src;
+      bonusAmount.textContent = `VestBit ${randomBonus.toFixed(5)}`;
+      vestbitNotification.classList.remove('hidden');
+      bonusSection.classList.add('hidden');
+      countdownContainer.classList.remove('hidden');
+      vestbitLastSelectedTime = Date.now();
+      localStorage.setItem('vestbitLastSelectedTime', vestbitLastSelectedTime);
+      clearBonusBtn.onclick = () => sendVestBitBonus(currentUserEmail, randomBonus);
+      startVestbitCountdown();
+    };
+  });
+});
+
+function startVestbitCountdown() {
+  clearInterval(vestbitTimer);
+  vestbitTimer = setInterval(() => {
+    const diff = (Date.now() - vestbitLastSelectedTime) / 1000;
+    const remaining = 60 * 60 - diff;
+    if (remaining <= 0) {
+      clearInterval(vestbitTimer);
+      countdownContainer.classList.add('hidden');
+      bonusSection.classList.remove('hidden');
+    } else {
+      const h = Math.floor(remaining / 3600);
+      const m = Math.floor((remaining % 3600) / 60);
+      const s = Math.floor(remaining % 60);
+      countdownBtn.textContent = `Wait ${h}h ${m}m ${s}s`;
+    }
+  }, 1000);
+}
+
+window.addEventListener('load', () => {
+  if (vestbitLastSelectedTime) {
+    const diff = (Date.now() - vestbitLastSelectedTime) / 1000;
+    if (diff >= 60 * 60) {
+      bonusSection.classList.remove('hidden');
+      countdownContainer.classList.add('hidden');
+    } else {
+      bonusSection.classList.add('hidden');
+      countdownContainer.classList.remove('hidden');
+      startVestbitCountdown();
+    }
+  } else {
+    bonusSection.classList.remove('hidden');
+  }
+});
+
+
+let pushCountdownElement = document.getElementById('countdown');
+let pushContainer = document.getElementById('push-container');
+let botIcon = document.getElementById('bot-icon');
+
+let pushSchedule = [1 * 60, 2 * 60, 60 * 60];
+let pushScheduleIndex = 0;
+let pushCurrentTimer;
+let isPushVisible = false;
+let uid = null;
+let pushClaimed = false; 
+
+function startPushCountdown(duration) {
+  let timeLeft = duration;
+  pushCountdownElement.innerText = pushFormatTime(timeLeft);
+  clearInterval(pushCurrentTimer);
+
+  pushCurrentTimer = setInterval(() => {
+    if (pushClaimed) {
+      clearInterval(pushCurrentTimer);
+      return;
+    }
+
+    timeLeft--;
+    if (timeLeft <= 0) {
+      clearInterval(pushCurrentTimer);
+      showPush();
+    } else {
+      pushCountdownElement.innerText = pushFormatTime(timeLeft);
+    }
+  }, 1000);
+}
+
+function pushFormatTime(seconds) {
+  let m = Math.floor(seconds / 60);
+  let s = seconds % 60;
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+function showPush() {
+  if (pushClaimed) return; 
+  if (pushContainer) pushContainer.style.display = 'block';
+  botIcon.style.border = '2px solid green';
+  isPushVisible = true;
+}
+
+function closePush() {
+  if (pushContainer) pushContainer.style.display = 'none';
+  botIcon.style.border = 'none';
+  isPushVisible = false;
+  nextPush();
+}
+window.closePush = closePush; 
+
+function nextPush() {
+  pushScheduleIndex++;
+  if (pushScheduleIndex >= pushSchedule.length) {
+    pushScheduleIndex = pushSchedule.length - 1;
+  }
+  startPushCountdown(pushSchedule[pushScheduleIndex]);
+}
+
+function claimVestBit() {
+  if (!uid) {
+    alert("User ID (uid) is missing!");
+    return;
+  }
+
+  
+  pushClaimed = true;
+  closePush();
+  
+
+ window.open('https://www.profitableratecpm.com/nzy4m24sy?key=e5d19a4a6676f3c578d9f3f1da848b21', '_blank');
+  
+   
+  fetch("https://bonus-gamma.vercel.app/api/admine", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": "@haruna66"
+    },
+    body: JSON.stringify({ uid: uid })
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log("✅ Reward response:", data);
+    })
+    .catch(error => {
+      console.error("❌ Error sending reward request:", error);
+    });
+}
+
+window.claimVestBit = claimVestBit;
+
+function openChat() {
+  window.location.href = 'learn.html';
+}
+
+
+onAuthStateChanged(auth, (user) => {
+  showLoadingScreen();
+
+  if (user) {
+    currentUserUID = user.uid;
+    currentUserEmail = user.email;
+    uid = user.uid;
+    window.uid = user.uid;
+
+    const userRef = ref(db, `users/${currentUserUID}`);
+    onValue(userRef, (snapshot) => {
+      const userData = snapshot.val();
+
+      if (userData) {
+        currentUserFullName = userData.fullName;
+
+        const completeUserData = {
+          ...userData,
+          uid: currentUserUID
+        };
+
+        updateUI(completeUserData);
+      } else {
+        console.warn("⚠️ User data not found in database.");
+      }
+
+      hideLoadingScreen();
+    }, (error) => {
+      console.error("❌ Error fetching user data:", error);
+      hideLoadingScreen();
+    });
+  } else {
+    console.warn("⚠️ User not authenticated.");
+    hideLoadingScreen();
+  }
+});
+
+
+window.addEventListener('load', () => {
+  startPushCountdown(pushSchedule[pushScheduleIndex]);
+});
+</script>
+
+</body>
+</html>

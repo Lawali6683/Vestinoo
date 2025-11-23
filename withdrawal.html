@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vestinoo Withdrawal</title>
+  
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at 30% 30%, #0f2e2e, #051616);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            color: #ffffff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .banner {
+            position: relative;
+            text-align: center;
+        }
+
+        .banner-image {
+            width: 100%;
+            height: auto;
+        }
+
+  
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 93%; 
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 13px;
+
+    background-size: cover;
+    border-bottom: 2px solid #00ffcc; 
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    overflow: hidden;
+box-shadow: 0 0 10px #00ffcc;
+    
+}
+
+
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            gap: 39px;
+            margin-bottom: 15px;
+        }
+
+        .menu button {
+            padding: 10px 20px;
+            background: #00ffcc;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .menu button:hover {
+            background: #00e6b3;
+            transform: scale(1.05);
+        }
+.balanc {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+             top: 300%;
+            left: 0;
+        }
+        
+
+        .user-info h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+        
+        
+         .user-info {
+        background: #092424;
+        border: 1px solid #1c5757;
+        border-radius: 12px;
+        padding: 6px 3px;
+        font-size: 2.2rem;
+        font-weight: 500;
+        color: #00ffcc;
+        box-shadow: 0 4px 12px rgba(0, 255, 204, 0.15);
+        text-align: center;
+        letter-spacing: 1px;
+        width: fit-content;
+        min-width: 20px;
+        
+        position: absolute; 
+        top: 200px; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        border: 2px solid #00ffcc;
+        box-shadow: 0 0 10px #00ffcc;
+    }
+
+    .user-info small {
+        display: block;
+        margin-top: 5px;
+        font-size: 0.9rem;
+        color: #99fff5;
+        opacity: 0.7;
+        letter-spacing: 0.5px;
+    }
+
+        .logo {
+            text-align: center;
+            margin: 10px 0;
+                                  
+        }
+
+      
+
+        .form-container {
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            margin: 20px;
+            border: 2px solid #00ffcc;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 10px #00ffcc;
+        }
+
+        .form-container h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #00ffcc;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input {
+            width: 91%;
+            padding: 10px;
+            border: 2px solid #00ffcc;
+            border-radius: 7px;
+            background: #0f2e2e;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .form-group input::placeholder {
+            color: #a6a6a6;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #00ffcc;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: #00e6b3;
+            transform: scale(1.05);
+        }
+
+      .toast {
+  position: fixed;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%) translateY(20px);
+  background-color: #323232;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 10000;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+        
+        
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+        }
+
+        .loading-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(0, 255, 180, 0.05);
+            padding: 15px;
+            box-shadow: 0 0 25px rgba(0, 255, 180, 0.3);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .loading-logo img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+        }
+
+        .spinner {
+            margin: 20px auto 0;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 255, 180, 0.2);
+            border-top: 4px solid #00ffb4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #00ffb4;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 180, 0.5); }
+            100% { box-shadow: 0 0 10px rgba(0, 255, 180, 0.2); }
+        }
+
+  
+    </style>
+    <style>
+      
+    .container8{
+        line-height: 1.5;
+         margin-top: 0px;
+         padding: 20px 25px;
+    }
+    
+
+    .container8 h3 {
+      font-size: 18px;
+      color: #e67e22;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+
+    .container8 ul {
+      padding-left: 13px;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .container8 li {
+      font-size: 14px;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 17px;
+      color: #555;
+      font-style: italic;
+      font-weight: bold;
+    }
+    h2{
+        position: absolute; 
+        top: 50px; 
+        left: 50%; 
+        font-size: 15px;
+        transform: translateX(-30%);
+    }
+    #successfulPayment{
+        font-size: 10px;
+    }
+    #pendingWithdrawal{
+        font-size: 10px;
+    }
+    
+    
+    .form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #cfcfcf;
+}
+
+.form-group select {
+  padding: 12px 14px;
+  font-size: 15px;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border: 2px solid #00ffcc;
+  border-radius: 7px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg fill='%23cfcfcf' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px 16px;
+}
+
+.form-group select:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+}
+
+
+.main-content.hidden { display: none; }
+.hidden { display: none; }
+.user-info { margin-bottom: 20px; }
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; margin-bottom: 6px; font-weight: bold; }
+.form-group input, .form-group select {
+  width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;
+  font-size: 16px;
+}
+.withdraw-btn {
+  background: #00ffd5; color: #222; border: none; padding: 12px 0;
+  width: 100%; border-radius: 6px; font-size: 18px; cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+.withdraw-btn:active { background: #00ccb8; }
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  background: #222e; color: #fff; padding: 16px 22px; border-radius: 7px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  font-size: 17px; font-weight: 500;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  z-index: 99999;
+}
+.toast.show { opacity: 1; pointer-events: auto; }
+
+/* Push Container Styling */
+#push-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  padding: 0;
+  margin: 0;
+  
+}
+.push-inner {
+  background: rgba(20, 20, 30, 0.95);
+  border: 2px solid #00ffd5;
+  border-radius: 20px;
+  padding: 18px 12px 23px 12px;
+  box-shadow: 0 0 25px rgba(0, 255, 213, 0.3);
+  width: 300px;
+  text-align: center;
+  position: relative;
+  backdrop-filter: blur(10px);
+  animation: fadeInScale 0.4s ease;
+}
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.9) translate(-50%, -50%);}
+  to { opacity: 1; transform: scale(1) translate(-50%, -50%);}
+}
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  color: #ffffff;
+  font-size: 30px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close-btn:hover { color: #00ffd5;}
+.push-title {
+  font-size: 25px; font-weight: bold; color: #00ffd5;
+  margin-bottom: 16px; text-align: center;
+}
+.push-row {
+  display: flex; justify-content: space-between; gap: 8px; margin-bottom: 13px;
+}
+.push-input {
+  width: 35px; height: 40px; font-size: 20px; text-align: center;
+  border-radius: 7px; border: 2px solid #00ffd5; outline: none;
+  transition: border 0.2s;
+  background: #181c21;
+  color: #fff;
+}
+.push-input:focus { border-color: #00ccb8; background: #252c32; }
+.push-label {
+  display: block; text-align: left; margin-bottom: 5px; font-size: 15px;
+  color: #00ffd5; font-weight: 500;
+}
+.push-btn {
+  background: #00ffd5; color: #181c21; border: none; padding: 10px 0;
+  width: 80%; border-radius: 6px; font-size: 17px; cursor: pointer;
+  margin-top: 9px;
+  font-weight: 700;
+}
+.push-btn:active { background: #00ccb8; }
+
+@media (max-width: 200px) {
+  .push-inner { width: 98vw; }
+  .push-input { width: 13vw; min-width: 27px; }
+}
+
+.form-container {
+  background: #181c21;
+  border-radius: 18px;
+  box-shadow: 0 0 20px #00ffd544;
+  max-width: 300px;
+  margin: 40px auto;
+  padding: 28px 18px 22px 18px;
+  color: #e5e5e5;
+}
+.form-container h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #00ffd5;
+}
+.form-group {
+  margin-bottom: 19px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 600;
+  color: #00ffd5;
+}
+.form-group input {
+  width: 90%;
+  padding: 10px;
+  border: 1.5px solid #00ffd590;
+  border-radius: 7px;
+  font-size: 16px;
+  background: #232b32;
+  color: #fff;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.form-group select {
+  width: 98%;
+  padding: 10px;
+  border: 1.5px solid #00ffd590;
+  border-radius: 7px;
+  font-size: 16px;
+  background: #232b32;
+  color: #fff;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #00ffd5;
+}
+.password-boxes .pw-box {
+  width: 18px;
+  height: 18px;
+  font-size: 21px;
+  text-align: center;
+  border: 2px solid #00ffd5;
+  border-radius: 7px;
+  background: #232b32;
+  color: #fff;
+  margin-right: 0;
+}
+.password-boxes .pw-box:focus {
+  border-color: #00ccb8;
+  background: #242d34;
+}
+button[type="submit"] {
+  width: 100%;
+  background: #00ffd5;
+  color: #181c21;
+  border: none;
+  padding: 13px 0;
+  border-radius: 7px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 6px;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+button[type="submit"]:active {
+  background: #00ccb8;
+}
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  top: 200px;
+  transform: translateX(-50%);
+  background: #222e;
+  color: #fff;
+  padding: 1px 2px;
+  border-radius: 7px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  font-size: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.28s;
+  z-index: 9999;
+}
+.toast.show { opacity: 3; pointer-events: auto; }
+.hidden { display: none; }
+
+
+  </style>
+    <style>
+  
+.crypto-history-section {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    color: #f0f0f0;
+}
+
+.history-main-title {
+    font-size: 1.8em;
+    color: #00ffd5;
+    border-bottom: 3px solid #00ffd5;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 1.4em;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+.pending-title {
+    color: #ffc107;
+    border-left: 4px solid #ffc107;
+}
+
+.paid-title {
+    color: #28a745;
+    border-left: 4px solid #28a745;
+}
+
+.withdrawal-unified-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+}
+
+.withdrawal-container {
+    background: #2a2a2a;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border-left: 5px solid;
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.withdrawal-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.withdrawal-pending {
+    border-left-color: #ffc107; 
+}
+
+
+.withdrawal-paid {
+    border-left-color: #28a745; 
+}
+
+
+.status-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1em;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.status-line .status-text {
+    font-weight: 700;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+}
+
+.status-line .status-text i {
+    margin-right: 5px;
+}
+
+.wallet-line {
+    font-size: 0.9em;
+    color: #aaa;
+    word-break: break-all;
+}
+
+.wallet-line strong {
+    color: #f0f0f0;
+    font-weight: 400;
+    margin-left: 5px;
+}
+
+.amount-info {
+    color: #00ffd5;
+    font-weight: 700;
+}
+
+.coin-info {
+    color: #8c8c8c;
+    margin-left: 5px;
+}
+
+.date-time {
+    color: #8c8c8c;
+    font-size: 0.9em;
+}
+
+
+.no-history-msg {
+    text-align: center;
+    padding: 15px;
+    font-size: 1.1em;
+    color: #8c8c8c;
+    background: #2a2a2a;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+@media (max-width: 600px) {
+    .crypto-history-section {
+        padding: 10px;
+        margin: 15px auto;
+    }
+    .status-line {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .date-time {
+        margin-top: 5px;
+        font-size: 0.85em;
+    }
+}
+    </style>
+</head>
+<body>
+
+        <div id="toast" class="toast hidden"></div>
+   
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-logo">
+            <img src="logo.png" alt="Vestinoo Logo">
+        </div>
+        <div class="spinner"></div>
+        <div class="loading-text">Loading Vestinoo...</div>
+    </div>
+
+  
+    <div id="main-content" class="hidden">
+       
+    </div>
+    
+                   
+       
+        <div class="banner">
+            <img src="banner4.png" alt="Banner Image" class="banner-image">
+            <div class="banner-overlay">
+                       
+                <h2>Hi, <span id="fullName"></span></h2> 
+                
+                <div class="user-info">
+    <div class="balance"> $<span id="userBalance">0.00</span> </div>
+    <small>Available Balance</small>
+</div>
+
+            </div>
+        </div>
+
+        
+        </div>
+
+       <div class="container8">
+  <h3>Important Information About Withdrawal</h3>
+  <ul>
+    <li>Use only <strong>BNB (BEP20) USDT (BEP20)</strong> wallet address.</li>
+    <li>Other networks will not receive funds.</li>
+    <li>Any BNB (BEP20) USDT (BEP20) wallet can be used.</li>
+    <li>Withdrawals arrive within <strong>24 hours</strong>.</li>
+    <li>Minimum: <strong>$1.25</strong> | Maximum daily: <strong>$250</strong></li>
+    <li><strong>6% gas fee</strong> will be deducted.</li>
+    <li>Contact support if needed.</li>
+  </ul>
+  <div class="note">
+    Enter the amount you want to withdraw and wait for the funds to arrive within 24 hours.
+  </div>
+</div>
+
+       <div class="form-container">
+  <h3>Withdrawal</h3>
+  <form id="withdrawalForm" autocomplete="off">
+    <div class="form-group">
+  <label for="amount">Amount</label>
+  <input type="number" id="amount" placeholder="Enter amount to withdraw" step="0.01" required>
+</div>
+    
+
+    <div class="form-group">
+      <label for="coinSelect">Select Coin</label>
+      <select id="coinSelect" required>
+        <option value="" disabled selected>Select coin</option>
+        <option value="BNB">BNB (BEP20)</option>
+        <option value="USDT">USDT (BEP20)</option>
+        <option value="USDC">USDC (BEP20)</option>
+        <option value="TRX">TRX (BEP20)</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="walletAddress">Wallet Address</label>
+      <input type="text" id="walletAddress" placeholder="Enter your wallet address" required>
+    </div>
+
+   
+    <div class="form-group">
+      <label for="withdrawal-password-0">Withdrawal Password</label>
+      <div class="password-boxes" style="display:flex;gap:10px;">
+        <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]*" class="pw-box" id="withdrawal-password-0" autocomplete="off" required>
+        <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]*" class="pw-box" id="withdrawal-password-1" autocomplete="off" required>
+        <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]*" class="pw-box" id="withdrawal-password-2" autocomplete="off" required>
+        <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]*" class="pw-box" id="withdrawal-password-3" autocomplete="off" required>
+        <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]*" class="pw-box" id="withdrawal-password-4" autocomplete="off" required>
+        <input type="password" inputmode="numeric" maxlength="1" pattern="[0-9]*" class="pw-box" id="withdrawal-password-5" autocomplete="off" required>
+      </div>
+      <a href="chan.html">Missing password</a>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+  <div id="toast" class="toast hidden"></div>
+</div>
+                   
+       
+<section class="crypto-history-section">
+    <h2 class="history-main-title"><i class="fas fa-history"></i> </h2>
+   <center class="history-main-title" >Withdrawal History </center>
+    <div id="pending-withdrawals-container" class="withdrawal-section">
+        <h3 class="section-title pending-title" id="pending-section-title" style="display:none;"><i class="fas fa-hourglass-half"></i></h3>
+        <div id="pending-list" class="withdrawal-unified-list">
+            </div>
+    </div>
+
+    <div id="paid-withdrawals-container" class="withdrawal-section">
+        <h3 class="section-title paid-title"><i class="fas fa-wallet"></i> Successful Withdrawal </h3>
+        <div id="paid-list" class="withdrawal-unified-list">
+            </div>
+        <p class="no-history-msg" id="no-history-msg" style="display:none;">
+            <i class="fas fa-info-circle"></i> No successful withdrawal history found yet.
+        </p>
+    </div>
+</section>
+
+<div id="push-container" style="display:none"></div>
+<div id="toast" class="toast hidden"></div>
+
+</div>
+
+
+
+
+    <script type="module">
+
+import { app } from './firebase.js';
+
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import {
+  getDatabase,
+  ref,
+  get,
+  child
+} from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+
+const loadingScreen = document.getElementById("loadingScreen");
+const mainContent = document.getElementById("main-content");
+const userBalanceElem = document.getElementById("userBalance");
+const fullNameElem = document.getElementById("fullName");
+const toastElem = document.getElementById("toast");
+const pushContainer = document.getElementById("push-container");
+const passwordEntryArea = document.getElementById("password-entry-area");
+
+const pendingSectionTitleElem = document.getElementById("pending-section-title");
+const pendingListElem = document.getElementById("pending-list");
+const paidListElem = document.getElementById("paid-list");
+const noHistoryMsgElem = document.getElementById("no-history-msg");
+
+let userData = null;
+let withdrawalPassword = null;
+let withdrawalPasswordCreated = false;
+
+function showToast(message) {
+  toastElem.textContent = message;
+  toastElem.classList.remove("hidden");
+  toastElem.classList.add("show");
+  setTimeout(() => {
+    toastElem.classList.remove("show");
+    toastElem.classList.add("hidden");
+  }, 3000);
+}
+
+function createPasswordRow(idPrefix) {
+  let row = document.createElement("div");
+  row.className = "push-row";
+  for (let i = 0; i < 6; i++) {
+    let input = document.createElement("input");
+    input.type = "password";
+    input.maxLength = 1;
+    input.inputMode = "numeric";
+    input.pattern = "[0-9]*";
+    input.className = "push-input";
+    input.id = `${idPrefix}${i}`;
+    input.autocomplete = "off";
+    row.appendChild(input);
+  }
+  return row;
+}
+
+function getPassword(idPrefix) {
+  let value = "";
+  for (let i = 0; i < 6; i++) {
+    let input = document.getElementById(`${idPrefix}${i}`);
+    if (!input || !/^[0-9]$/.test(input.value)) return null;
+    value += input.value;
+  }
+  return value;
+}
+
+function resetPasswordInputs(idPrefix) {
+  for (let i = 0; i < 6; i++) {
+    let input = document.getElementById(`${idPrefix}${i}`);
+    if (input) input.value = "";
+  }
+  let first = document.getElementById(`${idPrefix}0`);
+  if (first) first.focus();
+}
+
+function setupAutoTab(idPrefix) {
+  for (let i = 0; i < 6; i++) {
+    let input = document.getElementById(`${idPrefix}${i}`);
+    input.addEventListener("input", (e) => {
+      let val = e.target.value;
+      if (/^[0-9]$/.test(val)) {
+        if (i < 5) document.getElementById(`${idPrefix}${i + 1}`).focus();
+      } else {
+        input.value = ""; 
+      }
+    });
+    input.addEventListener("keydown", e => {
+      if (e.key === "Backspace" && !input.value && i > 0) {
+        document.getElementById(`${idPrefix}${i - 1}`).focus();
+      }
+    });
+  }
+}
+
+function showPushModal(innerHtml) {
+  pushContainer.innerHTML = `<div class="push-inner">${innerHtml}</div>`;
+  pushContainer.style.display = "block";  
+  let closeBtn = pushContainer.querySelector('.close-btn');
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      pushContainer.style.display = "none";    
+      if (withdrawalPasswordCreated) renderPasswordEntry();
+    };
+  }
+}
+
+function showCreatePasswordModal() {
+  let html = `
+    <div class="close-btn" title="Close">&times;</div>
+    <div class="push-title">Create your 6 withdrawal password</div>
+    <div class="push-label">Password</div>
+    ${createPasswordRow("pw_").outerHTML}
+    <div class="push-label" style="margin-top:11px;">Confirm</div>
+    ${createPasswordRow("cpw_").outerHTML}
+    <button class="push-btn" id="createPwBtn">Submit</button>
+  `;
+  showPushModal(html);
+
+  setupAutoTab("pw_");
+  setupAutoTab("cpw_");
+  document.getElementById("pw_0").focus();
+
+  document.getElementById("createPwBtn").onclick = async () => {
+    loadingScreen.style.display = "flex";
+    let password = getPassword("pw_");
+    let confirm = getPassword("cpw_");
+    if (!password || !confirm) {
+      showToast("❌Error: Please enter and confirm 6 digits.");
+      loadingScreen.style.display = "none";
+      return;
+    }
+    if (password !== confirm) {
+      showToast("❌Error: Passwords do not match.");
+      resetPasswordInputs("pw_");
+      resetPasswordInputs("cpw_");
+      loadingScreen.style.display = "none";
+      return;
+    }
+    try {
+      const response = await fetch("https://bonus-gamma.vercel.app/api/password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "@haruna66"
+        },
+        body: JSON.stringify({
+          email: userData.email,
+          withdrawalPassword: password
+        })
+      });
+      if (response.ok) {
+        showToast("Password created successfully");
+        pushContainer.style.display = "none";
+        withdrawalPasswordCreated = true;
+        withdrawalPassword = password;
+        renderPasswordEntry();
+      } else {
+        showToast("❌Error: Failed to create password.");
+      }
+    } catch (e) {
+      showToast("❌Error: " + (e.message || "Failed to create password."));
+    }
+    loadingScreen.style.display = "none";
+  };
+}
+
+function renderPasswordEntry() {
+  if (!withdrawalPasswordCreated) {
+    passwordEntryArea.innerHTML = "";
+    return;
+  }
+  let wrap = document.createElement("div");
+  wrap.style.margin = '0 0 18px 0';
+  wrap.innerHTML = `
+    <div class="push-label" style="color:#00ffd5;font-weight:600;margin-bottom:3px;">Withdrawal Password</div>
+    <div id="withdrawalRow"></div>
+  `;
+  passwordEntryArea.innerHTML = "";
+  passwordEntryArea.appendChild(wrap);
+  let row = createPasswordRow("ent_");
+  row.id = "withdrawalRow";
+  wrap.appendChild(row);
+  setupAutoTab("ent_");
+  document.getElementById("ent_0").focus();
+}
+
+function setupFormPasswordAutoTab() {
+  const pwInputs = [];
+  for (let i = 0; i < 6; i++) {
+    const input = document.getElementById(`withdrawal-password-${i}`);
+    pwInputs.push(input);
+    input.addEventListener("input", (e) => {
+      if (/^[0-9]$/.test(input.value)) {
+        if (i < 5) pwInputs[i + 1].focus();
+      } else {
+        input.value = "";
+      }
+    });
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Backspace" && !input.value && i > 0) {
+        pwInputs[i - 1].focus();
+      }
+    });
+  }
+}
+
+function getFormWithdrawalPassword() {
+  let value = "";
+  for (let i = 0; i < 6; i++) {
+    let input = document.getElementById(`withdrawal-password-${i}`);
+    if (!input || !/^[0-9]$/.test(input.value)) return null;
+    value += input.value;
+  }
+  return value;
+}
+
+function resetFormWithdrawalPassword() {
+  for (let i = 0; i < 6; i++) {
+    let input = document.getElementById(`withdrawal-password-${i}`);
+    if (input) input.value = "";
+  }
+  document.getElementById("withdrawal-password-0").focus();
+}
+
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+function formatWalletAddress(address) {
+  if (!address || address.length <= 15) return address;
+  return `${address.substring(0, 8)}...${address.substring(address.length - 7)}`;
+}
+
+function createWithdrawalItemHTML(w, status) {
+  const isPending = status === 'pending';
+  const statusIcon = isPending ? '<i class="fas fa-hourglass-half" style="color:#ffc107;"></i>' : '<i class="fas fa-check-circle" style="color:#28a745;"></i>';
+  const statusText = isPending ? `Pending` : `Successful`;
+  const statusClass = isPending ? 'withdrawal-pending' : 'withdrawal-paid';
+  const formattedDate = new Date(w.withdrawalTime).toLocaleString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
+  const shortenedWallet = formatWalletAddress(w.walletAddress);
+
+  return `
+    <div class="withdrawal-container ${statusClass}">
+        <div class="status-line">
+            <span class="status-text">${statusIcon} ${statusText}</span>
+            <span class="date-time">${formattedDate}</span>
+        </div>
+        <div class="data-line">
+            <span class="amount-info">$${parseFloat(w.amount).toFixed(2)}</span>
+            <span class="coin-info">(${w.coin})</span>
+        </div>
+        <div class="wallet-line">
+            <i class="fas fa-wallet" style="margin-right:3px;"></i>Wallet: <strong>${shortenedWallet}</strong>
+        </div>
+    </div>
+  `;
+}
+
+async function loadWithdrawalHistory(userId) {
+  pendingListElem.innerHTML = '';
+  paidListElem.innerHTML = '';
+  pendingSectionTitleElem.style.display = 'none';
+  noHistoryMsgElem.style.display = 'none';
+
+  try {
+    let pendingWithdrawal = userData.approvedWithdrawals; 
+
+    if (pendingWithdrawal) {
+        pendingListElem.innerHTML = createWithdrawalItemHTML(pendingWithdrawal, 'pending');
+        pendingSectionTitleElem.style.display = 'block';
+    }
+
+    const paidRef = ref(db, `users/${userId}/successfullyPayment`);
+    const paidSnap = await get(paidRef);
+    const paidData = paidSnap.val();
+
+    let paidWithdrawals = [];
+    if (paidData) {
+      paidWithdrawals = Object.values(paidData);
+      
+      paidWithdrawals.sort((a, b) => new Date(b.withdrawalTime) - new Date(a.withdrawalTime));
+    }
+
+    if (paidWithdrawals.length > 0) {
+      paidWithdrawals.forEach((w) => {
+        paidListElem.innerHTML += createWithdrawalItemHTML(w, 'paid');
+      });
+    } else {
+      noHistoryMsgElem.style.display = 'block';
+    }
+  } catch (error) {
+    console.error("Error loading withdrawal history:", error);
+    showToast("❌Error: Failed to load history.");
+  }
+}
+
+loadingScreen.style.display = "flex";
+mainContent?.classList.add("hidden");
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    try {
+      const userRef = ref(db, `users/${user.uid}`);
+      const snapshot = await get(userRef);
+      const data = snapshot.val();
+      if (data) {
+        userData = data;
+        userData.uid = user.uid;
+        userData.email = user.email;
+        userBalanceElem.textContent = data.userBalance?.toFixed(2) || "0.00";
+        fullNameElem.textContent = data.fullName || "";
+        withdrawalPassword = data.withdrawalPassword || null;
+        withdrawalPasswordCreated = !!data.withdrawalPassword;
+        
+        await loadWithdrawalHistory(user.uid);
+        
+        if (!withdrawalPasswordCreated) {
+          showCreatePasswordModal();
+          passwordEntryArea.innerHTML = "";
+        } else {
+          renderPasswordEntry();
+        }
+      }
+      loadingScreen.style.display = "none";
+      mainContent.classList.remove("hidden");
+    } catch (error) {
+      loadingScreen.style.display = "none";
+      console.error(error);
+    }
+  } else {
+    window.location.href = "/login.html";
+  }
+});
+
+setupFormPasswordAutoTab();
+
+
+document.getElementById("withdrawalForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  loadingScreen.style.display = "flex";
+
+  const amount = parseFloat(document.getElementById("amount").value);
+  const walletAddress = document.getElementById("walletAddress").value.trim();
+  const coin = document.getElementById("coinSelect").value;
+  
+  let password = getFormWithdrawalPassword();
+
+  if (!withdrawalPasswordCreated) {
+    showToast("❌Error: Please create your withdrawal password first.");
+    loadingScreen.style.display = "none";    
+    showCreatePasswordModal();
+    return;
+  }
+  if (!password) {
+    showToast("❌Error: Please enter your 6-digit password.");
+    loadingScreen.style.display = "none";
+    return;
+  }
+  
+  if (!coin) {
+    showToast("❌Error: Please select a coin.");
+    loadingScreen.style.display = "none";
+    return;
+  }
+  if (isNaN(amount) || amount < 1.25) {
+    showToast("❌Error: Minimum withdrawal is $1.25");
+    loadingScreen.style.display = "none";
+    return;
+  }
+  if (amount > 350) {
+    showToast("❌Error: Maximum daily withdrawal is $250");
+    loadingScreen.style.display = "none";
+    return;
+  }
+  if (userData.userBalance < amount) {
+    showToast("❌Error: Insufficient balance");
+    loadingScreen.style.display = "none";
+    return;
+  }
+  
+  if (userData.approvedWithdrawals) {
+    showToast("❌Error: You have a pending withdrawal. Wait for it to be processed.");
+    loadingScreen.style.display = "none";
+    return;
+  }
+  
+  if (password !== withdrawalPassword) {
+    showToast("❌Error: This password is not correct ");
+    resetFormWithdrawalPassword();
+    loadingScreen.style.display = "none";
+    return;
+  }
+
+  try {
+    const gasFee = amount * 0.06;
+    const finalAmount = amount - gasFee;
+    const networkId = "56";
+    
+    const withdrawalData = {
+        email: userData.email,
+        amount: finalAmount.toFixed(2),
+        walletAddress,
+        coin,
+        networkId,
+        withdrawalTime: new Date().toISOString()
+    };
+
+    const response = await fetch("https://vestinoo-project.vercel.app/api/withdrawal", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "@haruna66"
+      },
+      body: JSON.stringify(withdrawalData)
+    });
+
+    if (response.ok) {
+      showToast("✔️Successfully: Your withdrawal has been processed. Please wait for 24 hours.");
+      
+      userData.approvedWithdrawals = withdrawalData;
+      
+      await loadWithdrawalHistory(userData.uid); 
+      
+      document.getElementById("withdrawalForm").reset();
+      resetFormWithdrawalPassword();
+    } else {
+      showToast("❌Error: Failed to process your withdrawal.");
+    }
+  } catch (error) {
+    showToast("❌Error: An unexpected error occurred.");
+    console.error(error);
+  } finally {
+    loadingScreen.style.display = "none";
+  }
+});
+
+pushContainer.addEventListener('click', function(e){
+  if(e.target === pushContainer || e.target.classList.contains('close-btn')){
+    pushContainer.style.display = "none";
+    if (withdrawalPasswordCreated) renderPasswordEntry();
+  }
+});
+
+</script>
+</body>
+</html>
